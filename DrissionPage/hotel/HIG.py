@@ -40,14 +40,14 @@ for hotel in hotels:
      #TODO 这里执行很慢，要优化
     if not name:
         name = hotel.ele('@data-slnm-ihg=hotelNameSID').ele('tag:span')
-    #有的酒店所查日期内，没有可用房源和价格时，价格在class=availability-message mb-4
+    #有的酒店所查日期内，没有可用房源和价格时，价格在属性为data-testid=noRoomsAvail
     #如<div _ngcontent-ng-c2686815634="" class="availability-message mb-4" data-testid="noRoomsAvail">所选日期无空房</div>
     #TODO 这里执行很慢，要优化
     if not price:
-        price = hotel.ele('@class=availability-message mb-4')
+        price = hotel.ele('@data-testid=noRoomsAvail')
     # 打印酒店名、价格信息
     # print(f'酒店名称：{name.text}, 价格{price.text}')
 end_time = time.time()
-#耗时67.39秒
+#打印耗时67.39秒左右
 print(f'===={file_path.name}执行成功完成！耗时{end_time - start_time:.2f}秒====')
 page.quit()
