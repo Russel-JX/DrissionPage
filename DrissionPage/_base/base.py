@@ -13,6 +13,8 @@ from urllib.parse import quote
 
 from DownloadKit import DownloadKit
 from requests import Session
+import sys
+print(f"======{sys.path}")
 
 from .._configs.session_options import SessionOptions
 from .._elements.none_element import NoneElement
