@@ -49,18 +49,19 @@ class LoadPriceHIG:
             hotel_price_list = self.loadData(priceURL, 'price')
             hotel_points_list = self.loadData(pointsURL, 'points')
             print(f'====酒店价格数量：{len(hotel_price_list)}，酒店积分数量：{len(hotel_points_list)}====')
-            # for index, hotel in enumerate(hotel_price_list):
-            #     hotel['name']
-            #     self.db.insert_data(TABLES['hotelprice'], hotel)
-
             # 对具体相同酒店，合并name,price,points信息
             hotel_list = self.merge_hotel_data(hotel_price_list, hotel_points_list)
+
             # 存DB
             # 数据库连接
             db = HotelDatabase()
             # TODO数据字典，用定义好的TABLES.hotelprice??
             for hotel in hotel_list:
-                db.insert_data(TABLES['hotelprice'], hotel) 
+                print(f'====酒店详情：{hotel}====')
+
+                # db.insert_data(TABLES['hotelprice'], hotel) 
+                db.insert_data('hotelprice', hotel)
+
             # 关闭数据库连接
             db.close()
 
@@ -88,11 +89,11 @@ class LoadPriceHIG:
             if name not in hotel_dict:
                 hotel_dict[name] = {
                     'name': name,
-                    'minprice': hotel.get('price', ''),
-                    'minpoints': ''  # 初始化积分为空
+                    'minprice': hotel.get('price', -1),
+                    'minpoints': -1  # 初始化积分为-1，表示无房或不能用积分
                 }
             else:
-                hotel_dict[name]['minprice'] = hotel.get('price', '')
+                hotel_dict[name]['minprice'] = hotel.get('price', -1)
 
         # 遍历积分列表，将积分信息合并到字典中
         for hotel in points_list:
@@ -100,11 +101,14 @@ class LoadPriceHIG:
             if name not in hotel_dict:
                 hotel_dict[name] = {
                     'name': name,
-                    'minprice': '',  # 初始化价格为空
-                    'minpoints': hotel.get('points', '')
+                    'minprice': -1,  # 初始化现金价格为-1，表示无房或不能用现金
+                    'minpoints': hotel.get('points', -1),
+                    # 'minpoints': hotel.get('points') if isinstance(hotel.get('points'), (int, float)) else -1
+
+                    
                 }
             else:
-                hotel_dict[name]['minpoints'] = hotel.get('points', '')
+                hotel_dict[name]['minpoints'] = hotel.get('points', -1)
 
         # 将字典转换为列表。[{},{}]形式
         merged_list = list(hotel_dict.values())
@@ -145,9 +149,9 @@ class LoadPriceHIG:
                 last_height = height
         hotel_list = []
         hotel_data = {
-                'name': None,
-                'price': None,
-                'points': None
+                'name': '',
+                'price': -1,
+                'points': -1
             }
         # 获取所有酒店卡片。使用s_eles代替eles，速度从60s提升至12s
         # hotels = page.eles('@class=hotel-card-list-resize ng-star-inserted')
@@ -156,28 +160,38 @@ class LoadPriceHIG:
 
         for hotel in hotels:
             # 优先取 brandHotelNameSID，其次 hotelNameSID > span
-            name = hotel.ele('@data-slnm-ihg=brandHotelNameSID')
-            price = None
-            points = None
-            if not name:
+            name_container = hotel.ele('@data-slnm-ihg=brandHotelNameSID')
+            name = ''
+            price = -1
+            points = -1
+            if not name_container:
                 name_container = hotel.ele('@data-slnm-ihg=hotelNameSID')
-                name = name_container.ele('tag:span') if name_container else None
+                name = name_container.ele('tag:span').text if name_container else ''
 
             # 优先取正常价格，其次判断无房价格提示
-            if queryType == 'price':#价格信息
-                price = hotel.ele('@class=price') or hotel.ele('@data-testid=noRoomsAvail')
-            elif queryType == 'points':#积分信息  data-slnm-ihg="dailyPointsCostSID"  data-testid="noRoomsAvail"
-                points = hotel.ele('@data-slnm-ihg=dailyPointsCostSID') or hotel.ele('@data-testid=noRoomsAvail')
+            if queryType == 'price':#价格信息。
+                #价格中会返回"1,415 CNY"，要去掉" CNY"。因为<div _ngcontent-ng-c3430809455="" class="price modal-view" data-slnm-ihg="hotelPirceSID"> 1,415 <span _ngcontent-ng-c3430809455="" class="display-n" data-slnm-ihg="currencySID">CNY</span></div>
+                price_div = hotel.ele('@data-slnm-ihg=hotelPirceSID')
+                if price_div:#有房价格"1,415 CNY"
+                    price_text = price_div.text if price_div else ''
+                    # 去掉 CNY（或者任何 span 的内容）
+                    currency = price_div.ele('tag:span')
+                    if currency:
+                        price = price_text.replace(currency.text, '').strip()
+                elif hotel.ele('@data-testid=noRoomsAvail'):#无房价格默认为-1
+                    price = -1
+            elif queryType == 'points':#积分信息。noRoomsAvail则无房，返回默认-1  data-slnm-ihg="dailyPointsCostSID"  data-testid="noRoomsAvail"。
+                points = hotel.ele('@data-slnm-ihg=dailyPointsCostSID') or -1 if hotel.ele('@data-testid=noRoomsAvail') else -1
 
-            hotel_data['name'] = name.text
-            hotel_data['price'] = price.text if price else '' 
-            hotel_data['points'] = points.text if points else ''
+            hotel_data['name'] = name
+            hotel_data['price'] = price if price else '' 
+            hotel_data['points'] = points if points else ''
             hotel_list.append(hotel_data)
 
             # 打印酒店名、价格信息（注意判空）
-            # print(f"酒店名称：{name.text if name else '未知'}, 价格：{price.text if price else '无'}")
+            # print(f"酒店名称：{name if name else '未知'}, 价格：{price if price else '无'}")
 
         end_time =  time.time()
-        return hotel_list
         print(f'===={file_path.name}执行成功完成！耗时 {end_time - start_time:.2f} 秒====')
         page.quit()
+        return hotel_list
