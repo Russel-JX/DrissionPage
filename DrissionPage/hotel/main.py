@@ -36,7 +36,7 @@ def crawl_city_data(city, result_queue):
     :param result_queue: 用于存储爬取结果的队列
     """
     try:
-        print(f"开始爬取城市：{city['name']}")
+        # print(f"开始爬取城市：{city['name']}")
         page = ChromiumPage()
 
         # 获取酒店列表及价格信息
