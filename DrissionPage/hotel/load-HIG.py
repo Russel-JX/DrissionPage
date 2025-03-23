@@ -1,3 +1,4 @@
+#爬取具体酒店的一天价格信息
 from DrissionPage import ChromiumPage
 from pathlib import Path
 import time
@@ -77,7 +78,7 @@ for hotel in hotels:
     price = hotel.ele('@class=price') or hotel.ele('@data-testid=noRoomsAvail')
 
     # 打印酒店名、价格信息（注意判空）
-    print(f"酒店名称：{name.text if name else '未知'}, 价格：{price.text if price else '无'}")
+    # print(f"酒店名称：{name.text if name else '未知'}, 价格：{price.text if price else '无'}")
 
 end_time =  time.time()
 print(f'===={file_path.name}执行成功完成！耗时 {end_time - start_time:.2f} 秒====')
