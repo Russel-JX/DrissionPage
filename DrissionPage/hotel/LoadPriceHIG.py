@@ -38,16 +38,78 @@ class LoadPriceHIG:
     # # 关闭数据库连接
     # db.close()
 
-    def loadPrice(self):
-         # 价格信息URL
-        priceURL = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=CASH&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=6CBARC&qAAR=6CBARC&qAkamaiCC=CN&srb_u=1&qExpndSrch=false&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1&qLoSe=false'
-        # 积分信息URL
-        pointsURL = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=POINTS&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1'
-        
-        hotel_price_list = self.loadData(priceURL, 'price')
-        hotel_points_list = self.loadData(pointsURL, 'points')
+    def getHotelInfo(self, city, result_queue):
+        print(f'====load数据！====')
+        try:
+            # 价格信息URL
+            priceURL = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=CASH&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=6CBARC&qAAR=6CBARC&qAkamaiCC=CN&srb_u=1&qExpndSrch=false&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1&qLoSe=false'
+            # 积分信息URL
+            pointsURL = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=POINTS&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1'
+            
+            hotel_price_list = self.loadData(priceURL, 'price')
+            hotel_points_list = self.loadData(pointsURL, 'points')
+            print(f'====酒店价格数量：{len(hotel_price_list)}，酒店积分数量：{len(hotel_points_list)}====')
+            # for index, hotel in enumerate(hotel_price_list):
+            #     hotel['name']
+            #     self.db.insert_data(TABLES['hotelprice'], hotel)
 
-        # TODO 对具体相同酒店，DB记录价格和积分信息
+            # 对具体相同酒店，合并name,price,points信息
+            hotel_list = self.merge_hotel_data(hotel_price_list, hotel_points_list)
+            # 存DB
+            # 数据库连接
+            db = HotelDatabase()
+            # TODO数据字典，用定义好的TABLES.hotelprice??
+            for hotel in hotel_list:
+                db.insert_data(TABLES['hotelprice'], hotel) 
+            # 关闭数据库连接
+            db.close()
+
+            # 将结果存入队列
+            result_queue.put(f"城市 {city['name']} 爬取完成")
+
+        except Exception as e:
+            print(f"爬取城市 {city['name']} 时发生错误：{e}")
+            result_queue.put(f"城市 {city['name']} 爬取失败：{e}")
+    
+    #合并酒店的价格信息和积分信息
+    def merge_hotel_data(self, price_list, points_list):
+        """
+        合并酒店的价格信息和积分信息
+        :param price_list: 包含价格信息的酒店列表
+        :param points_list: 包含积分信息的酒店列表
+        :return: 合并后的酒店列表
+        """
+        # 创建一个字典，用于快速查找酒店。key-object形式
+        hotel_dict = {}
+
+        # 遍历价格列表，将价格信息存入字典
+        for hotel in price_list:
+            name = hotel['name']
+            if name not in hotel_dict:
+                hotel_dict[name] = {
+                    'name': name,
+                    'minprice': hotel.get('price', ''),
+                    'minpoints': ''  # 初始化积分为空
+                }
+            else:
+                hotel_dict[name]['minprice'] = hotel.get('price', '')
+
+        # 遍历积分列表，将积分信息合并到字典中
+        for hotel in points_list:
+            name = hotel['name']
+            if name not in hotel_dict:
+                hotel_dict[name] = {
+                    'name': name,
+                    'minprice': '',  # 初始化价格为空
+                    'minpoints': hotel.get('points', '')
+                }
+            else:
+                hotel_dict[name]['minpoints'] = hotel.get('points', '')
+
+        # 将字典转换为列表。[{},{}]形式
+        merged_list = list(hotel_dict.values())
+        return merged_list
+
 
     """
     #2.1 每个城市一个线程。一个线程中：
@@ -95,6 +157,8 @@ class LoadPriceHIG:
         for hotel in hotels:
             # 优先取 brandHotelNameSID，其次 hotelNameSID > span
             name = hotel.ele('@data-slnm-ihg=brandHotelNameSID')
+            price = None
+            points = None
             if not name:
                 name_container = hotel.ele('@data-slnm-ihg=hotelNameSID')
                 name = name_container.ele('tag:span') if name_container else None

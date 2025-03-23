@@ -21,65 +21,22 @@ import time
 from queue import Queue
 from DrissionPage import ChromiumPage
 from util.HotelDatabase import HotelDatabase
+from LoadPriceHIG import LoadPriceHIG
+
 
 # 数据库连接
 db = HotelDatabase()
+# 爬取酒店信息的函数
+loader = LoadPriceHIG()
 def get_city_list():
     #从数据库读取可用城市列表。默认返回所有城市
     return db.query_data('city')  # 假设 city 表中有城市信息
 
-# 爬取酒店信息的线程函数
-def crawl_city_data(city, result_queue):
-    """
-    爬取指定城市的酒店信息
-    :param city: 城市名称
-    :param result_queue: 用于存储爬取结果的队列
-    """
-    try:
-        # print(f"开始爬取城市：{city['name']}")
-        page = ChromiumPage()
-
-        # 获取酒店列表及价格信息
-        page.get(f"https://example.com/hotels?city={city['name']}")
-        hotels = page.eles('.hotel-card')  # 假设酒店卡片的 CSS 类名为 .hotel-card
-
-        for hotel in hotels:
-            hotel_data = {
-                'name': hotel.ele('.hotel-name').text,
-                'price': hotel.ele('.hotel-price').text,
-                'city': city['name']
-            }
-            # 获取积分信息
-            hotel_data['points'] = hotel.ele('.hotel-points').text
-
-            # 保存酒店价格和积分信息到数据库
-            db.insert_data('hotelprice', hotel_data)
-
-            # 获取酒店详情页信息
-            hotel_detail_url = hotel.ele('.hotel-detail-link').attr('href')
-            page.get(hotel_detail_url)
-            hotel_details = {
-                'address': page.ele('.hotel-address').text,
-                'features': page.ele('.hotel-features').text
-            }
-            hotel_data.update(hotel_details)
-
-            # 保存酒店详情信息到数据库
-            db.insert_data('hotel', hotel_data)
-
-        # 将结果存入队列
-        result_queue.put(f"城市 {city['name']} 爬取完成")
-        print(f"城市 {city['name']} 爬取完成")
-        page.quit()
-
-    except Exception as e:
-        print(f"爬取城市 {city['name']} 时发生错误：{e}")
-        result_queue.put(f"城市 {city['name']} 爬取失败：{e}")
-
 # 主函数
 def main():
     # 读取城市列表
-    cities = get_city_list()
+    # cities = get_city_list()
+    cities = [{'name':'北京'}] 
 
     # 创建线程队列
     threads = []
@@ -87,7 +44,10 @@ def main():
 
     # 启动多线程爬取
     for city in cities:
-        thread = threading.Thread(target=crawl_city_data, args=(city, result_queue))
+        print(f'====线程开始！====')
+
+        thread = threading.Thread(target=loader.getHotelInfo, args=(city, result_queue))
+
         threads.append(thread)
         thread.start()
 
@@ -101,7 +61,7 @@ def main():
         print(result)  # 打印日志，实际可保存到数据库或文件
 
     # 保存爬取状态
-    db.insert_data('loadboard', {'status': 1, 'updatetime': time.strftime('%Y-%m-%d %H:%M:%S')})
+    db.insert_data('loadboard', {'city':city, 'status': 1, 'updatetime': time.strftime('%Y-%m-%d %H:%M:%S')})
 
     print("所有城市爬取完成")
 

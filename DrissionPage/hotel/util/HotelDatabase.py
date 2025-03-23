@@ -41,7 +41,7 @@ class HotelDatabase:
         try:
             self.cursor.execute(sql, params)
             results = self.cursor.fetchall()
-            print(f"查询结果：{results}")
+            print(f"查询结果总数：{len(results)}")
             return results
         except Exception as e:
             print(f"查询数据失败：{e}")
