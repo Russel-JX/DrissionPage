@@ -29,8 +29,9 @@ for _ in range(30):  # 最多下滑30次
         same_count = 0
         last_height = height
 
-# 获取所有酒店卡片
-hotels = page.eles('@class=hotel-card-list-resize ng-star-inserted')
+# 获取所有酒店卡片。使用s_eles代替eles，速度从60s提升至12s
+# hotels = page.eles('@class=hotel-card-list-resize ng-star-inserted')
+hotels = page.s_eles('@class=hotel-card-list-resize ng-star-inserted')
 print("======酒店总数======", len(hotels))
 
 for hotel in hotels:
