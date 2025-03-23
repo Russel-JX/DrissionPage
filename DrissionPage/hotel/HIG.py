@@ -1,6 +1,38 @@
 from DrissionPage import ChromiumPage
 from pathlib import Path
 import time
+from util.HotelDatabase import HotelDatabase
+from models.hotel_dicts import TABLES
+
+db = HotelDatabase()
+
+# 插入数据到 hotel 表
+hotel_data = {
+    'version': '25.03.23 09',
+    'hotelcode': 'H123',
+    'name': '上海外滩W酒店',
+    'groupcode': 'G001',
+    'brandcode': 'B001',
+    'groupname': '万豪集团',
+    'brandname': 'W酒店',
+    'country': '中国',
+    'province': '上海',
+    'city': '上海',
+    'minpoints': 20000,
+    'minprice': 1500,
+    'latitude': 31.2304,
+    'longitude': 121.4737,
+    'address': '上海市黄浦区外滩',
+    'features': '免早,直升套房',
+    'createtime': '2025-03-23 10:00:00'
+}
+db.insert_data('hotel', hotel_data)
+
+# 查询 hotel 表数据
+db.query_data('hotel', {'city': '上海'})
+
+# 关闭数据库连接
+db.close()
 
 # 当前文件路径
 file_path = Path(__file__)
