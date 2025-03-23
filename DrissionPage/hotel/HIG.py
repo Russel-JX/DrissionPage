@@ -30,50 +30,22 @@ for _ in range(30):  # 最多下滑30次
         last_height = height
 
 # 获取所有酒店卡片
-# hotels = page.eles('@class=hotel-card-list-resize ng-star-inserted')
-hotels = page.eles('@class=theme-6c')
-
-
+hotels = page.eles('@class=hotel-card-list-resize ng-star-inserted')
 print("======酒店总数======", len(hotels))
 
-# 遍历酒店卡片，提取信息
 for hotel in hotels:
-    # 一次性获取所有可能的子元素，减少 DOM 查询次数
-    elements = hotel.eles('xpath:*')
-    name = None
-    price = None
-
-    # 查找酒店名称
-    for ele in elements:
-        # print(f'***ele:{ele}')
-        if ele.attr('data-slnm-ihg') == 'brandHotelNameSID':
-            name = ele
-            # print(f'***name0：{name}')
-            break
+    # 优先取 brandHotelNameSID，其次 hotelNameSID > span
+    name = hotel.ele('@data-slnm-ihg=brandHotelNameSID')
     if not name:
-        for ele in elements:
-            if ele.attr('data-slnm-ihg') == 'hotelNameSID':
-                name = ele.ele('tag:span')
-                break
-    # print(f'***name：{name}')
+        name_container = hotel.ele('@data-slnm-ihg=hotelNameSID')
+        name = name_container.ele('tag:span') if name_container else None
 
-    # 查找价格信息
-    for ele in elements:
-        if ele.attr('class') == 'price':
-            price = ele
-            break
-    if not price:
-        for ele in elements:
-            if ele.attr('data-testid') == 'noRoomsAvail':
-                price = ele
-                break
-    # print(f'***price{price}')
+    # 优先取正常价格，其次判断无房价格提示
+    price = hotel.ele('@class=price') or hotel.ele('@data-testid=noRoomsAvail')
 
-    # 打印酒店名和价格信息
-    name_text = name.text if name else '未知酒店'
-    price_text = price.text if price else '未知价格'
-    print(f'酒店名称：{name_text}, 价格：{price_text}')
+    # 打印酒店名、价格信息（注意判空）
+    print(f"酒店名称：{name.text if name else '未知'}, 价格：{price.text if price else '无'}")
 
-end_time = time.time()
-print(f'===={file_path.name}执行成功完成！耗时{end_time - start_time:.2f}秒====')
+end_time =  time.time()
+print(f'===={file_path.name}执行成功完成！耗时 {end_time - start_time:.2f} 秒====')
 page.quit()
