@@ -8,38 +8,10 @@ from models.hotel_dicts import TABLES
 class LoadPriceHIG:
     def __init__(self):
         self.db = HotelDatabase()
-    # db = HotelDatabase()
-
-    # # 插入数据到 hotel 表
-    # hotel_data = {
-    #     'version': '25.03.23 09',
-    #     'hotelcode': 'H123',
-    #     'name': '上海外滩W酒店',
-    #     'groupcode': 'G001',
-    #     'brandcode': 'B001',
-    #     'groupname': '万豪集团',
-    #     'brandname': 'W酒店',
-    #     'country': '中国',
-    #     'province': '上海',
-    #     'city': '上海',
-    #     'minpoints': 20000,
-    #     'minprice': 1500,
-    #     'latitude': 31.2304,
-    #     'longitude': 121.4737,
-    #     'address': '上海市黄浦区外滩',
-    #     'features': '免早,直升套房',
-    #     'createtime': '2025-03-23 10:00:00'
-    # }
-    # db.insert_data('hotel', hotel_data)
-
-    # # 查询 hotel 表数据
-    # db.query_data('hotel', {'city': '上海'})
-
-    # # 关闭数据库连接
-    # db.close()
 
     def getHotelInfo(self, city, result_queue):
         print(f'====load数据！====')
+        start_time = time.time()
         try:
             # 价格信息URL
             priceURL = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=CASH&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=6CBARC&qAAR=6CBARC&qAkamaiCC=CN&srb_u=1&qExpndSrch=false&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1&qLoSe=false'
@@ -67,6 +39,8 @@ class LoadPriceHIG:
 
             # 将结果存入队列
             result_queue.put(f"城市 {city['name']} 爬取完成")
+            end_time =  time.time()
+            print(f'===={city['name']}执行成功完成！总耗时 {end_time - start_time:.2f} 秒====')
 
         except Exception as e:
             print(f"爬取城市 {city['name']} 时发生错误：{e}")
@@ -159,11 +133,12 @@ class LoadPriceHIG:
         print("======酒店总数======", len(hotels))
 
         for hotel in hotels:
-            # 优先取 brandHotelNameSID，其次 hotelNameSID > span
-            name_container = hotel.ele('@data-slnm-ihg=brandHotelNameSID')
             name = ''
             price = -1
             points = -1
+            # 优先取 brandHotelNameSID，其次 hotelNameSID > span
+            name_container = hotel.ele('@data-slnm-ihg=brandHotelNameSID')
+            name = name_container.text if name_container else ''
             if not name_container:
                 name_container = hotel.ele('@data-slnm-ihg=hotelNameSID')
                 name = name_container.ele('tag:span').text if name_container else ''
@@ -189,7 +164,7 @@ class LoadPriceHIG:
             hotel_list.append(hotel_data)
 
             # 打印酒店名、价格信息（注意判空）
-            # print(f"酒店名称：{name if name else '未知'}, 价格：{price if price else '无'}")
+            print(f"酒店名称：{name if name else '未知'}, 价格：{price if price else '无'}")
 
         end_time =  time.time()
         print(f'===={file_path.name}执行成功完成！耗时 {end_time - start_time:.2f} 秒====')

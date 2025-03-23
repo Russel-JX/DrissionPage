@@ -46,7 +46,7 @@ TABLES = {
         'createtime': 'TIMESTAMP'
     },
     'hotelprice': {
-        'id': 'INT PRIMARY KEY',
+        'id': 'INT PRIMARY KEY AUTO_INCREMENT',
         'version': 'VARCHAR(30)',
         'groupcode': 'VARCHAR(45)',
         'brandcode': 'VARCHAR(45)',
