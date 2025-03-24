@@ -70,8 +70,9 @@ class LoadPriceHIG:
         qCoMy=032025
     """
     def getHotelInfo(self, city, result_queue):
-        print(f'===={inspect.currentframe().f_code.co_name}方法load{city}城市数据！====')
         start_time = time.time()
+        version = datetime.now().strftime('%Y-%m-%d %H') # 当前日期时间2025-03-23 15
+        print(f'===={inspect.currentframe().f_code.co_name}方法load{city} version:{version}城市数据！====')
 
         try:
             # 价格信息URL
@@ -80,40 +81,41 @@ class LoadPriceHIG:
             pointsURL = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=POINTS&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1'
             
             pricedate = datetime.today()
+            #共用的部分拿出来。如数据库的连接和关闭,共用对象。提升运行速度
+            # 数据库连接
+            db = HotelDatabase()
+            su = StrUtil()
             for i in range(2):#爬取两天的价格和积分信息
-                version = datetime.now().strftime('%Y-%m-%d %H') # 当前日期时间2025-03-23 15
+                start_day_time = time.time()
                 params = self.getHIGParams(city, pricedate)
                 print(f'====第{i+1}天，url params：{params})')
-
-                su = StrUtil()
+                
                 priceURL = su.replace_URLParam(priceURL, params)
                 pointsURL = su.replace_URLParam(pointsURL, params)
                 print(f'====价格url：{priceURL})')
                 print(f'====积分url：{pointsURL})')
-
+                # TODO以后尝试把同一城市同一天的请求价格和积分信息放在一起并行的线程中且互相等待，加快速度
+                # 即外层还是多个城市对应多个线程跑，这里再新建2个子线程绑定跑
                 hotel_price_list = self.loadData(priceURL, city, 'price', pricedate)
                 hotel_points_list = self.loadData(pointsURL, city, 'points', pricedate)
                 print(f'===={city} {pricedate} 酒店价格数量：{len(hotel_price_list)}，酒店积分数量：{len(hotel_points_list)}====')
                 # 对具体相同酒店，合并name,price,points信息
                 hotel_list = self.merge_hotel_data(hotel_price_list, hotel_points_list)
 
-                # 存DB
-                # 数据库连接
-                db = HotelDatabase()
                 for hotel in hotel_list:
                     hotel['version'] = version
                     hotel['pricedate'] = pricedate
                     db.insert_data('hotelprice', hotel)
-
-                # 关闭数据库连接
-                db.close()
-
                 # 将结果存入队列
                 result_queue.put(f"城市 {city} 爬取完成")
-                end_time =  time.time()
-                print(f'===={city}执行成功完成！总耗时 {end_time - start_time:.2f} 秒====')
+                end_day_time =  time.time()
+                print(f'===={city} {pricedate}耗时 {end_day_time - start_day_time:.2f} 秒====')
                 #下一天作为新的pricedate去查价格和积分
                 pricedate = pricedate+timedelta(days=1)
+            # 关闭数据库连接
+            db.close()
+            final_time =  time.time()
+            print(f'===={city}执行成功完成！总耗时 {final_time - start_time:.2f} 秒====')
         except Exception as e:
             print(f"爬取城市 {city} {pricedate}时发生错误：{e}")
             traceback.print_exc()  # 打印详细的堆栈跟踪信息
@@ -175,6 +177,7 @@ class LoadPriceHIG:
 
         # 打开目标页面，获取所需价格或积分信息
         page.get(url)
+        # page.get(url, timeout=30)
         # 确保页面完全加载
         # page.wait.load(timeout=10)  
 
@@ -190,15 +193,29 @@ class LoadPriceHIG:
         last_height = 0
         same_count = 0
 
-        for _ in range(10):  # 最多下滑10次
+        """
+        先固定向下滑动几次，让页面完全加载完。如果连续3次，都划不动了，则表示页面到底，不要再划了。
+        假设每次向下滑动后，页面都变长5，页面总长度15.
+        执行过程：
+        第几次滑动      height      last_height             same_count
+        1               5           0(5!=0)->5              0->0
+        2               10          5(10!=5)->10            0->0
+        3               15          10(15!=10)->15          0->0
+        4               15          15(15==15)              0->0+1=1(第一次划不动)
+        5               15          15(15==15)              1->1+1=2(第二次划不动)
+        6               15          15(15==15)              2->2+1=3(连续3次划不动了，即至少等了3秒，下面都没新内容，则到底了)
+        """
+        for _ in range(15):  # 固定下滑次数，保证页面数据完全加载完。这里下滑15次
             page.scroll.to_bottom()
-            time.sleep(1)  # 减少等待时间
+            time.sleep(1)  # 睡1秒，等下下方新页面内容加载
 
-            height = page.run_js('document.body.scrollHeight')
+            #TODO 同时处理2个城市时，有1个城市查询price老是挂了，导致此城市无任何数据。
+            # 可能是因为这里的height获取不到，导致一直下滑。
+            height = page.run_js('document.body.scrollHeight')#获取网页文档 整个内容的高度，包括当前视口之外不可见的部分
             if height == last_height:
                 same_count += 1
                 if same_count >= 3:
-                    print("滑到底了，停止滚动。")
+                    print("{city}的{queryType}的{pricedate}滑到底了，停止滚动。（连续3次，往下滑不动了）")
                     break
             else:
                 same_count = 0
@@ -207,7 +224,7 @@ class LoadPriceHIG:
         # 获取所有酒店卡片。使用s_eles代替eles，速度从60s提升至12s
         # hotels = page.eles('@class=hotel-card-list-resize ng-star-inserted')
         hotels = page.s_eles('@class=hotel-card-list-resize ng-star-inserted')
-        print(f"======{city} {pricedate}酒店总数======", len(hotels))
+        print(f"======{city}的{queryType} {pricedate}酒店总数======", len(hotels))
         for hotel in hotels:
             hotel_data = {
                 'name': '',
@@ -254,6 +271,6 @@ class LoadPriceHIG:
             hotel_data['points'] = points if points else -1
             hotel_list.append(hotel_data)
         end_time =  time.time()
-        print(f'===={file_path.name}执行成功完成！耗时 {end_time - start_time:.2f} 秒====')
+        print(f'===={file_path.name} {city}的{queryType}的{pricedate}执行成功完成！耗时 {end_time - start_time:.2f} 秒====')
         page.quit()
         return hotel_list

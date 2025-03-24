@@ -36,11 +36,13 @@ def get_city_list():
 def main():
     # 读取城市列表
     # cities = get_city_list()
+    # cities = [{'name':'上海'}] 
     cities = [{'name':'北京'},
               {'name':'上海'}] 
 
     # 创建线程队列
     threads = []
+    #队列收集多个线程的执行情况。（哪些运行成功，哪些失败）
     result_queue = Queue()
 
     # 启动多线程爬取
