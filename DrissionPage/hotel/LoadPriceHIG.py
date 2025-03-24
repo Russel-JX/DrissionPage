@@ -29,7 +29,7 @@ class LoadPriceHIG:
             db = HotelDatabase()
             # TODO数据字典，用定义好的TABLES.hotelprice??
             for hotel in hotel_list:
-                print(f'====价格、积分合并后，酒店详情：{hotel}====')
+                # print(f'====价格、积分合并后酒店详情：{hotel}====')
 
                 # db.insert_data(TABLES['hotelprice'], hotel) 
                 db.insert_data('hotelprice', hotel)
@@ -120,17 +120,16 @@ class LoadPriceHIG:
                 same_count = 0
                 last_height = height
         hotel_list = []
-        hotel_data = {
-                'name': '',
-                'price': -1,
-                'points': -1
-            }
         # 获取所有酒店卡片。使用s_eles代替eles，速度从60s提升至12s
         # hotels = page.eles('@class=hotel-card-list-resize ng-star-inserted')
         hotels = page.s_eles('@class=hotel-card-list-resize ng-star-inserted')
         print("======酒店总数======", len(hotels))
-
         for hotel in hotels:
+            hotel_data = {
+                'name': '',
+                'price': -1,
+                'points': -1
+            }
             name = ''
             price = -1
             points = -1
@@ -151,6 +150,8 @@ class LoadPriceHIG:
                     currency = price_div.ele('tag:span')
                     if currency:
                         price = price_text.replace(currency.text, '').strip()
+                        #去掉数字中间的逗号。18,000->18000
+                        price = int(price.replace(',', ''))
                 elif hotel.ele('@data-testid=noRoomsAvail'):#无房价格默认为-1
                     price = -1
                 print(f"酒店名称：{name if name else '未知'}, 价格：{price if price else '无'}")
@@ -158,9 +159,10 @@ class LoadPriceHIG:
                 points_div = hotel.ele('@data-slnm-ihg=dailyPointsCostSID')
                 if points_div:
                     points = points_div.text.strip() if points_div else -1
+                    #去掉数字中间的逗号。18,000->18000
+                    points = int(points.replace(',', ''))
                 elif hotel.ele('@data-testid=noRoomsAvail'):#无房价格默认为-1
-                    points = -1  
-                # points = hotel.ele('@data-slnm-ihg=dailyPointsCostSID') or (-1 if hotel.ele('@data-testid=noRoomsAvail') else -1)
+                    points = -1
                 print(f"酒店名称：{name if name else '未知'}, 积分：{points if points else '无'}")
 
             hotel_data['name'] = name
