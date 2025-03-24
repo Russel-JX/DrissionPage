@@ -91,9 +91,9 @@ class LoadPriceHIG:
                 print(f'====价格url：{priceURL})')
                 print(f'====积分url：{pointsURL})')
 
-                hotel_price_list = self.loadData(priceURL, city, 'price')
-                hotel_points_list = self.loadData(pointsURL, city, 'points')
-                print(f'====酒店价格数量：{len(hotel_price_list)}，酒店积分数量：{len(hotel_points_list)}====')
+                hotel_price_list = self.loadData(priceURL, city, 'price', pricedate)
+                hotel_points_list = self.loadData(pointsURL, city, 'points', pricedate)
+                print(f'===={city} {pricedate} 酒店价格数量：{len(hotel_price_list)}，酒店积分数量：{len(hotel_points_list)}====')
                 # 对具体相同酒店，合并name,price,points信息
                 hotel_list = self.merge_hotel_data(hotel_price_list, hotel_points_list)
 
@@ -115,9 +115,9 @@ class LoadPriceHIG:
                 #下一天作为新的pricedate去查价格和积分
                 pricedate = pricedate+timedelta(days=1)
         except Exception as e:
-            print(f"爬取城市 {city} 时发生错误：{e}")
+            print(f"爬取城市 {city} {pricedate}时发生错误：{e}")
             traceback.print_exc()  # 打印详细的堆栈跟踪信息
-            result_queue.put(f"城市 {city} 爬取失败：{e}")
+            result_queue.put(f"城市 {city} {pricedate}爬取失败：{e}")
     
     #合并酒店的价格信息和积分信息
     def merge_hotel_data(self, price_list, points_list):
@@ -166,12 +166,12 @@ class LoadPriceHIG:
         # 发起请求，获取酒店列表及积分信息；
         # 对具体相同酒店，DB记录价格和积分信息。
     """
-    def loadData(self, url=None, city=None, queryType=None):
+    def loadData(self, url=None, city=None, queryType=None, pricedate=None):
         # 当前文件路径
         file_path = Path(__file__)
         start_time = time.time()
         page = ChromiumPage()
-        print(f'===={file_path.name}.{inspect.currentframe().f_code.co_name}执行{city}的{queryType}开始！====')
+        print(f'===={file_path.name}.{inspect.currentframe().f_code.co_name}执行{city}的{queryType}的{pricedate}开始！====')
 
         # 打开目标页面，获取所需价格或积分信息
         page.get(url)
@@ -190,7 +190,7 @@ class LoadPriceHIG:
         last_height = 0
         same_count = 0
 
-        for _ in range(30):  # 最多下滑30次
+        for _ in range(10):  # 最多下滑10次
             page.scroll.to_bottom()
             time.sleep(1)  # 减少等待时间
 
@@ -207,7 +207,7 @@ class LoadPriceHIG:
         # 获取所有酒店卡片。使用s_eles代替eles，速度从60s提升至12s
         # hotels = page.eles('@class=hotel-card-list-resize ng-star-inserted')
         hotels = page.s_eles('@class=hotel-card-list-resize ng-star-inserted')
-        print("======{city}酒店总数======", len(hotels))
+        print(f"======{city} {pricedate}酒店总数======", len(hotels))
         for hotel in hotels:
             hotel_data = {
                 'name': '',
@@ -238,7 +238,7 @@ class LoadPriceHIG:
                         price = int(price.replace(',', ''))
                 elif hotel.ele('@data-testid=noRoomsAvail'):#无房价格默认为-1
                     price = -1
-                print(f"酒店名称：{name if name else '未知'}, 价格：{price if price else '无'}")
+                # print(f"酒店名称：{name if name else '未知'}, 价格：{price if price else '无'}")
             elif queryType == 'points':#积分信息。noRoomsAvail则无房，返回默认-1  data-slnm-ihg="dailyPointsCostSID"  data-testid="noRoomsAvail"。
                 points_div = hotel.ele('@data-slnm-ihg=dailyPointsCostSID')
                 if points_div:
@@ -247,7 +247,7 @@ class LoadPriceHIG:
                     points = int(points.replace(',', ''))
                 elif hotel.ele('@data-testid=noRoomsAvail'):#无房价格默认为-1
                     points = -1
-                print(f"酒店名称：{name if name else '未知'}, 积分：{points if points else '无'}")
+                # print(f"酒店名称：{name if name else '未知'}, 积分：{points if points else '无'}")
 
             hotel_data['name'] = name
             hotel_data['price'] = price if price else -1 
