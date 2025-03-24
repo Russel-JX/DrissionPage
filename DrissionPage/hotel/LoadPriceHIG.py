@@ -2,49 +2,122 @@
 from DrissionPage import ChromiumPage
 from pathlib import Path
 import time
+from datetime import timedelta, datetime
+from dateutil.relativedelta import relativedelta
+import traceback
+import inspect
 from util.HotelDatabase import HotelDatabase
 from models.hotel_dicts import TABLES
+from util.StrUtil import StrUtil
+
 
 class LoadPriceHIG:
     def __init__(self):
         self.db = HotelDatabase()
 
+    """
+    params = {
+                'pricedate': '',
+                'version': '',
+                'qCiD': '',   
+                'qCoD': '',   
+                'qCiMy': '',  
+                'qCoMy': ''
+            }   
+    """
+    def getHIGParams(self, city, pricedate):
+        params = {
+            'qDest': '', 
+            'qCiD': '',   
+            'qCoD': '',   
+            'qCiMy': '',  
+            'qCoMy': ''
+        }
+        pricedate_text = pricedate.strftime('%Y-%m-%d') # 今天日期2025-03-23
+        nextdate = pricedate+timedelta(days=1)
+        
+        formatted_day = f"{pricedate.day:02d}"  # 当前日期的日，格式化为两位数字
+        formatted_nextday = f"{nextdate.day:02d}" # 当前日期的日，格式化为两位数字
+        formatted_month = f"{(pricedate - relativedelta(months=1)).month:02d}"
+        formatted_year = (pricedate - relativedelta(months=1)).strftime('%y')
+        qmonth = f"{formatted_month}20{formatted_year}"  # 2025-03-24转换为 022025 的形式
+        params['qDest'] = city
+        params['qCiD'] = formatted_day
+        params['qCoD'] = formatted_nextday
+        params['qCiMy'] = qmonth
+        params['qCoMy'] = qmonth
+        return params
+
+
+    """
+    查询一个城市下的一个酒店集团下的所有酒店的价格和积分信息
+
+    URL解释
+    洲际价格URL。https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=CASH&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=6CBARC&qAAR=6CBARC&qAkamaiCC=CN&srb_u=1&qExpndSrch=false&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1&qLoSe=false
+    洲际积分URL。https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=POINTS&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1
+
+    整体表示：查询"北京亚运村"位置，现金支付方式，入住日期在2025-04-23号，离开在2025-04-24号的客房价格
+    qDest：查询城市。使用Percent-Encoding的URL 编码。对应的是"北京亚运村"
+        qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91
+    qPt:支付方式。CASH：现金；POINTS：积分
+        qPt=CASH
+    qCiD:客户入住日期
+        qCiD=23
+    qCoD:客户离开日期
+        qCoD=24
+    qCiMy/qCoMy:客户入住/离开的月份和年份。url参数比实际查询的月份小1个月。下面表示：去查3+1=4月份，25年
+        qCiMy=032025
+        qCoMy=032025
+    """
     def getHotelInfo(self, city, result_queue):
-        print(f'====load数据！====')
+        print(f'===={inspect.currentframe().f_code.co_name}方法load{city}城市数据！====')
         start_time = time.time()
+
         try:
             # 价格信息URL
             priceURL = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=CASH&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=6CBARC&qAAR=6CBARC&qAkamaiCC=CN&srb_u=1&qExpndSrch=false&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1&qLoSe=false'
             # 积分信息URL
             pointsURL = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=POINTS&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1'
             
-            hotel_price_list = self.loadData(priceURL, 'price')
-            hotel_points_list = self.loadData(pointsURL, 'points')
-            print(f'====酒店价格数量：{len(hotel_price_list)}，酒店积分数量：{len(hotel_points_list)}====')
-            # 对具体相同酒店，合并name,price,points信息
-            hotel_list = self.merge_hotel_data(hotel_price_list, hotel_points_list)
+            pricedate = datetime.today()
+            for i in range(2):#爬取两天的价格和积分信息
+                version = datetime.now().strftime('%Y-%m-%d %H') # 当前日期时间2025-03-23 15
+                params = self.getHIGParams(city, pricedate)
+                print(f'====第{i+1}天，url params：{params})')
 
-            # 存DB
-            # 数据库连接
-            db = HotelDatabase()
-            # TODO数据字典，用定义好的TABLES.hotelprice??
-            for hotel in hotel_list:
-                # print(f'====价格、积分合并后酒店详情：{hotel}====')
+                su = StrUtil()
+                priceURL = su.replace_URLParam(priceURL, params)
+                pointsURL = su.replace_URLParam(pointsURL, params)
+                print(f'====价格url：{priceURL})')
+                print(f'====积分url：{pointsURL})')
 
-                # db.insert_data(TABLES['hotelprice'], hotel) 
-                db.insert_data('hotelprice', hotel)
+                hotel_price_list = self.loadData(priceURL, city, 'price')
+                hotel_points_list = self.loadData(pointsURL, city, 'points')
+                print(f'====酒店价格数量：{len(hotel_price_list)}，酒店积分数量：{len(hotel_points_list)}====')
+                # 对具体相同酒店，合并name,price,points信息
+                hotel_list = self.merge_hotel_data(hotel_price_list, hotel_points_list)
 
-            # 关闭数据库连接
-            db.close()
+                # 存DB
+                # 数据库连接
+                db = HotelDatabase()
+                for hotel in hotel_list:
+                    hotel['version'] = version
+                    hotel['pricedate'] = pricedate
+                    db.insert_data('hotelprice', hotel)
 
-            # 将结果存入队列
-            result_queue.put(f"城市 {city['name']} 爬取完成")
-            end_time =  time.time()
-            print(f'===={city['name']}执行成功完成！总耗时 {end_time - start_time:.2f} 秒====')
+                # 关闭数据库连接
+                db.close()
 
+                # 将结果存入队列
+                result_queue.put(f"城市 {city} 爬取完成")
+                end_time =  time.time()
+                print(f'===={city}执行成功完成！总耗时 {end_time - start_time:.2f} 秒====')
+                #下一天作为新的pricedate去查价格和积分
+                pricedate = pricedate+timedelta(days=1)
         except Exception as e:
-            print(f"爬取城市 {city['name']} 时发生错误：{e}")
-            result_queue.put(f"城市 {city['name']} 爬取失败：{e}")
+            print(f"爬取城市 {city} 时发生错误：{e}")
+            traceback.print_exc()  # 打印详细的堆栈跟踪信息
+            result_queue.put(f"城市 {city} 爬取失败：{e}")
     
     #合并酒店的价格信息和积分信息
     def merge_hotel_data(self, price_list, points_list):
@@ -93,15 +166,26 @@ class LoadPriceHIG:
         # 发起请求，获取酒店列表及积分信息；
         # 对具体相同酒店，DB记录价格和积分信息。
     """
-    def loadData(self, url=None, queryType=None):
+    def loadData(self, url=None, city=None, queryType=None):
         # 当前文件路径
         file_path = Path(__file__)
         start_time = time.time()
         page = ChromiumPage()
-        print(f'===={file_path.name}执行开始！====')
+        print(f'===={file_path.name}.{inspect.currentframe().f_code.co_name}执行{city}的{queryType}开始！====')
 
         # 打开目标页面，获取所需价格或积分信息
         page.get(url)
+        # 确保页面完全加载
+        # page.wait.load(timeout=10)  
+
+        # 确保页面完全加载
+        # try:
+        #     page.wait_appear('body', timeout=10)  # 等待 body 元素加载完成
+        # except Exception as e:
+        #     print(f"页面加载超时或发生错误：{e}")
+        #     traceback.print_exc()  # 打印详细的堆栈跟踪信息
+        #     return []   
+
         # 下滑到底，获取更多内容
         last_height = 0
         same_count = 0
@@ -123,7 +207,7 @@ class LoadPriceHIG:
         # 获取所有酒店卡片。使用s_eles代替eles，速度从60s提升至12s
         # hotels = page.eles('@class=hotel-card-list-resize ng-star-inserted')
         hotels = page.s_eles('@class=hotel-card-list-resize ng-star-inserted')
-        print("======酒店总数======", len(hotels))
+        print("======{city}酒店总数======", len(hotels))
         for hotel in hotels:
             hotel_data = {
                 'name': '',

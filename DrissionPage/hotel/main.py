@@ -36,7 +36,8 @@ def get_city_list():
 def main():
     # 读取城市列表
     # cities = get_city_list()
-    cities = [{'name':'北京'}] 
+    cities = [{'name':'北京'},
+              {'name':'上海'}] 
 
     # 创建线程队列
     threads = []
@@ -45,8 +46,12 @@ def main():
     # 启动多线程爬取
     for city in cities:
         print(f'====线程开始！====')
+        #汉字城市转码
+        # encoded_city = urllib.parse.quote(city.get('name'))  不用编码，因为url替换式工具类中已经编码了
+        # today = datetime.today().strftime('%Y-%m-%d') # 今天日期2025-03-23
+        # version = datetime.now().strftime('%Y-%m-%d %H') # 当前日期时间2025-03-23 15
 
-        thread = threading.Thread(target=loader.getHotelInfo, args=(city, result_queue))
+        thread = threading.Thread(target=loader.getHotelInfo, args=(city.get('name'), result_queue))
 
         threads.append(thread)
         thread.start()
