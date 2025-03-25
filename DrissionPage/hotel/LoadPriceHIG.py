@@ -94,6 +94,10 @@ class LoadPriceHIG:
 
 
 
+    """
+    TODO 同时打开多个tab时，有时有的tab不被点击选中，tab内容不会渲染，导致程序一直等待。
+    方案：可在其他tab执行完成后，去点一点卡住的tab，让程序继续。
+    """
     def loadData(self, city, pricedate, url, queryType, tab_index):
         """
         在指定的 tab 页面中加载数据

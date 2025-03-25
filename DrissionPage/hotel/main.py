@@ -104,6 +104,10 @@ def main():
     loader = LoadPriceHIG()
 
     try:
+        """"
+        默认的page会打开一个tab，加上这里指定打开的固定tab数。总tab数比定义的多1个。
+        操作定义的tab时，还是从0开始（0不会操作到page默认tab）
+        """
         # 打开 8 个 tab 页面（4 个城市，每个城市 2 个 tab）
         # loader.open_tabs(8)
         loader.open_tabs(4)
