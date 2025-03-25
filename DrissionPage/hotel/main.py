@@ -47,9 +47,7 @@ def process_city(loader, city, result_queue):
                 # 构造 URL
                 params = loader.getHIGParams(city, pricedate)
                 su = StrUtil()
-                # priceURL = su.replace_URLParam('https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qPt=CASH', params)
-                # pointsURL = su.replace_URLParam('https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qPt=POINTS', params)
-                
+     
                 # 价格信息URL
                 priceURL = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=CASH&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=6CBARC&qAAR=6CBARC&qAkamaiCC=CN&srb_u=1&qExpndSrch=false&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1&qLoSe=false'
                 # 积分信息URL
@@ -80,10 +78,6 @@ def process_city(loader, city, result_queue):
                 points_thread.join()
 
                 # 合并数据
-                # merged_data = loader.merge_hotel_data(price_result, points_result)
-                # logging.info(f"城市 {city} 日期 {pricedate} 的合并数据：{merged_data}")
-
-                # 合并数据
                 hotel_list = loader.merge_hotel_data(price_result, points_result)
                 logging.info(f"城市 {city} 日期 {pricedate} 的合并数据：{hotel_list}")
 
@@ -107,6 +101,7 @@ def process_city(loader, city, result_queue):
                 tab_pool.append(price_tab_index)
                 tab_pool.append(points_tab_index)
             logging.info(f"城市 {city} 释放了 tab 索引：价格 tab={price_tab_index}, 积分 tab={points_tab_index}")
+
 
 
 def main():
