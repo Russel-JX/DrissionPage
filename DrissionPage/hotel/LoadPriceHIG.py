@@ -4,6 +4,7 @@ import time
 import traceback
 from util.StrUtil import StrUtil
 from util.HotelDatabase import HotelDatabase
+import logging
 
 
 class LoadPriceHIG:
@@ -72,7 +73,7 @@ class LoadPriceHIG:
         for _ in range(count):
             tab = self.page.new_tab()
             self.tabs.append(tab)
-        print(f"====已打开 {len(self.tabs)} 个 tab 页面====")
+        logging.info(f"====已打开 {len(self.tabs)} 个 tab 页面====")
 
     #TODO 切换tab页面的方法要搞
     """
@@ -105,7 +106,7 @@ class LoadPriceHIG:
         try:
             #当前被使用的tab
             tab = self.tabs[tab_index]
-            print(f"====当前tab： {tab_index} {city} {pricedate} {queryType}====")
+            logging.info(f"====当前tab： {tab_index} {city} {pricedate} {queryType}====")
 
             tab.set.activate()  # 激活指定 tab
             # self.page.get(url)  # 打开目标页面
@@ -125,7 +126,7 @@ class LoadPriceHIG:
                 if height == last_height:
                     same_count += 1
                     if same_count >= 3:
-                        print(f"Tab {tab_index}  {city} {pricedate} {queryType} 页面已滚动到底")
+                        logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 页面已滚动到底")
                         break
                 else:
                     same_count = 0
@@ -135,7 +136,7 @@ class LoadPriceHIG:
             # hotels = self.page.s_eles('@class=hotel-card-list-resize ng-star-inserted')
             hotels = tab.s_eles('@class=hotel-card-list-resize ng-star-inserted')
 
-            # print(f"城市 {city} 的 {queryType} 数据，共找到 {len(hotels)} 个酒店")
+            # logging.info(f"城市 {city} 的 {queryType} 数据，共找到 {len(hotels)} 个酒店")
             hotel_list = []
             for hotel in hotels:
                 hotel_data = {
@@ -160,8 +161,8 @@ class LoadPriceHIG:
             return hotel_list
 
         except Exception as e:
-            print(f"加载 Tab {tab_index} {city} {pricedate} {queryType} 的数据时发生错误：{e}")
-            traceback.print_exc()
+            logging.info(f"加载 Tab {tab_index} {city} {pricedate} {queryType} 的数据时发生错误：{e}")
+            traceback.logging.info_exc()
             return []
 
     def close_browser(self):
@@ -169,4 +170,4 @@ class LoadPriceHIG:
         关闭浏览器
         """
         self.page.quit()
-        print("浏览器已关闭")
+        logging.info("浏览器已关闭")

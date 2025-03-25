@@ -3,6 +3,18 @@ from queue import Queue
 from LoadPriceHIG import LoadPriceHIG
 from datetime import datetime, timedelta
 from util.StrUtil import StrUtil
+import logging
+
+# 配置日志
+logging.basicConfig(
+    level=logging.DEBUG,  # 设置日志级别为 DEBUG
+    format='%(asctime)s - %(levelname)s - %(message)s',  # 日志格式（包括时间戳）
+    datefmt='%Y-%m-%d %H:%M:%S',  # 设置时间格式
+    handlers=[
+        logging.FileHandler('DrissionPage/hotel/logs/hotel.log'),  # 将日志输出到 logs/my_log.log 文件
+        logging.StreamHandler()  # 同时将日志输出到控制台
+    ]
+)
 
 # 限制同时运行的城市数量（4 个城市，即 8 个 tab）
 # city_semaphore = Semaphore(4)
@@ -27,7 +39,7 @@ def process_city(loader, city, result_queue):
                 price_tab_index = tab_pool.pop(0)
                 points_tab_index = tab_pool.pop(0)
 
-            print(f"城市 {city} 分配到的 tab 索引：价格 tab={price_tab_index}, 积分 tab={points_tab_index}")
+            logging.info(f"城市 {city} 分配到的 tab 索引：价格 tab={price_tab_index}, 积分 tab={points_tab_index}")
 
             pricedate = datetime.today()
             for i in range(2):  # 爬取两天的数据
@@ -68,11 +80,11 @@ def process_city(loader, city, result_queue):
 
                 # 合并数据
                 # merged_data = loader.merge_hotel_data(price_result, points_result)
-                # print(f"城市 {city} 日期 {pricedate} 的合并数据：{merged_data}")
+                # logging.info(f"城市 {city} 日期 {pricedate} 的合并数据：{merged_data}")
 
                 # 合并数据
                 hotel_list = loader.merge_hotel_data(price_result, points_result)
-                print(f"城市 {city} 日期 {pricedate} 的合并数据：{hotel_list}")
+                logging.info(f"城市 {city} 日期 {pricedate} 的合并数据：{hotel_list}")
 
                 # 保存到数据库
                 for hotel in hotel_list:
@@ -93,7 +105,7 @@ def process_city(loader, city, result_queue):
             with tab_lock:
                 tab_pool.append(price_tab_index)
                 tab_pool.append(points_tab_index)
-            print(f"城市 {city} 释放了 tab 索引：价格 tab={price_tab_index}, 积分 tab={points_tab_index}")
+            logging.info(f"城市 {city} 释放了 tab 索引：价格 tab={price_tab_index}, 积分 tab={points_tab_index}")
 
 
 def main():
@@ -126,7 +138,7 @@ def main():
 
         # 打印结果
         while not result_queue.empty():
-            print(result_queue.get())
+            logging.info(result_queue.get())
 
     finally:
         # 关闭浏览器
