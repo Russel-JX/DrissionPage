@@ -1,77 +1,84 @@
-#爬虫主入口。启动多线程，爬取酒店信息
-# 1. 读取可用酒店的城市列表(city表)
-# 2. 启动多线程，爬取酒店信息
-    #2.1 每个城市一个线程。一个线程中：
-        # 发起请求，获取酒店列表及价格信息；
-        # 发起请求，获取酒店列表及积分信息
-        # 对具体相同酒店，DB记录价格和积分信息
-    #2.2 对具体相同酒店，DB记录酒店详情页信息
-# 3. 保存酒店信息
-# 4. 保存爬取日志
-# 5. 保存爬取状态
-# 6. 保存爬取结果
-# 7. 保存爬取错误
-# 8. 保存爬取统计
-# 9. 保存爬取配置
-# 10. 保存爬取参数
-# 11. 保存爬取数据  
-
-import threading
-import time
+from threading import Thread
 from queue import Queue
-from DrissionPage import ChromiumPage
-from util.HotelDatabase import HotelDatabase
 from LoadPriceHIG import LoadPriceHIG
+from datetime import datetime, timedelta
+from util.StrUtil import StrUtil
+import time
 
 
-# 数据库连接
-db = HotelDatabase()
-# 爬取酒店信息的函数
-loader = LoadPriceHIG()
-def get_city_list():
-    #从数据库读取可用城市列表。默认返回所有城市
-    return db.query_data('city')  # 假设 city 表中有城市信息
+def process_city(loader, city, result_queue):
+    """
+    处理单个城市的数据
+    """
+    try:
+        pricedate = datetime.today()
+        version = datetime.now().strftime('%Y-%m-%d %H')
 
-# 主函数
+        for i in range(2):  # 爬取两天的数据
+            # 构造 URL
+            params = loader.getHIGParams(city, pricedate)
+            su = StrUtil()
+            # 价格信息URL
+            priceURL = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=CASH&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=6CBARC&qAAR=6CBARC&qAkamaiCC=CN&srb_u=1&qExpndSrch=false&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1&qLoSe=false'
+            # 积分信息URL
+            pointsURL = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=POINTS&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1'
+            
+            priceURL = su.replace_URLParam(priceURL, params)
+            pointsURL = su.replace_URLParam(pointsURL, params)
+            # priceURL = su.replace_URLParam('https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qPt=CASH', params)
+            # pointsURL = su.replace_URLParam('https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qPt=POINTS', params)
+
+            # 加载价格和积分数据
+            hotel_price_list = loader.loadData(priceURL, city, 'price', pricedate)
+            hotel_points_list = loader.loadData(pointsURL, city, 'points', pricedate)
+
+            # 合并数据
+            hotel_list = loader.merge_hotel_data(hotel_price_list, hotel_points_list)
+
+            # 保存到数据库
+            for hotel in hotel_list:
+                hotel['version'] = version
+                hotel['pricedate'] = pricedate
+                loader.db.insert_data('hotelprice', hotel)
+
+            result_queue.put(f"城市 {city} {pricedate} 数据爬取完成")
+            pricedate += timedelta(days=1)
+
+    except Exception as e:
+        result_queue.put(f"城市 {city} 数据爬取失败：{e}")
+
+
 def main():
-    # 读取城市列表
-    # cities = get_city_list()
-    # cities = [{'name':'上海'}] 
-    cities = [{'name':'北京'},
-              {'name':'上海'}] 
-
-    # 创建线程队列
-    threads = []
-    #队列收集多个线程的执行情况。（哪些运行成功，哪些失败）
+    cities = ['北京', '上海', '广州']  # 城市列表
     result_queue = Queue()
+    loader = LoadPriceHIG()
 
-    # 启动多线程爬取
-    for city in cities:
-        print(f'====线程开始！====')
-        #汉字城市转码
-        # encoded_city = urllib.parse.quote(city.get('name'))  不用编码，因为url替换式工具类中已经编码了
-        # today = datetime.today().strftime('%Y-%m-%d') # 今天日期2025-03-23
-        # version = datetime.now().strftime('%Y-%m-%d %H') # 当前日期时间2025-03-23 15
+    try:
+        # 为每个城市打开一个 tab 页面
+        loader.open_tabs_for_cities(cities)
 
-        thread = threading.Thread(target=loader.getHotelInfo, args=(city.get('name'), result_queue))
+        # 切换到每个 tab 页面一次，确保页面渲染完成
+        loader.switch_to_all_tabs()
 
-        threads.append(thread)
-        thread.start()
+        # 多线程处理每个城市的数据
+        threads = []
+        for city in cities:
+            thread = Thread(target=process_city, args=(loader, city, result_queue))
+            threads.append(thread)
+            thread.start()
 
-    # 等待所有线程完成
-    for thread in threads:
-        thread.join()
+        # 等待所有线程完成
+        for thread in threads:
+            thread.join()
 
-    # 保存爬取日志
-    while not result_queue.empty():
-        result = result_queue.get()
-        print(result)  # 打印日志，实际可保存到数据库或文件
+        # 打印结果
+        while not result_queue.empty():
+            print(result_queue.get())
 
-    # 保存爬取状态
-    db.insert_data('loadboard', {'city':city, 'status': 1, 'updatetime': time.strftime('%Y-%m-%d %H:%M:%S')})
+    finally:
+        # 关闭浏览器
+        loader.close_browser()
 
-    print("所有城市爬取完成")
 
-# 执行主函数
 if __name__ == '__main__':
     main()
