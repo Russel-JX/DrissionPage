@@ -118,9 +118,12 @@ class LoadPriceHIG:
                 """
                 TODO
                 激活所有 tab，确保每个 tab 都能顺利加载内容，这样做有问题。3个城市跑了6分钟。（单线程才3分钟）
-                时间都消耗在了tab切换上了
+                时间都消耗在了tab切换上了。因为每个线程这个位置，都去切换所有线程，不管当前线程是否正在有效处理数据。
+                注释掉_activate_all_tabs中的time.sleep(1)后，快了。1分51秒(切换耗时46秒，占比41.4%)
+                下一步：
+                    找到更合理的切换时机，或者
+                    新开线程来控制这些子线程的运行
                 """
-
                 self._activate_all_tabs()
 
                 tab.scroll.to_bottom()
@@ -176,7 +179,7 @@ class LoadPriceHIG:
             try:
                 tab.set.activate()
                 logging.info(f"激活 Tab {i}")
-                time.sleep(1)  # 每次激活后等待 1 秒
+                # time.sleep(1)  # 每次激活后等待 1 秒
             except Exception as e:
                 logging.warning(f"激活 Tab {i} 时发生错误：{e}")
 
