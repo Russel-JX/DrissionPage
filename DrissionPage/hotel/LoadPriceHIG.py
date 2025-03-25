@@ -104,7 +104,7 @@ class LoadPriceHIG:
         在指定的 tab 页面中加载数据
         """
         try:
-            #当前被使用的tab
+            #当前被使用的tab。tab_index和main.py中的tab_pool.pop(0)对应
             tab = self.tabs[tab_index]
             logging.info(f"====当前tab： {tab_index} {city} {pricedate} {queryType}====")
 
