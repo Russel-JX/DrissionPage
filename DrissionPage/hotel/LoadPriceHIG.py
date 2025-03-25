@@ -2,28 +2,15 @@ from DrissionPage import ChromiumPage
 from datetime import datetime, timedelta
 import time
 import traceback
-from util.HotelDatabase import HotelDatabase
 from util.StrUtil import StrUtil
+from util.HotelDatabase import HotelDatabase
 
 
 class LoadPriceHIG:
     def __init__(self):
-        self.db = HotelDatabase()
         self.page = ChromiumPage()  # 创建一个全局的浏览器实例
-        self.tabs = {}  # 存储每个城市对应的 tab
-
-    def getHIGParams(self, city, pricedate):
-        """
-        构造 URL 参数
-        """
-        params = {
-            'qDest': city,
-            'qCiD': f"{pricedate.day:02d}",
-            'qCoD': f"{(pricedate + timedelta(days=1)).day:02d}",
-            'qCiMy': f"{(pricedate - timedelta(days=30)).month:02d}20{(pricedate - timedelta(days=30)).year % 100}",
-            'qCoMy': f"{(pricedate - timedelta(days=30)).month:02d}20{(pricedate - timedelta(days=30)).year % 100}"
-        }
-        return params
+        self.tabs = []  # 存储所有 tab 的句柄
+        self.db = HotelDatabase()  # 数据库实例
 
     #合并酒店的价格信息和积分信息
     def merge_hotel_data(self, price_list, points_list):
@@ -65,40 +52,39 @@ class LoadPriceHIG:
         merged_list = list(hotel_dict.values())
         return merged_list
     
-    def open_tabs_for_cities(self, cities):
+    def getHIGParams(self, city, pricedate):
         """
-        为每个城市打开一个新的 tab 页面
-        关于tab操作的文档：
-        https://github.com/Russel-JX/DrissionPage/blob/master/docs_en/ChromiumPage/tab_operation.md
+        构造 URL 参数
         """
-        for city in cities:
-            #新建tab。TODO这里新建tab时，可以直接给url去请求，快
-            self.tabs[city] = self.page.new_tab()
-            print(f"为城市 {city} 打开了新的 tab 页面{self.tabs[city]}")
-        print(f'====现有总tab数：{self.page.tabs_count}')  
-    def switch_to_all_tabs(self):
+        params = {
+            'qDest': city,
+            'qCiD': f"{pricedate.day:02d}",
+            'qCoD': f"{(pricedate + timedelta(days=1)).day:02d}",
+            'qCiMy': f"{(pricedate - timedelta(days=30)).month:02d}20{(pricedate - timedelta(days=30)).year % 100}",
+            'qCoMy': f"{(pricedate - timedelta(days=30)).month:02d}20{(pricedate - timedelta(days=30)).year % 100}"
+        }
+        return params
+    
+    def open_tabs(self, count):
         """
-        切换到每个 tab 页面一次，确保页面聚焦并充分渲染
+        打开指定数量的 tab 页面
         """
-        for city, tab in self.tabs.items():
-            print(f"====为城市 {city} 切换了的 tab 页面{tab}")
-            """
-            有简单方式切换tab。
-            老的都不好用：
-                self.page.set_active_tab(index=0)
-                self.page.driver.switch_to_window(driver.current_window_handle)
-            """
-            tab.set.activate()
-            print(f"切换到城市 {city} 的 tab 页面")
-            time.sleep(1)  # 等待页面渲染完成
+        for _ in range(count):
+            tab = self.page.new_tab()
+            self.tabs.append(tab)
+        print(f"====已打开 {len(self.tabs)} 个 tab 页面====")
 
-    def loadData(self, url, city, queryType, pricedate):
+    #TODO 切换tab页面的方法要搞
+
+    def loadData(self, url, queryType, tab_index):
         """
-        加载单个城市的价格或积分数据
+        在指定的 tab 页面中加载数据
         """
         try:
-            self.tabs[city].set.activate()  # 切换到对应城市的 tab
+            tab = self.tabs[tab_index]
+            tab.set.activate()  # 激活指定 tab
             self.page.get(url)  # 打开目标页面
+            # self.page.wait_appear('body', timeout=10)  # 等待页面加载完成
 
             # 滚动页面，确保内容加载完全
             last_height = 0
@@ -110,7 +96,7 @@ class LoadPriceHIG:
                 if height == last_height:
                     same_count += 1
                     if same_count >= 3:
-                        print(f"{city} 的 {queryType} 页面已滚动到底")
+                        print(f"Tab {tab_index} 页面已滚动到底")
                         break
                 else:
                     same_count = 0
@@ -118,7 +104,7 @@ class LoadPriceHIG:
 
             # 获取酒店数据
             hotels = self.page.s_eles('@class=hotel-card-list-resize ng-star-inserted')
-            print(f"城市 {city} 的 {queryType} 数据，共找到 {len(hotels)} 个酒店")
+            # print(f"城市 {city} 的 {queryType} 数据，共找到 {len(hotels)} 个酒店")
             hotel_list = []
             for hotel in hotels:
                 hotel_data = {
@@ -143,7 +129,7 @@ class LoadPriceHIG:
             return hotel_list
 
         except Exception as e:
-            print(f"加载城市 {city} 的 {queryType} 数据时发生错误：{e}")
+            print(f"加载 Tab {tab_index} 的数据时发生错误：{e}")
             traceback.print_exc()
             return []
 
