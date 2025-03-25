@@ -97,7 +97,7 @@ class LoadPriceHIG:
 
     """
     TODO 同时打开多个tab时，有时有的tab不被点击选中，tab内容不会渲染，导致程序一直等待。
-    方案：可在其他tab执行完成后，去点一点卡住的tab，让程序继续。
+    方案：可在其他tab执行完成后，去点击卡住的tab，让程序继续。
     """
     def loadData(self, city, pricedate, url, queryType, tab_index):
         """
@@ -109,18 +109,15 @@ class LoadPriceHIG:
             logging.info(f"====当前tab： {tab_index} {city} {pricedate} {queryType}====")
 
             tab.set.activate()  # 激活指定 tab
-            # self.page.get(url)  # 打开目标页面
             tab.get(url)  # 打开目标页面
 
             # 滚动页面，确保内容加载完全
             last_height = 0
             same_count = 0
             for _ in range(15):  # 最多滚动 15 次
-                # self.page.scroll.to_bottom()
                 tab.scroll.to_bottom()
 
-                time.sleep(1)
-                # height = self.page.run_js('document.body.scrollHeight')
+                # time.sleep(1)
                 height = tab.run_js('document.body.scrollHeight')
 
                 if height == last_height:
@@ -133,7 +130,6 @@ class LoadPriceHIG:
                     last_height = height
 
             # 获取酒店数据
-            # hotels = self.page.s_eles('@class=hotel-card-list-resize ng-star-inserted')
             hotels = tab.s_eles('@class=hotel-card-list-resize ng-star-inserted')
 
             # logging.info(f"城市 {city} 的 {queryType} 数据，共找到 {len(hotels)} 个酒店")
@@ -162,7 +158,7 @@ class LoadPriceHIG:
 
         except Exception as e:
             logging.info(f"加载 Tab {tab_index} {city} {pricedate} {queryType} 的数据时发生错误：{e}")
-            traceback.logging.info_exc()
+            traceback.print_exc()
             return []
 
     def close_browser(self):
