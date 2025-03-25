@@ -115,8 +115,15 @@ class LoadPriceHIG:
             last_height = 0
             same_count = 0
             for _ in range(15):  # 最多滚动 15 次
-                tab.scroll.to_bottom()
+                """
+                TODO
+                激活所有 tab，确保每个 tab 都能顺利加载内容，这样做有问题。3个城市跑了6分钟。（单线程才3分钟）
+                时间都消耗在了tab切换上了
+                """
 
+                self._activate_all_tabs()
+
+                tab.scroll.to_bottom()
                 time.sleep(1)
                 height = tab.run_js('document.body.scrollHeight')
 
@@ -160,6 +167,18 @@ class LoadPriceHIG:
             logging.info(f"加载 Tab {tab_index} {city} {pricedate} {queryType} 的数据时发生错误：{e}")
             traceback.print_exc()
             return []
+
+    def _activate_all_tabs(self):
+        """
+        依次激活所有 tab，确保每个 tab 都能顺利加载内容
+        """
+        for i, tab in enumerate(self.tabs):
+            try:
+                tab.set.activate()
+                logging.info(f"激活 Tab {i}")
+                time.sleep(1)  # 每次激活后等待 1 秒
+            except Exception as e:
+                logging.warning(f"激活 Tab {i} 时发生错误：{e}")
 
     def close_browser(self):
         """
