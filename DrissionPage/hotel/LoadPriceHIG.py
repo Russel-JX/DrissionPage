@@ -117,7 +117,7 @@ class LoadPriceHIG:
             for _ in range(15):  # 最多滚动 15 次
                 tab.scroll.to_bottom()
 
-                # time.sleep(1)
+                time.sleep(1)
                 height = tab.run_js('document.body.scrollHeight')
 
                 if height == last_height:
