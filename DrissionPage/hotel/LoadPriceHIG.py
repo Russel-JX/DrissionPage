@@ -204,6 +204,12 @@ class LoadPriceHIG:
         #     print(f"{city}的{queryType}的{pricedate}页面加载超时或发生错误：{e}")
         #     return []
 
+        # 过1秒钟，切换到当前标签页，让页面内容加载完全
+        # time.sleep(1)
+        # page.set_active_tab(index=0)
+        # page.driver.switch_to.window(page.driver.current_window_handle)
+
+
         # 下滑到底，获取更多内容
         last_height = 0
         same_count = 0
