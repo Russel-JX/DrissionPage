@@ -53,6 +53,8 @@ def main():
     result_queue = Queue()
     loader = LoadPriceHIG()
 
+    
+
     try:
         # 为每个城市打开一个 tab 页面
         loader.open_tabs_for_cities(cities)

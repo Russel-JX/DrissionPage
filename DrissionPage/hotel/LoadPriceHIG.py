@@ -68,30 +68,27 @@ class LoadPriceHIG:
     def open_tabs_for_cities(self, cities):
         """
         为每个城市打开一个新的 tab 页面
+        关于tab操作的文档：
+        https://github.com/Russel-JX/DrissionPage/blob/master/docs_en/ChromiumPage/tab_operation.md
         """
         for city in cities:
-            # tab = self.page.driver.execute_script("window.open('');")  # 打开新 tab
-            tab = self.page.run_js("window.open('');")
-
-            self.tabs[city] = tab
-            print(f"为城市 {city} 打开了新的 tab 页面")
-
+            #新建tab。TODO这里新建tab时，可以直接给url去请求，快
+            self.tabs[city] = self.page.new_tab()
+            print(f"为城市 {city} 打开了新的 tab 页面{self.tabs[city]}")
+        print(f'====现有总tab数：{self.page.tabs_count}')  
     def switch_to_all_tabs(self):
         """
         切换到每个 tab 页面一次，确保页面聚焦并充分渲染
         """
         for city, tab in self.tabs.items():
-            # self.page.driver.switch_to.window(tab)
-            time.sleep(1)
-            # self.page.set_active_tab(index=0)
-            # self.page.driver.switch_to.window(self.page.driver.current_window_handle)
-
-            # 获取原生 WebDriver 实例
-            driver = self.page.driver
-
-            # 切换到当前窗口
-            driver.switch_to.window(driver.current_window_handle)
-
+            print(f"====为城市 {city} 切换了的 tab 页面{tab}")
+            """
+            有简单方式切换tab。
+            老的都不好用：
+                self.page.set_active_tab(index=0)
+                self.page.driver.switch_to_window(driver.current_window_handle)
+            """
+            tab.set.activate()
             print(f"切换到城市 {city} 的 tab 页面")
             time.sleep(1)  # 等待页面渲染完成
 
@@ -100,9 +97,8 @@ class LoadPriceHIG:
         加载单个城市的价格或积分数据
         """
         try:
-            self.page.driver.switch_to.window(self.tabs[city])  # 切换到对应城市的 tab
+            self.tabs[city].set.activate()  # 切换到对应城市的 tab
             self.page.get(url)  # 打开目标页面
-            self.page.wait_appear('body', timeout=10)  # 等待页面加载完成
 
             # 滚动页面，确保内容加载完全
             last_height = 0
@@ -155,5 +151,5 @@ class LoadPriceHIG:
         """
         关闭浏览器
         """
-        # self.page.quit()
+        self.page.quit()
         print("浏览器已关闭")
