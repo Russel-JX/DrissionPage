@@ -19,7 +19,7 @@ class HotelDatabase:
         try:
             self.cursor.execute(sql, tuple(data.values()))
             self.connection.commit()
-            print(f"数据插入成功：{data}")
+            # print(f"数据插入成功：{data}")
         except Exception as e:
             self.connection.rollback()
             print(f"插入数据失败：{e}")

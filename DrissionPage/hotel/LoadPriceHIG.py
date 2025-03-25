@@ -94,8 +94,10 @@ class LoadPriceHIG:
                 pointsURL = su.replace_URLParam(pointsURL, params)
                 print(f'====价格url：{priceURL})')
                 print(f'====积分url：{pointsURL})')
-                # TODO以后尝试把同一城市同一天的请求价格和积分信息放在一起并行的线程中且互相等待，加快速度
+                # TODO性能提升点1. 以后尝试把同一城市同一天的请求价格和积分信息放在一起并行的线程中且互相等待，加快速度
                 # 即外层还是多个城市对应多个线程跑，这里再新建2个子线程绑定跑
+
+                # TODO性能提升点2. 对同一个城市的不同日期的请求，可以总是在打开的同一个页面不同用新url获取数据，不同总是关闭页面再打开。
                 hotel_price_list = self.loadData(priceURL, city, 'price', pricedate)
                 hotel_points_list = self.loadData(pointsURL, city, 'points', pricedate)
                 print(f'===={city} {pricedate} 酒店价格数量：{len(hotel_price_list)}，酒店积分数量：{len(hotel_points_list)}====')
@@ -107,7 +109,7 @@ class LoadPriceHIG:
                     hotel['pricedate'] = pricedate
                     db.insert_data('hotelprice', hotel)
                 # 将结果存入队列
-                result_queue.put(f"城市 {city} 爬取完成")
+                result_queue.put(f"城市 {city} {pricedate}爬取完成")
                 end_day_time =  time.time()
                 print(f'===={city} {pricedate}耗时 {end_day_time - start_day_time:.2f} 秒====')
                 #下一天作为新的pricedate去查价格和积分
@@ -177,17 +179,23 @@ class LoadPriceHIG:
 
         # 打开目标页面，获取所需价格或积分信息
         page.get(url)
-        # page.get(url, timeout=30)
-        # 确保页面完全加载
-        # page.wait.load(timeout=10)  
 
-        # 确保页面完全加载
+        """
+        页面处理不到的问题，不是因为没加载到页面的body（其实加载到了），
+        而是有body，但获取长时间（超时）不到'document.body.scrollHeight'页面真实高度
+        所以，原因是html其实已经加载到浏览器了，但是用户可见的页面的内容还没加载完全。
+        没加载完全的原因是，此时有其他页面正在被滑动操作，本自己页面没机会渲染页面内容。
+        导致获取不到页面的真实高度，超时异常了。
+        解决方案是：让页面切换一下，让页面内容加载完全。
+        """
+        #
         # try:
-        #     page.wait_appear('body', timeout=10)  # 等待 body 元素加载完成
+        #     ele = page.ele('tag:div', timeout=10)  # 等待 body 元素加载完成
+        #     print(f"======{city}的{queryType}的{pricedate}页面是：{ele}======")
+
         # except Exception as e:
-        #     print(f"页面加载超时或发生错误：{e}")
-        #     traceback.print_exc()  # 打印详细的堆栈跟踪信息
-        #     return []   
+        #     print(f"{city}的{queryType}的{pricedate}页面加载超时或发生错误：{e}")
+        #     return []
 
         # 下滑到底，获取更多内容
         last_height = 0
@@ -207,7 +215,7 @@ class LoadPriceHIG:
         """
         for _ in range(15):  # 固定下滑次数，保证页面数据完全加载完。这里下滑15次
             page.scroll.to_bottom()
-            time.sleep(1)  # 睡1秒，等下下方新页面内容加载
+            time.sleep(1)  # 向下滚动后，睡1秒，等下方新页面内容加载
 
             #TODO 同时处理2个城市时，有1个城市查询price老是挂了，导致此城市无任何数据。
             # 可能是因为这里的height获取不到，导致一直下滑。
@@ -215,7 +223,7 @@ class LoadPriceHIG:
             if height == last_height:
                 same_count += 1
                 if same_count >= 3:
-                    print("{city}的{queryType}的{pricedate}滑到底了，停止滚动。（连续3次，往下滑不动了）")
+                    print(f"{city}的{queryType}的{pricedate}滑到底了，停止滚动。（连续3次，往下滑不动了）")
                     break
             else:
                 same_count = 0
