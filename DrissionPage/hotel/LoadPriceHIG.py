@@ -75,35 +75,62 @@ class LoadPriceHIG:
         print(f"====已打开 {len(self.tabs)} 个 tab 页面====")
 
     #TODO 切换tab页面的方法要搞
+    """
+    DrissionPage并不提供切换标签页的功能，而是通过get_tab()或者new_tab()方法来获取指定的标签页对象进行操作。
 
-    def loadData(self, url, queryType, tab_index):
+    tab的一些功能：
+    https://github.com/Russel-JX/DrissionPage/blob/master/docs_en/ChromiumPage/tab_operation.md
+    tab = page.new_tab()  # Create a new tab and get the tab object
+
+    tab.get('https://www.baidu.com')  # Operate the tab using the tab object
+    tab = page.get_tab(page.latest_tab)  # Get the specified tab object
+    page.tabs_count 返回选项卡的数量。
+    page.tabs 列表形式返回所有选项卡 ID
+    tab_id = page.find_tabs(url='baidu.com')  查找符合指定条件的标签页
+    tab.set.activate()  激活Tab对象
+    page.set.activate()  激活Page对象。
+
+    """
+
+
+
+    def loadData(self, city, pricedate, url, queryType, tab_index):
         """
         在指定的 tab 页面中加载数据
         """
         try:
+            #当前被使用的tab
             tab = self.tabs[tab_index]
+            print(f"====当前tab： {tab_index} {city} {pricedate} {queryType}====")
+
             tab.set.activate()  # 激活指定 tab
-            self.page.get(url)  # 打开目标页面
-            # self.page.wait_appear('body', timeout=10)  # 等待页面加载完成
+            # self.page.get(url)  # 打开目标页面
+            tab.get(url)  # 打开目标页面
 
             # 滚动页面，确保内容加载完全
             last_height = 0
             same_count = 0
             for _ in range(15):  # 最多滚动 15 次
-                self.page.scroll.to_bottom()
+                # self.page.scroll.to_bottom()
+                tab.scroll.to_bottom()
+
                 time.sleep(1)
-                height = self.page.run_js('document.body.scrollHeight')
+                # height = self.page.run_js('document.body.scrollHeight')
+                height = tab.run_js('document.body.scrollHeight')
+
                 if height == last_height:
                     same_count += 1
                     if same_count >= 3:
-                        print(f"Tab {tab_index} 页面已滚动到底")
+                        print(f"Tab {tab_index}  {city} {pricedate} {queryType} 页面已滚动到底")
                         break
                 else:
                     same_count = 0
                     last_height = height
 
             # 获取酒店数据
-            hotels = self.page.s_eles('@class=hotel-card-list-resize ng-star-inserted')
+            # hotels = self.page.s_eles('@class=hotel-card-list-resize ng-star-inserted')
+            hotels = tab.s_eles('@class=hotel-card-list-resize ng-star-inserted')
+
             # print(f"城市 {city} 的 {queryType} 数据，共找到 {len(hotels)} 个酒店")
             hotel_list = []
             for hotel in hotels:
@@ -129,7 +156,7 @@ class LoadPriceHIG:
             return hotel_list
 
         except Exception as e:
-            print(f"加载 Tab {tab_index} 的数据时发生错误：{e}")
+            print(f"加载 Tab {tab_index} {city} {pricedate} {queryType} 的数据时发生错误：{e}")
             traceback.print_exc()
             return []
 

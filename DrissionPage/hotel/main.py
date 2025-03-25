@@ -50,11 +50,11 @@ def process_city(loader, city, result_queue):
 
                 def fetch_price():
                     nonlocal price_result
-                    price_result = loader.loadData(priceURL, 'price', tab_index=price_tab_index)
+                    price_result = loader.loadData(city, pricedate, priceURL, 'price', tab_index=price_tab_index)
 
                 def fetch_points():
                     nonlocal points_result
-                    points_result = loader.loadData(pointsURL, 'points', tab_index=points_tab_index)
+                    points_result = loader.loadData(city, pricedate, pointsURL, 'points', tab_index=points_tab_index)
 
                 # 启动子线程
                 price_thread = Thread(target=fetch_price)
