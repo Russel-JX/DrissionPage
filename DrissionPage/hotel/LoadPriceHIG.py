@@ -1,5 +1,6 @@
 #爬取具体酒店的一天价格信息
 from DrissionPage import ChromiumPage
+# from DrissionPage import ChromiumOptions
 from pathlib import Path
 import time
 from datetime import timedelta, datetime
@@ -9,7 +10,6 @@ import inspect
 from util.HotelDatabase import HotelDatabase
 from models.hotel_dicts import TABLES
 from util.StrUtil import StrUtil
-
 
 class LoadPriceHIG:
     def __init__(self):
@@ -171,10 +171,17 @@ class LoadPriceHIG:
         # 对具体相同酒店，DB记录价格和积分信息。
     """
     def loadData(self, url=None, city=None, queryType=None, pricedate=None):
+        co = ChromiumOptions()
+        #不管用。禁用节能策略.最大限度保持页面后台也能执行 JS 和渲染
+        # co.set_argument('--disable-background-timer-throttling') #禁用后台标签页的 setTimeout 等限速
+        # co.set_argument('--disable-backgrounding-occluded-windows') #禁用遮挡窗口时的资源降级处理
+        # co.set_argument('--disable-renderer-backgrounding') #禁用后台标签页渲染进程降级
+        # page = ChromiumPage(co)
+        page = ChromiumPage()
+            
         # 当前文件路径
         file_path = Path(__file__)
         start_time = time.time()
-        page = ChromiumPage()
         print(f'===={file_path.name}.{inspect.currentframe().f_code.co_name}执行{city}的{queryType}的{pricedate}开始！====')
 
         # 打开目标页面，获取所需价格或积分信息
