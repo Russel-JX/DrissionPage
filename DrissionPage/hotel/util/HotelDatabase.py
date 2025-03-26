@@ -1,6 +1,7 @@
 # 数据库操作类
 import pymysql
 from config.db_config import DB_CONFIG
+import logging
 
 class HotelDatabase:
     def __init__(self):
@@ -19,11 +20,10 @@ class HotelDatabase:
         try:
             self.cursor.execute(sql, tuple(data.values()))
             self.connection.commit()
-            # print(f"数据插入成功：{data}")
+            # logging.info(f"数据插入成功：{data}")
         except Exception as e:
             self.connection.rollback()
-            print(f"插入数据失败：{e}")
-
+            logging.info(f"插入数据失败：{e}")
     def query_data(self, table, conditions=None):
         """
         查询数据
@@ -41,10 +41,10 @@ class HotelDatabase:
         try:
             self.cursor.execute(sql, params)
             results = self.cursor.fetchall()
-            print(f"查询结果总数：{len(results)}")
+            logging.info(f"查询结果总数：{len(results)}")
             return results
         except Exception as e:
-            print(f"查询数据失败：{e}")
+            logging.error(f"查询数据失败：{e}")
             return []
 
     def close(self):

@@ -18,11 +18,13 @@ logging.basicConfig(
 )
 
 #常量定义
-MAX_MAIN_THREAD_COUNT = 2 #同时运行的城市（主线程）数
-MAX_SUB_THREAD_TAB_COUNT = 4 #同时运行的tab（子线程。1个酒店的一种数据请求）数
+MAX_MAIN_THREAD_COUNT = 8 #同时运行的城市（主线程）数
+MAX_SUB_THREAD_TAB_COUNT = 16 #同时运行的tab（子线程。1个酒店的一种数据请求）数
 MAX_DAYS_COUNT = 2 #请求的总天数
 # CITIES = ['北京']  # 城市列表
-CITIES = ['北京', '上海', '广州']  # 城市列表
+# CITIES = ['北京', '上海', '广州']  # 城市列表
+CITIES = ['北京', '上海', '广州', '深圳', '南京', '武汉', '成都', '杭州']  # 城市列表
+
 
 # 限制同时运行的城市数量（4 个城市，即 8 个 tab）
 city_semaphore = Semaphore(MAX_MAIN_THREAD_COUNT)
@@ -130,7 +132,9 @@ def main():
         操作定义的tab时，还是从0开始（0不会操作到page默认tab）
         处理一个单个数据时，耗时平均：15秒
         03.26
-        3cityx2dayx2type    154s    平均12s/city*day*type
+        city day type totaltime(s) average
+        3 2 2 154 12
+        8 2 2 347 10.8
         """
         # 打开 8 个 tab 页面（4 个城市，每个城市 2 个 tab）
         loader.open_tabs(MAX_SUB_THREAD_TAB_COUNT)

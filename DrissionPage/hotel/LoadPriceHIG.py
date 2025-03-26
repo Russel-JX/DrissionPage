@@ -134,7 +134,7 @@ class LoadPriceHIG:
                 if height == last_height:
                     same_count += 1
                     if same_count >= 3:
-                        logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 页面已滚动到底")
+                        # logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 页面已滚动到底")
                         break
                 else:
                     same_count = 0
@@ -170,8 +170,9 @@ class LoadPriceHIG:
             return hotel_list
 
         except Exception as e:
-            logging.info(f"加载 Tab {tab_index} {city} {pricedate} {queryType} 的数据时发生错误：{e}")
-            traceback.print_exc()
+            logging.error(f"加载 Tab {tab_index} {city} {pricedate} {queryType} 的数据时发生错误：{e}")
+            logging.error("Stack trace:\n%s", traceback.format_exc())  # 使用 traceback.format_exc() 获取堆栈信息
+
             return []
 
     def _activate_all_tabs(self):
