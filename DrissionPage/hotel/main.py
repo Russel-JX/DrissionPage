@@ -19,23 +19,17 @@ logging.basicConfig(
 #常量定义
 MAX_MAIN_THREAD_COUNT = 1 #同时运行的城市（主线程）数
 MAX_SUB_THREAD_TAB_COUNT = 2 #同时运行的tab（子线程。1个酒店的一种数据请求）数
-# MAX_TAB_COUNT = 2 #tab（子线程。1个酒店的一种数据请求）数
 MAX_DAYS_COUNT = 1 #请求的总天数
 CITIES = ['北京']  # 城市列表
-
-
+# CITIES = ['北京', '上海', '广州']  # 城市列表
 
 # 限制同时运行的城市数量（4 个城市，即 8 个 tab）
-# city_semaphore = Semaphore(4)
 city_semaphore = Semaphore(MAX_MAIN_THREAD_COUNT)
-# tab_pool = list(range(8))  # 8 个 tab 的索引
 tab_pool = list(range(MAX_SUB_THREAD_TAB_COUNT))  # 4 个 tab 的索引
-
 tab_lock = Lock()  # 用于保护 tab_pool 的线程锁
 
-
 def process_city(loader, city, result_queue):
-    version = datetime.now().strftime('%Y-%m-%d %H')
+    version = datetime.now().strftime('%Y-%m-%d %H:%M')
     """
     处理单个城市的数据（父线程）
     """

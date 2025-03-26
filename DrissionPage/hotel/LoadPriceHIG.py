@@ -30,11 +30,11 @@ class LoadPriceHIG:
             if name not in hotel_dict:
                 hotel_dict[name] = {
                     'name': name,
-                    'minprice': hotel.get('price', -1),
+                    'minvalue': hotel.get('price', -1),
                     'minpoints': -1  # 初始化积分为-1，表示无房或不能用积分
                 }
             else:
-                hotel_dict[name]['minprice'] = hotel.get('price', -1)
+                hotel_dict[name]['minvalue'] = hotel.get('price', -1)
 
         # 遍历积分列表，将积分信息合并到字典中
         for hotel in points_list:
@@ -42,7 +42,7 @@ class LoadPriceHIG:
             if name not in hotel_dict:
                 hotel_dict[name] = {
                     'name': name,
-                    'minprice': -1,  # 初始化现金价格为-1，表示无房或不能用现金
+                    'minvalue': -1,  # 初始化现金价格为-1，表示无房或不能用现金
                     'minpoints': hotel.get('points', -1),
                     # 'minpoints': hotel.get('points') if isinstance(hotel.get('points'), (int, float)) else -1
                 }
@@ -147,22 +147,24 @@ class LoadPriceHIG:
             for hotel in hotels:
                 hotel_data = {
                     'name': hotel.ele('@data-slnm-ihg=brandHotelNameSID').text if hotel.ele('@data-slnm-ihg=brandHotelNameSID') else '',
-                    'minprice': -1,
-                    'minpoints': -1
+                    'minvalue': -1,
+                    'mintype': 0 #默认0，表示既不是最低房价，页不是最低所需积分。1:房价；2：积分
                 }
                 if queryType == 'price':
                     price_div = hotel.ele('@data-slnm-ihg=hotelPirceSID')
+                    hotel_data['mintype'] = 1
                     if price_div:
                         price_text = price_div.text.strip()
                         currency = price_div.ele('tag:span')
                         if currency:
                             price = price_text.replace(currency.text, '').strip()
-                            hotel_data['minprice'] = int(price.replace(',', ''))
+                            hotel_data['minvalue'] = int(price.replace(',', ''))
                 elif queryType == 'points':
                     points_div = hotel.ele('@data-slnm-ihg=dailyPointsCostSID')
+                    hotel_data['mintype'] = 2
                     if points_div:
                         points = points_div.text.strip()
-                        hotel_data['minpoints'] = int(points.replace(',', ''))
+                        hotel_data['minvalue'] = int(points.replace(',', ''))
                 hotel_list.append(hotel_data)
             return hotel_list
 
