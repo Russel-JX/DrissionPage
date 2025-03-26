@@ -106,7 +106,7 @@ class LoadPriceHIG:
         try:
             #当前被使用的tab。tab_index和main.py中的tab_pool.pop(0)对应
             tab = self.tabs[tab_index]
-            logging.info(f"====当前tab： {tab_index} {city} {pricedate} {queryType}====")
+            # logging.info(f"====当前tab： {tab_index} {city} {pricedate} {queryType}====")
 
             tab.set.activate()  # 激活指定 tab
             tab.get(url)  # 打开目标页面
@@ -123,6 +123,7 @@ class LoadPriceHIG:
                 下一步：
                     找到更合理的切换时机，或者
                     新开线程来控制这些子线程的运行
+                    _activate_all_tabs中，当前等待跑的线程数<tab数时，只切换那些再跑的tab。完全结束的tab不用切换。
                 """
                 self._activate_all_tabs()
 
@@ -180,7 +181,7 @@ class LoadPriceHIG:
         for i, tab in enumerate(self.tabs):
             try:
                 tab.set.activate()
-                logging.info(f"激活 Tab {i}")
+                # logging.info(f"激活 Tab {i}")
                 # time.sleep(1)  # 每次激活后等待 1 秒
             except Exception as e:
                 logging.warning(f"激活 Tab {i} 时发生错误：{e}")

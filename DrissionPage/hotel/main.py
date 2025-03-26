@@ -4,6 +4,7 @@ from LoadPriceHIG import LoadPriceHIG
 from datetime import datetime, timedelta
 from util.StrUtil import StrUtil
 import logging
+import time
 
 # 配置日志
 logging.basicConfig(
@@ -17,11 +18,11 @@ logging.basicConfig(
 )
 
 #常量定义
-MAX_MAIN_THREAD_COUNT = 1 #同时运行的城市（主线程）数
-MAX_SUB_THREAD_TAB_COUNT = 2 #同时运行的tab（子线程。1个酒店的一种数据请求）数
-MAX_DAYS_COUNT = 1 #请求的总天数
-CITIES = ['北京']  # 城市列表
-# CITIES = ['北京', '上海', '广州']  # 城市列表
+MAX_MAIN_THREAD_COUNT = 2 #同时运行的城市（主线程）数
+MAX_SUB_THREAD_TAB_COUNT = 4 #同时运行的tab（子线程。1个酒店的一种数据请求）数
+MAX_DAYS_COUNT = 2 #请求的总天数
+# CITIES = ['北京']  # 城市列表
+CITIES = ['北京', '上海', '广州']  # 城市列表
 
 # 限制同时运行的城市数量（4 个城市，即 8 个 tab）
 city_semaphore = Semaphore(MAX_MAIN_THREAD_COUNT)
@@ -43,9 +44,12 @@ def process_city(loader, city, result_queue):
                 price_tab_index = tab_pool.pop(0)
                 points_tab_index = tab_pool.pop(0)
 
-            logging.info(f"城市 {city} 分配到的 tab 索引：价格 tab={price_tab_index}, 积分 tab={points_tab_index}")
+            # logging.info(f"城市 {city} 分配到的 tab 索引：价格 tab={price_tab_index}, 积分 tab={points_tab_index}")
 
             pricedate = datetime.today()
+
+            days_start_time = time.time()
+
             for i in range(MAX_DAYS_COUNT):  # 爬取两天的数据
                 # 构造 URL
                 params = loader.getHIGParams(city, pricedate)
@@ -64,17 +68,20 @@ def process_city(loader, city, result_queue):
 
                 def fetch_price():
                     nonlocal price_result
+                    start_time = time.time()
                     price_result = loader.loadData(city, pricedate, priceURL, 'price', tab_index=price_tab_index)
-                    logging.info(f"price 城市 {city} 日期 {pricedate} 的1天数据：{price_result}")
                     save(loader, version, pricedate, price_result)
-
+                    end_time =  time.time()
+                    logging.info(f"***price 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的1天数据量：{len(price_result)}，耗时：{end_time - start_time:.2f} 秒)")
 
                 def fetch_points():
                     nonlocal points_result
+                    start_time = time.time()
                     points_result = loader.loadData(city, pricedate, pointsURL, 'points', tab_index=points_tab_index)
-                    logging.info(f"points 城市 {city} 日期 {pricedate} 的1天数据：{points_result}")
+                    # logging.info(f"points 城市 {city} 日期 {pricedate} 的1天数据：{points_result}")
                     save(loader, version, pricedate, points_result)
-
+                    end_time =  time.time()
+                    logging.info(f"***points 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的1天数据量：{len(points_result)}，耗时：{end_time - start_time:.2f} 秒)")
 
                 # 启动子线程
                 price_thread = Thread(target=fetch_price)
@@ -86,21 +93,11 @@ def process_city(loader, city, result_queue):
                 price_thread.join()
                 points_thread.join()
 
-                # # 合并数据
-                # hotel_list = loader.merge_hotel_data(price_result, points_result)
-                # logging.info(f"城市 {city} 日期 {pricedate} 的合并数据：{hotel_list}")
-
-                # # 保存到数据库
-                # for hotel in hotel_list:
-                #     hotel['version'] = version
-                #     hotel['pricedate'] = pricedate
-                #     loader.db.insert_data('hotelprice', hotel)
-
                 # 更新日期
                 pricedate += timedelta(days=1)
-
-            result_queue.put(f"城市 {city} 数据爬取完成")
-
+            days_end_time = time.time()
+            logging.info(f"==={city} {MAX_DAYS_COUNT} 天 总耗时：{days_end_time - days_start_time:.2f} 秒)")
+            result_queue.put(f"城市 {city} {MAX_DAYS_COUNT} 天数据爬取完成")
         except Exception as e:
             result_queue.put(f"城市 {city} 数据爬取失败：{e}")
 
@@ -122,8 +119,6 @@ def save(loader, version, pricedate, hotel_list):
         loader.db.insert_data('hotelprice', hotel)
 
 def main():
-    # cities = ['北京', '上海', '广州', '深圳', '杭州', '成都']  # 城市列表
-    # cities = ['北京', '上海', '广州']  # 城市列表
     cities = CITIES
 
     result_queue = Queue()
@@ -134,11 +129,13 @@ def main():
         默认的page会打开一个tab，加上这里指定打开的固定tab数。总tab数比定义的多1个。
         操作定义的tab时，还是从0开始（0不会操作到page默认tab）
         处理一个单个数据时，耗时平均：15秒
+        03.26
+        3cityx2dayx2type    154s    平均12s/city*day*type
         """
         # 打开 8 个 tab 页面（4 个城市，每个城市 2 个 tab）
-        # loader.open_tabs(8)
         loader.open_tabs(MAX_SUB_THREAD_TAB_COUNT)
 
+        cities_start_time = time.time()
 
         # 多线程处理每个城市的数据
         threads = []
@@ -150,6 +147,9 @@ def main():
         # 等待所有线程完成
         for thread in threads:
             thread.join()
+
+        cities_end_time = time.time()
+        logging.info(f"###{len(cities)} 个城市， {MAX_DAYS_COUNT} 天 总耗时：{cities_end_time - cities_start_time:.2f} 秒)")
 
         # 打印结果
         while not result_queue.empty():
