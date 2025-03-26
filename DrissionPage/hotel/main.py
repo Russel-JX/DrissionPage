@@ -7,7 +7,7 @@ import logging
 
 # 配置日志
 logging.basicConfig(
-    level=logging.DEBUG,  # 设置日志级别为 DEBUG
+    level=logging.INFO,  # 设置日志级别为 DEBUG
     format='%(asctime)s - %(levelname)s - %(message)s',  # 日志格式（包括时间戳）
     datefmt='%Y-%m-%d %H:%M:%S',  # 设置时间格式
     handlers=[
@@ -16,11 +16,20 @@ logging.basicConfig(
     ]
 )
 
+#常量定义
+MAX_MAIN_THREAD_COUNT = 1 #同时运行的城市（主线程）数
+MAX_SUB_THREAD_TAB_COUNT = 2 #同时运行的tab（子线程。1个酒店的一种数据请求）数
+# MAX_TAB_COUNT = 2 #tab（子线程。1个酒店的一种数据请求）数
+MAX_DAYS_COUNT = 1 #请求的总天数
+CITIES = ['北京']  # 城市列表
+
+
+
 # 限制同时运行的城市数量（4 个城市，即 8 个 tab）
 # city_semaphore = Semaphore(4)
-city_semaphore = Semaphore(2)
+city_semaphore = Semaphore(MAX_MAIN_THREAD_COUNT)
 # tab_pool = list(range(8))  # 8 个 tab 的索引
-tab_pool = list(range(4))  # 4 个 tab 的索引
+tab_pool = list(range(MAX_SUB_THREAD_TAB_COUNT))  # 4 个 tab 的索引
 
 tab_lock = Lock()  # 用于保护 tab_pool 的线程锁
 
@@ -43,7 +52,7 @@ def process_city(loader, city, result_queue):
             logging.info(f"城市 {city} 分配到的 tab 索引：价格 tab={price_tab_index}, 积分 tab={points_tab_index}")
 
             pricedate = datetime.today()
-            for i in range(2):  # 爬取两天的数据
+            for i in range(MAX_DAYS_COUNT):  # 爬取两天的数据
                 # 构造 URL
                 params = loader.getHIGParams(city, pricedate)
                 su = StrUtil()
@@ -62,10 +71,16 @@ def process_city(loader, city, result_queue):
                 def fetch_price():
                     nonlocal price_result
                     price_result = loader.loadData(city, pricedate, priceURL, 'price', tab_index=price_tab_index)
+                    logging.info(f"price 城市 {city} 日期 {pricedate} 的1天数据：{price_result}")
+                    save(loader, version, pricedate, price_result)
+
 
                 def fetch_points():
                     nonlocal points_result
                     points_result = loader.loadData(city, pricedate, pointsURL, 'points', tab_index=points_tab_index)
+                    logging.info(f"points 城市 {city} 日期 {pricedate} 的1天数据：{points_result}")
+                    save(loader, version, pricedate, points_result)
+
 
                 # 启动子线程
                 price_thread = Thread(target=fetch_price)
@@ -77,15 +92,15 @@ def process_city(loader, city, result_queue):
                 price_thread.join()
                 points_thread.join()
 
-                # 合并数据
-                hotel_list = loader.merge_hotel_data(price_result, points_result)
-                logging.info(f"城市 {city} 日期 {pricedate} 的合并数据：{hotel_list}")
+                # # 合并数据
+                # hotel_list = loader.merge_hotel_data(price_result, points_result)
+                # logging.info(f"城市 {city} 日期 {pricedate} 的合并数据：{hotel_list}")
 
-                # 保存到数据库
-                for hotel in hotel_list:
-                    hotel['version'] = version
-                    hotel['pricedate'] = pricedate
-                    loader.db.insert_data('hotelprice', hotel)
+                # # 保存到数据库
+                # for hotel in hotel_list:
+                #     hotel['version'] = version
+                #     hotel['pricedate'] = pricedate
+                #     loader.db.insert_data('hotelprice', hotel)
 
                 # 更新日期
                 pricedate += timedelta(days=1)
@@ -102,11 +117,20 @@ def process_city(loader, city, result_queue):
                 tab_pool.append(points_tab_index)
             logging.info(f"城市 {city} 释放了 tab 索引：价格 tab={price_tab_index}, 积分 tab={points_tab_index}")
 
+    #保存1个城市的1个酒店的1天价格信息，到DB
+def save(loader, version, pricedate, hotel_list):
+    #转一下
 
+    # 保存到数据库
+    for hotel in hotel_list:
+        hotel['version'] = version
+        hotel['pricedate'] = pricedate
+        loader.db.insert_data('hotelprice', hotel)
 
 def main():
     # cities = ['北京', '上海', '广州', '深圳', '杭州', '成都']  # 城市列表
-    cities = ['北京', '上海', '广州']  # 城市列表
+    # cities = ['北京', '上海', '广州']  # 城市列表
+    cities = CITIES
 
     result_queue = Queue()
     loader = LoadPriceHIG()
@@ -119,7 +143,7 @@ def main():
         """
         # 打开 8 个 tab 页面（4 个城市，每个城市 2 个 tab）
         # loader.open_tabs(8)
-        loader.open_tabs(4)
+        loader.open_tabs(MAX_SUB_THREAD_TAB_COUNT)
 
 
         # 多线程处理每个城市的数据

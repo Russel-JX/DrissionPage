@@ -147,8 +147,8 @@ class LoadPriceHIG:
             for hotel in hotels:
                 hotel_data = {
                     'name': hotel.ele('@data-slnm-ihg=brandHotelNameSID').text if hotel.ele('@data-slnm-ihg=brandHotelNameSID') else '',
-                    'price': -1,
-                    'points': -1
+                    'minprice': -1,
+                    'minpoints': -1
                 }
                 if queryType == 'price':
                     price_div = hotel.ele('@data-slnm-ihg=hotelPirceSID')
@@ -157,12 +157,12 @@ class LoadPriceHIG:
                         currency = price_div.ele('tag:span')
                         if currency:
                             price = price_text.replace(currency.text, '').strip()
-                            hotel_data['price'] = int(price.replace(',', ''))
+                            hotel_data['minprice'] = int(price.replace(',', ''))
                 elif queryType == 'points':
                     points_div = hotel.ele('@data-slnm-ihg=dailyPointsCostSID')
                     if points_div:
                         points = points_div.text.strip()
-                        hotel_data['points'] = int(points.replace(',', ''))
+                        hotel_data['minpoints'] = int(points.replace(',', ''))
                 hotel_list.append(hotel_data)
             return hotel_list
 
