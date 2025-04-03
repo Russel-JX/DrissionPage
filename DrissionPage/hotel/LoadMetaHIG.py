@@ -79,21 +79,30 @@ def main():
         # monitor_xhr_requests(page, db)
 
         resp = page.listen.wait()
-        json = resp.response.body['hotelContent'][0]
+        hotel = resp.response.body['hotelContent'][0]
         # print(f"捕获到请求1：{resp}")
         # print(f"捕获到请求2：{json}")
-        print(f"捕获到请求2：{json['hotelCode']}")
-        # hotel_data = {
-        #         'hotelcode': hotel.get('hotelContent').get('hotelCode'),
-        #         'brandcode': hotel.get('brandInfo', {}).get('brandCode'),
-        #         'enname': hotel.get('brandInfo', {}).get('brandName'),
-        #         'name': hotel.get('profile', {}).get('name', [{}])[0].get('value'),
-        #         'longitude': hotel.get('profile', {}).get('latLong', {}).get('longitude'),
-        #         'latitude': hotel.get('profile', {}).get('latLong', {}).get('latitude'),
-        #         'address': hotel.get('address', {}).get('translatedMainAddress', {}).get('line1', [{}])[0].get('value'),
-        #         'startyear': hotel.get('profile', {}).get('entityOpenDate')
-        #     }
-        # print(f"捕获到请求3：{hotel_data}")
+        print(f"捕获到请求2：{hotel['hotelCode']}")
+       
+
+        """
+         将响应数据的 "hotelContent.hotelCode"、"hotelContent.brandInfo.brandCode"、"hotelContent.brandInfo.brandName"、"hotelContent.profile.name"、
+        "hotelContent.profile.latLong.longitude"、"hotelContent.profile.latLong.latitude"、"hotelContent.address.translatedMainAddress.line1.value"、
+        "hotelContent.profile.entityOpenDate"属性值取出，使用现有的HotelDatabase.py文件中的insert_data方法存到数据库的hotel表中，分别对应hotel表的
+        hotelcode、brandcode、enname、name、longitude、latitude、address、startyear列中。
+        {'hotelcode': 'NKGRS', 'brandcode': 'HIEX', 'enname': 'Holiday Inn Express', 'name': '南京滨江智选假日酒店', 'longitude': '118.73766', 'latitude': '32.09012', 'address': '江苏省南京市鼓楼区公共路18号', 'startyear': '2024-08-13'}
+        """
+        hotel_data = {
+                'hotelcode': hotel.get('hotelCode'),
+                'brandcode': hotel.get('brandInfo').get('brandCode'),
+                'enname': hotel.get('brandInfo').get('brandName'),
+                'name': hotel.get('profile').get('name')[0].get('value'),
+                'longitude': hotel.get('profile').get('latLong').get('longitude'),
+                'latitude': hotel.get('profile').get('latLong').get('latitude'),
+                'address': hotel.get('address').get('translatedMainAddress').get('line1')[0].get('value'),
+                'startyear': hotel.get('profile').get('entityOpenDate')
+            }
+        print(f"捕获到请求3：{hotel_data}")
 
         logging.info(f"捕获到请求：{resp}")
 
