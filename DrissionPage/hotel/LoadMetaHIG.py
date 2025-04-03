@@ -32,23 +32,19 @@ def main():
     db = HotelDatabase()
 
     try:
-        # 打开目标页面
-        # page.listen.start('apis.ihg.com.cn/hotels/v3/profiles')  # Start the listener, specifying to capture data packets containing this text
-        page.listen.start('https://apis.ihg.com.cn/hotels/v3/profiles/NKGRS/details?fieldset=brandInfo,location,reviews,profile,address,parking,media,policies,facilities,badges,stripes,room,renovations,tax,marketing,greenEngage,renovationAlerts.active&brandCode=HIEX&ihg-language=zh-cn')  # Start the listener, specifying to capture data packets containing this text
+        # 监听网络中所有满足的url请求 
+        page.listen.start('https://apis.ihg.com.cn/hotels/v3/profiles/') 
+        # 只监听网络中1个URL
+        # page.listen.start('https://apis.ihg.com.cn/hotels/v3/profiles/NKGRS/details?fieldset=brandInfo,location,reviews,profile,address,parking,media,policies,facilities,badges,stripes,room,renovations,tax,marketing,greenEngage,renovationAlerts.active&brandCode=HIEX&ihg-language=zh-cn') 
+        # 浏览器中的URL。注：浏览器中的URL，可对应多个网络的url
         url = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8D%97%E4%BA%AC,%20%E6%B1%9F%E8%8B%8F,%20%E4%B8%AD%E5%9B%BD&qPt=CASH&qCiD=30&qCoD=31&qCiMy=042025&qCoMy=042025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=6CBARC&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=30&qRdU=mi&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1'
         page.get(url)
 
-        resp = page.listen.wait()
-        hotel = resp.response.body['hotelContent'][0]
-
-        """
-         将响应数据的 "hotelContent.hotelCode"、"hotelContent.brandInfo.brandCode"、"hotelContent.brandInfo.brandName"、"hotelContent.profile.name"、
-        "hotelContent.profile.latLong.longitude"、"hotelContent.profile.latLong.latitude"、"hotelContent.address.translatedMainAddress.line1.value"、
-        "hotelContent.profile.entityOpenDate"属性值取出，使用现有的HotelDatabase.py文件中的insert_data方法存到数据库的hotel表中，分别对应hotel表的
-        hotelcode、brandcode、enname、name、longitude、latitude、address、startyear列中。
-        {'hotelcode': 'NKGRS', 'brandcode': 'HIEX', 'enname': 'Holiday Inn Express', 'name': '南京滨江智选假日酒店', 'longitude': '118.73766', 'latitude': '32.09012', 'address': '江苏省南京市鼓楼区公共路18号', 'startyear': '2024-08-13'}
-        """
-        hotel_data = {
+        #遍历所有具体酒店细节的请求结果
+        for packet in page.listen.steps():
+            logging.info(f"捕获到请求：{packet.url}")
+            hotel = packet.response.body['hotelContent'][0]
+            hotel_data = {
                 'hotelcode': hotel.get('hotelCode'),
                 'brandcode': hotel.get('brandInfo').get('brandCode'),
                 'enname': hotel.get('brandInfo').get('brandName'),
@@ -57,9 +53,9 @@ def main():
                 'latitude': hotel.get('profile').get('latLong').get('latitude'),
                 'address': hotel.get('address').get('translatedMainAddress').get('line1')[0].get('value'),
                 'startyear': hotel.get('profile').get('entityOpenDate')
-            }
-        db.insert_data('hotel', hotel_data)
-        logging.info(f"捕获到请求：{hotel_data}")
+                }
+            db.insert_data('hotel', hotel_data)
+            logging.info(f"有效数据：{hotel_data}")
     except Exception as e:
         print(f"运行过程中发生错误：{e}")
     finally:
