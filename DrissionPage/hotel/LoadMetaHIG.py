@@ -9,55 +9,77 @@
         否则，该城市无任何此集团酒店。
         https://apis.ihg.com.cn/hotels/v1/profiles/PEGHC/details?fieldset=brandInfo,location,reviews,profile,address,parking,media,policies,facilities,badges,stripes,room,renovations,tax,marketing,greenEngage,renovationAlerts.active&brandCode=ICON&ihg-language=zh-cn
 """
-from DrissionPage import ChromiumPage
-from pathlib import Path
+import json
 import time
+from DrissionPage import ChromiumPage
+from util.HotelDatabase import HotelDatabase
 
-# 当前文件路径
-file_path = Path(__file__)
-start_time = time.time()
-page = ChromiumPage()
-print(f'===={file_path.name}执行开始！====')
+def monitor_xhr_requests(page, db):
+    """
+    监听并处理 XHR 请求
+    """
+    async def intercept_request(request):
+        if request.resourceType == 'xhr' and request.url.startswith('https://apis.ihg.com.cn/hotels/v3/profiles'):
+            print(f"捕获到 XHR 请求：{request.url}")
+            response = await request.response()
+            if response:
+                try:
+                    # 解析 JSON 响应数据
+                    data = await response.json()
+                    process_hotel_data(data, db)
+                except Exception as e:
+                    print(f"处理 XHR 请求数据时发生错误：{e}")
 
-# 打开目标页面
-page.get('https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=CASH&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=6CBARC&qAAR=6CBARC&qAkamaiCC=CN&srb_u=1&qExpndSrch=false&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1&qLoSe=false')  # 示例页面
+    # 设置拦截器
+    page.browser.set_request_interception(True)
+    page.browser.on('request', intercept_request)
 
-# 下滑到底，获取更多内容
-last_height = 0
-same_count = 0
+def process_hotel_data(data, db):
+    """
+    处理酒店数据并存入数据库
+    """
+    try:
+        for hotel in data.get('hotelContent', []):
+            hotel_data = {
+                'hotelcode': hotel.get('hotelCode'),
+                'brandcode': hotel.get('brandInfo', {}).get('brandCode'),
+                'enname': hotel.get('brandInfo', {}).get('brandName'),
+                'name': hotel.get('profile', {}).get('name', [{}])[0].get('value'),
+                'longitude': hotel.get('profile', {}).get('latLong', {}).get('longitude'),
+                'latitude': hotel.get('profile', {}).get('latLong', {}).get('latitude'),
+                'address': hotel.get('address', {}).get('translatedMainAddress', {}).get('line1', [{}])[0].get('value'),
+                'startyear': hotel.get('profile', {}).get('entityOpenDate')
+            }
+            # 插入数据到数据库
+            db.insert_data('hotel', hotel_data)
+            print(f"插入酒店数据：{hotel_data}")
+    except Exception as e:
+        print(f"处理酒店数据时发生错误：{e}")
 
-for _ in range(30):  # 最多下滑30次
-    page.scroll.to_bottom()
-    time.sleep(1)  # 减少等待时间
+def main():
+    # 初始化浏览器和数据库
+    page = ChromiumPage()
+    db = HotelDatabase()
 
-    height = page.run_js('document.body.scrollHeight')
-    if height == last_height:
-        same_count += 1
-        if same_count >= 3:
-            print("滑到底了，停止滚动。")
-            break
-    else:
-        same_count = 0
-        last_height = height
+    try:
+        # 打开目标页面
+        url = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=CASH&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=6CBARC&qAAR=6CBARC&qAkamaiCC=CN&srb_u=1&qExpndSrch=false&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1&qLoSe=false'
+        page.get(url)
 
-# 获取所有酒店卡片。使用s_eles代替eles，速度从60s提升至12s
-# hotels = page.eles('@class=hotel-card-list-resize ng-star-inserted')
-hotels = page.s_eles('@class=hotel-card-list-resize ng-star-inserted')
-print("======酒店总数======", len(hotels))
+        # 开始监听 XHR 请求
+        monitor_xhr_requests(page, db)
 
-for hotel in hotels:
-    # 优先取 brandHotelNameSID，其次 hotelNameSID > span
-    name = hotel.ele('@data-slnm-ihg=brandHotelNameSID')
-    if not name:
-        name_container = hotel.ele('@data-slnm-ihg=hotelNameSID')
-        name = name_container.ele('tag:span') if name_container else None
+        # 模拟页面操作（例如滚动加载更多内容）
+        for _ in range(10):
+            page.scroll.to_bottom()
+            time.sleep(2)
 
-    # 优先取正常价格，其次判断无房价格提示
-    price = hotel.ele('@class=price') or hotel.ele('@data-testid=noRoomsAvail')
+    except Exception as e:
+        print(f"运行过程中发生错误：{e}")
+    finally:
+        # 关闭浏览器和数据库连接
+        page.quit()
+        db.close()
 
-    # 打印酒店名、价格信息（注意判空）
-    # print(f"酒店名称：{name.text if name else '未知'}, 价格：{price.text if price else '无'}")
-
-end_time =  time.time()
-print(f'===={file_path.name}执行成功完成！耗时 {end_time - start_time:.2f} 秒====')
-page.quit()
+if __name__ == '__main__':
+    main()
