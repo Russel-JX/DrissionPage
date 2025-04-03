@@ -15,53 +15,16 @@ from DrissionPage import ChromiumPage
 from util.HotelDatabase import HotelDatabase
 import logging
 
-async def monitor_xhr_requests(page, db):
-    """
-    监听并处理 XHR 请求
-    """
-    async def intercept_request(request):
-        if request.resourceType == 'xhr' and request.url.startswith('https://apis.ihg.com.cn/hotels/v3/profiles'):
-            print(f"捕获到 XHR 请求：{request.url}")
-            response = await request.response()
-            if response:
-                try:
-                    # 解析 JSON 响应数据
-                    data = await response.json()
-                    # TODO 暂时不处理数据
-                    # process_hotel_data(data, db)
-                except Exception as e:
-                    print(f"处理 XHR 请求数据时发生错误：{e}")
-
-    # 设置拦截器
-    # page.browser.set_request_interception(True)
-    #page.browser.on('request', intercept_request)
-    
-    await page.set_request_interception(True)
-    page.on('request', intercept_request)
-    
-
-
-def process_hotel_data(data, db):
-    """
-    处理酒店数据并存入数据库
-    """
-    try:
-        for hotel in data.get('hotelContent', []):
-            hotel_data = {
-                'hotelcode': hotel.get('hotelCode'),
-                'brandcode': hotel.get('brandInfo', {}).get('brandCode'),
-                'enname': hotel.get('brandInfo', {}).get('brandName'),
-                'name': hotel.get('profile', {}).get('name', [{}])[0].get('value'),
-                'longitude': hotel.get('profile', {}).get('latLong', {}).get('longitude'),
-                'latitude': hotel.get('profile', {}).get('latLong', {}).get('latitude'),
-                'address': hotel.get('address', {}).get('translatedMainAddress', {}).get('line1', [{}])[0].get('value'),
-                'startyear': hotel.get('profile', {}).get('entityOpenDate')
-            }
-            # 插入数据到数据库
-            db.insert_data('hotel', hotel_data)
-            print(f"插入酒店数据：{hotel_data}")
-    except Exception as e:
-        print(f"处理酒店数据时发生错误：{e}")
+# 配置日志
+logging.basicConfig(
+    level=logging.INFO,  # 设置日志级别为 DEBUG
+    format='%(asctime)s - %(levelname)s - %(message)s',  # 日志格式（包括时间戳）
+    datefmt='%Y-%m-%d %H:%M:%S',  # 设置时间格式
+    handlers=[
+        logging.FileHandler('DrissionPage/hotel/logs/hotel.log'),  # 将日志输出到 logs/my_log.log 文件
+        logging.StreamHandler()  # 同时将日志输出到控制台
+    ]
+)
 
 def main():
     # 初始化浏览器和数据库
@@ -75,15 +38,8 @@ def main():
         url = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8D%97%E4%BA%AC,%20%E6%B1%9F%E8%8B%8F,%20%E4%B8%AD%E5%9B%BD&qPt=CASH&qCiD=30&qCoD=31&qCiMy=042025&qCoMy=042025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=6CBARC&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=30&qRdU=mi&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1'
         page.get(url)
 
-        # 开始监听 XHR 请求
-        # monitor_xhr_requests(page, db)
-
         resp = page.listen.wait()
         hotel = resp.response.body['hotelContent'][0]
-        # print(f"捕获到请求1：{resp}")
-        # print(f"捕获到请求2：{json}")
-        print(f"捕获到请求2：{hotel['hotelCode']}")
-       
 
         """
          将响应数据的 "hotelContent.hotelCode"、"hotelContent.brandInfo.brandCode"、"hotelContent.brandInfo.brandName"、"hotelContent.profile.name"、
@@ -102,28 +58,8 @@ def main():
                 'address': hotel.get('address').get('translatedMainAddress').get('line1')[0].get('value'),
                 'startyear': hotel.get('profile').get('entityOpenDate')
             }
-        print(f"捕获到请求3：{hotel_data}")
-
-        logging.info(f"捕获到请求：{resp}")
-
-
-        # i = 0
-        # for packet in page.listen.steps():
-        #     logging.info(f"捕获到 XHR 请求：{packet.url}")
-        #     i += 1
-        #     if i == 5:
-        #         break
-        # for _ in range(5):
-        #     # page('@rel=next').click()  # Click on the next page
-        #     res = page.listen.wait()  # Wait for and capture a data packet
-        #     logging.info(f"捕获到 XHR 请求：{res.url}")
-
-
-        # 模拟页面操作（例如滚动加载更多内容）
-        # for _ in range(10):
-        #     page.scroll.to_bottom()
-        #     time.sleep(2)
-
+        db.insert_data('hotel', hotel_data)
+        logging.info(f"捕获到请求：{hotel_data}")
     except Exception as e:
         print(f"运行过程中发生错误：{e}")
     finally:
