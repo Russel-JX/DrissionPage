@@ -9,7 +9,6 @@
         否则，该城市无任何此集团酒店。
         https://apis.ihg.com.cn/hotels/v1/profiles/PEGHC/details?fieldset=brandInfo,location,reviews,profile,address,parking,media,policies,facilities,badges,stripes,room,renovations,tax,marketing,greenEngage,renovationAlerts.active&brandCode=ICON&ihg-language=zh-cn
 """
-import json
 import time
 from DrissionPage import ChromiumPage
 from util.HotelDatabase import HotelDatabase
@@ -29,6 +28,7 @@ logging.basicConfig(
 )
 
 def main():
+    start_time = time.time()
     # 初始化浏览器和数据库
     page = ChromiumPage()
     db = HotelDatabase()
@@ -79,7 +79,7 @@ def main():
                 'groupcode': 'IHG',
                 'groupname': '洲际',
                 'brandname': hotel.get('brandInfo').get('brandName'),
-                'hotelcode': hotel.get('mnemonic'),
+                'hotelcode': hotel.get('brandInfo').get('mnemonic'),
                 'brandcode': hotel.get('brandInfo').get('brandCode'),
                 'enname': hotel.get('brandInfo').get('brandName'),
                 'name': hotel.get('profile').get('name'),
@@ -87,7 +87,8 @@ def main():
                 'latitude': hotel.get('profile').get('latLong').get('latitude'),
                 'address': hotel.get('address').get('street1'),
                 'city': hotel.get('address').get('city'),
-                'startyear': hotel.get('profile').get('entityOpenDate')
+                'startyear': hotel.get('profile').get('entityOpenDate'),
+                'note': urlVersion
                 }
             elif urlVersion == 'v3':
                 hotel = packet.response.body['hotelContent'][0]
@@ -103,19 +104,21 @@ def main():
                 'latitude': hotel.get('profile').get('latLong').get('latitude'),
                 'address': hotel.get('address').get('translatedMainAddress').get('line1')[0].get('value'),
                 'city': hotel.get('address').get('translatedMainAddress').get('city')[0].get('value'),
-                'startyear': hotel.get('profile').get('entityOpenDate')
+                'startyear': hotel.get('profile').get('entityOpenDate'),
+                'note': urlVersion
                 }
             else:
                 logging.error(f"未知的URL版本：{urlVersion}")
                 continue  
-            
             db.insert_data('hotel', hotel_data)
-            # logging.info(f"有效数据：{hotel_data}")
+            # logging.info(f"有效数据：{hotel_data}")   
     except Exception as e:
         print(f"运行过程中发生错误：{e}")
         logging.error(f"运行过程中发生错误：{e}")
         logging.error("Stack trace:\n%s", traceback.format_exc())  # 使用 traceback.format_exc() 获取堆栈信息
     finally:
+        end_time =  time.time()
+        logging.info(f"总请求数：{len(packets)}，耗时：{end_time - start_time:.2f} 秒)")
         # 关闭浏览器和数据库连接
         page.quit()
         db.close()
