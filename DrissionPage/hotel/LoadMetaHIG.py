@@ -60,6 +60,7 @@ def main():
         {'hotelcode': 'NKGRS', 'brandcode': 'HIEX', 'enname': 'Holiday Inn Express', 'name': '南京滨江智选假日酒店', 'longitude': '118.73766', 'latitude': '32.09012', 'address': '江苏省南京市鼓楼区公共路18号', 'startyear': '2024-08-13'}
         """
         # 将生成器转换为列表。每个数据包最多等3秒，必须结束监听返回数据。不这样做的话，会导致页面一直在监听，如果页面自动刷新则会导致重复数据。
+        # TODO这里还会出现重复url的问题。比如：同一个酒店的详情页url会被多次请求，导致数据重复。
         packets = list(page.listen.steps(count=None, timeout=3, gap=1))  
         logging.info(f"捕获到总请求数：{len(packets)}")
         fisrtPacketUrl = packets[0].url
@@ -88,6 +89,7 @@ def main():
                 'address': hotel.get('address').get('street1'),
                 'city': hotel.get('address').get('city'),
                 'startyear': hotel.get('profile').get('entityOpenDate'),
+                'pic': hotel.get('profile').get('primaryImageUrl').get('originalUrl'),
                 'note': urlVersion
                 }
             elif urlVersion == 'v3':
@@ -105,6 +107,7 @@ def main():
                 'address': hotel.get('address').get('translatedMainAddress').get('line1')[0].get('value'),
                 'city': hotel.get('address').get('translatedMainAddress').get('city')[0].get('value'),
                 'startyear': hotel.get('profile').get('entityOpenDate'),
+                'pic': hotel.get('profile').get('primaryImageUrl').get('originalUrl'),
                 'note': urlVersion
                 }
             else:
