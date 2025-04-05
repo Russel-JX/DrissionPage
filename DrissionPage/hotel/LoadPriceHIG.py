@@ -136,6 +136,7 @@ class LoadPriceHIG:
             # 滚动页面，确保内容加载完全
             last_height = 0
             same_count = 0
+            scroll_count = 0
             for _ in range(15):  # 最多滚动 15 次
                 """
                 TODO
@@ -150,13 +151,16 @@ class LoadPriceHIG:
                 # self._activate_all_tabs() #无头模式下，无需获取页面焦点。因为脚本会自动操作页面。
 
                 tab.scroll.to_bottom()
-                # time.sleep(1)
+                scroll_count = scroll_count+1
+
+                time.sleep(1)
                 height = tab.run_js('document.body.scrollHeight')
 
                 if height == last_height:
                     same_count += 1
                     if same_count >= 3:
-                        # logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 页面已滚动到底")
+                        logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 页面已滚动{scroll_count}次到底")
+                        # time.sleep(4)  # 等待 4 秒，确保数据加载完成
                         break
                 else:
                     same_count = 0

@@ -56056,3 +56056,284 @@ Version: 4.1.0.17
 
 2025-04-06 06:58:45 - INFO - ***price 城市 北京 日期 2025-04-26 的据量：0，耗时：5.25 秒)
 2025-04-06 06:58:45 - INFO - ***points 城市 北京 日期 2025-04-26 的据量：0，耗时：5.25 秒)
+2025-04-06 07:05:11 - INFO - 查询SELECT * FROM city WHERE hotelavailable != 0 AND level IN (0, 1) ORDER BY level ASC结果总数：11
+2025-04-06 07:05:11 - INFO - 从DB得到城市列表：['北京市', '上海市', '广州市', '深圳市', '天津市', '南京市', '苏州市', '杭州市', '武汉市', '重庆市', '成都市']
+2025-04-06 07:05:12 - INFO - ====已打开 2 个 tab 页面====
+2025-04-06 07:05:23 - INFO - ***points 城市 北京 日期 2025-04-06 的据量：8，耗时：11.17 秒)
+2025-04-06 07:05:23 - INFO - ***price 城市 北京 日期 2025-04-06 的据量：8，耗时：11.20 秒)
+2025-04-06 07:05:31 - INFO - ***price 城市 北京 日期 2025-04-07 的据量：6，耗时：7.64 秒)
+2025-04-06 07:05:31 - INFO - ***points 城市 北京 日期 2025-04-07 的据量：8，耗时：8.00 秒)
+2025-04-06 07:05:37 - INFO - ***points 城市 北京 日期 2025-04-08 的据量：6，耗时：6.03 秒)
+2025-04-06 07:05:37 - INFO - ***price 城市 北京 日期 2025-04-08 的据量：4，耗时：6.04 秒)
+2025-04-06 07:05:44 - INFO - ***price 城市 北京 日期 2025-04-09 的据量：6，耗时：7.26 秒)
+2025-04-06 07:05:45 - INFO - ***points 城市 北京 日期 2025-04-09 的据量：8，耗时：7.45 秒)
+2025-04-06 07:05:52 - INFO - ***points 城市 北京 日期 2025-04-10 的据量：5，耗时：7.05 秒)
+2025-04-06 07:05:52 - INFO - ***price 城市 北京 日期 2025-04-10 的据量：5，耗时：7.07 秒)
+2025-04-06 07:05:58 - INFO - ***price 城市 北京 日期 2025-04-11 的据量：6，耗时：6.48 秒)
+2025-04-06 07:05:58 - INFO - ***points 城市 北京 日期 2025-04-11 的据量：6，耗时：6.50 秒)
+2025-04-06 07:06:05 - INFO - ***price 城市 北京 日期 2025-04-12 的据量：4，耗时：6.30 秒)
+2025-04-06 07:06:05 - INFO - ***points 城市 北京 日期 2025-04-12 的据量：8，耗时：6.34 秒)
+2025-04-06 07:06:11 - INFO - ***points 城市 北京 日期 2025-04-13 的据量：6，耗时：6.35 秒)
+2025-04-06 07:06:11 - INFO - ***price 城市 北京 日期 2025-04-13 的据量：6，耗时：6.37 秒)
+2025-04-06 07:06:17 - INFO - ***price 城市 北京 日期 2025-04-14 的据量：6，耗时：5.97 秒)
+2025-04-06 07:06:17 - INFO - ***points 城市 北京 日期 2025-04-14 的据量：8，耗时：6.00 秒)
+2025-04-06 07:06:23 - INFO - ***points 城市 北京 日期 2025-04-15 的据量：6，耗时：6.01 秒)
+2025-04-06 07:06:23 - INFO - ***price 城市 北京 日期 2025-04-15 的据量：7，耗时：6.04 秒)
+2025-04-06 07:06:29 - INFO - ***points 城市 北京 日期 2025-04-16 的据量：6，耗时：6.04 秒)
+2025-04-06 07:06:29 - INFO - ***price 城市 北京 日期 2025-04-16 的据量：7，耗时：6.08 秒)
+2025-04-06 07:06:34 - ERROR - 加载 Tab 0 北京 2025-04-17 07:05:12.391175 price 的数据时发生错误：
+The connection to the page has been disconnected.
+Version: 4.1.0.17
+2025-04-06 07:06:34 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 154, in loadData
+    height = tab.run_js('document.body.scrollHeight')
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 391, in run_js
+    return self._run_js(script, *args, as_expr=as_expr, timeout=timeout)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.PageDisconnectedError: 
+The connection to the page has been disconnected.
+Version: 4.1.0.17
+
+2025-04-06 07:06:34 - INFO - ***price 城市 北京 日期 2025-04-17 的据量：0，耗时：5.02 秒)
+2025-04-06 07:06:34 - ERROR - 加载 Tab 1 北京 2025-04-17 07:05:12.391175 points 的数据时发生错误：
+The connection to the page has been disconnected.
+Version: 4.1.0.17
+2025-04-06 07:06:34 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 152, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.PageDisconnectedError: 
+The connection to the page has been disconnected.
+Version: 4.1.0.17
+
+2025-04-06 07:06:34 - INFO - ***points 城市 北京 日期 2025-04-17 的据量：0，耗时：5.09 秒)
+2025-04-06 07:07:47 - INFO - 查询SELECT * FROM city WHERE hotelavailable != 0 AND level IN (0, 1) ORDER BY level ASC结果总数：11
+2025-04-06 07:07:47 - INFO - 从DB得到城市列表：['北京市', '上海市', '广州市', '深圳市', '天津市', '南京市', '苏州市', '杭州市', '武汉市', '重庆市', '成都市']
+2025-04-06 07:07:47 - INFO - ====已打开 2 个 tab 页面====
+2025-04-06 07:07:58 - INFO - ***points 城市 北京 日期 2025-04-06 的据量：6，耗时：10.98 秒)
+2025-04-06 07:07:58 - INFO - ***price 城市 北京 日期 2025-04-06 的据量：6，耗时：11.01 秒)
+2025-04-06 07:08:05 - INFO - ***points 城市 北京 日期 2025-04-07 的据量：7，耗时：6.98 秒)
+2025-04-06 07:08:35 - INFO - ***price 城市 北京 日期 2025-04-07 的据量：5，耗时：36.22 秒)
+2025-04-06 07:08:42 - INFO - ***points 城市 北京 日期 2025-04-08 的据量：6，耗时：7.61 秒)
+2025-04-06 07:09:10 - INFO - ***price 城市 北京 日期 2025-04-08 的据量：6，耗时：35.72 秒)
+2025-04-06 07:09:18 - INFO - ***points 城市 北京 日期 2025-04-09 的据量：4，耗时：7.63 秒)
+2025-04-06 07:09:42 - ERROR - 加载 Tab 0 北京 2025-04-09 07:07:47.737087 price 的数据时发生错误：
+The connection to the page has been disconnected.
+Version: 4.1.0.17
+2025-04-06 07:09:42 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 134, in loadData
+    tab.get(url)  # 打开目标页面
+    ~~~~~~~^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 409, in get
+    self._url_available = self._d_connect(self._url, times=retry, interval=interval,
+                          ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                          show_errmsg=show_errmsg, timeout=timeout)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 765, in _d_connect
+    result = self._run_cdp('Page.navigate', frameId=self._frame_id, url=to_url, _timeout=timeout)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.PageDisconnectedError: 
+The connection to the page has been disconnected.
+Version: 4.1.0.17
+
+2025-04-06 07:09:42 - INFO - ***price 城市 北京 日期 2025-04-09 的据量：0，耗时：32.02 秒)
+2025-04-06 07:15:57 - INFO - 查询SELECT * FROM city WHERE hotelavailable != 0 AND level IN (0, 1) ORDER BY level ASC结果总数：11
+2025-04-06 07:15:57 - INFO - 从DB得到城市列表：['北京市', '上海市', '广州市', '深圳市', '天津市', '南京市', '苏州市', '杭州市', '武汉市', '重庆市', '成都市']
+2025-04-06 07:15:57 - INFO - ====已打开 2 个 tab 页面====
+2025-04-06 07:16:18 - INFO - ***points 城市 北京 日期 2025-04-06 的据量：6，耗时：20.41 秒)
+2025-04-06 07:16:20 - INFO - ***price 城市 北京 日期 2025-04-06 的据量：8，耗时：22.77 秒)
+2025-04-06 07:16:31 - INFO - ***points 城市 北京 日期 2025-04-07 的据量：6，耗时：10.99 秒)
+2025-04-06 07:16:31 - INFO - ***price 城市 北京 日期 2025-04-07 的据量：6，耗时：11.02 秒)
+2025-04-06 07:16:42 - INFO - ***points 城市 北京 日期 2025-04-08 的据量：6，耗时：10.87 秒)
+2025-04-06 07:16:42 - INFO - ***price 城市 北京 日期 2025-04-08 的据量：6，耗时：10.92 秒)
+2025-04-06 07:16:52 - INFO - ***points 城市 北京 日期 2025-04-09 的据量：6，耗时：9.95 秒)
+2025-04-06 07:16:53 - INFO - ***price 城市 北京 日期 2025-04-09 的据量：6，耗时：10.92 秒)
+2025-04-06 07:17:19 - INFO - 查询SELECT * FROM city WHERE hotelavailable != 0 AND level IN (0, 1) ORDER BY level ASC结果总数：11
+2025-04-06 07:17:19 - INFO - 从DB得到城市列表：['北京市', '上海市', '广州市', '深圳市', '天津市', '南京市', '苏州市', '杭州市', '武汉市', '重庆市', '成都市']
+2025-04-06 07:17:19 - INFO - ====已打开 2 个 tab 页面====
+2025-04-06 07:17:45 - INFO - ***price 城市 北京 日期 2025-04-06 的据量：6，耗时：26.01 秒)
+2025-04-06 07:17:45 - INFO - ***points 城市 北京 日期 2025-04-06 的据量：6，耗时：26.03 秒)
+2025-04-06 07:18:05 - INFO - ***points 城市 北京 日期 2025-04-07 的据量：7，耗时：19.94 秒)
+2025-04-06 07:18:07 - INFO - ***price 城市 北京 日期 2025-04-07 的据量：8，耗时：21.63 秒)
+2025-04-06 07:18:27 - INFO - ***points 城市 北京 日期 2025-04-08 的据量：8，耗时：19.72 秒)
+2025-04-06 07:18:29 - INFO - ***price 城市 北京 日期 2025-04-08 的据量：6，耗时：21.54 秒)
+2025-04-06 07:18:47 - INFO - ***price 城市 北京 日期 2025-04-09 的据量：6，耗时：18.24 秒)
+2025-04-06 07:18:48 - INFO - ***points 城市 北京 日期 2025-04-09 的据量：8，耗时：19.53 秒)
+2025-04-06 07:19:07 - INFO - ***price 城市 北京 日期 2025-04-10 的据量：6，耗时：19.21 秒)
+2025-04-06 07:19:08 - INFO - ***points 城市 北京 日期 2025-04-10 的据量：8，耗时：19.45 秒)
+2025-04-06 07:20:08 - INFO - 查询SELECT * FROM city WHERE hotelavailable != 0 AND level IN (0, 1) ORDER BY level ASC结果总数：11
+2025-04-06 07:20:08 - INFO - 从DB得到城市列表：['北京市', '上海市', '广州市', '深圳市', '天津市', '南京市', '苏州市', '杭州市', '武汉市', '重庆市', '成都市']
+2025-04-06 07:20:08 - INFO - ====已打开 2 个 tab 页面====
+2025-04-06 07:20:23 - INFO - ***price 城市 北京 日期 2025-04-06 的据量：6，耗时：15.19 秒)
+2025-04-06 07:20:24 - INFO - ***points 城市 北京 日期 2025-04-06 的据量：8，耗时：16.29 秒)
+2025-04-06 07:20:31 - INFO - ***price 城市 北京 日期 2025-04-07 的据量：5，耗时：6.65 秒)
+2025-04-06 07:20:31 - INFO - ***points 城市 北京 日期 2025-04-07 的据量：6，耗时：6.67 秒)
+2025-04-06 07:20:37 - INFO - ***price 城市 北京 日期 2025-04-08 的据量：5，耗时：6.07 秒)
+2025-04-06 07:20:37 - INFO - ***points 城市 北京 日期 2025-04-08 的据量：4，耗时：6.08 秒)
+2025-04-06 07:20:43 - INFO - ***price 城市 北京 日期 2025-04-09 的据量：6，耗时：5.95 秒)
+2025-04-06 07:20:43 - INFO - ***points 城市 北京 日期 2025-04-09 的据量：8，耗时：5.98 秒)
+2025-04-06 07:20:49 - ERROR - 加载 Tab 1 北京 2025-04-10 07:20:08.579970 points 的数据时发生错误：
+The connection to the page has been disconnected.
+Version: 4.1.0.17
+2025-04-06 07:20:49 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 154, in loadData
+    height = tab.run_js('document.body.scrollHeight')
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 391, in run_js
+    return self._run_js(script, *args, as_expr=as_expr, timeout=timeout)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.PageDisconnectedError: 
+The connection to the page has been disconnected.
+Version: 4.1.0.17
+
+2025-04-06 07:20:49 - INFO - ***points 城市 北京 日期 2025-04-10 的据量：0，耗时：5.55 秒)
+2025-04-06 07:20:49 - ERROR - 加载 Tab 0 北京 2025-04-10 07:20:08.579970 price 的数据时发生错误：
+The connection to the page has been disconnected.
+Version: 4.1.0.17
+2025-04-06 07:20:49 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 152, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.PageDisconnectedError: 
+The connection to the page has been disconnected.
+Version: 4.1.0.17
+
+2025-04-06 07:20:49 - INFO - ***price 城市 北京 日期 2025-04-10 的据量：0，耗时：5.56 秒)
+2025-04-06 07:22:03 - INFO - 查询SELECT * FROM city WHERE hotelavailable != 0 AND level IN (0, 1) ORDER BY level ASC结果总数：11
+2025-04-06 07:22:03 - INFO - 从DB得到城市列表：['北京市', '上海市', '广州市', '深圳市', '天津市', '南京市', '苏州市', '杭州市', '武汉市', '重庆市', '成都市']
+2025-04-06 07:22:03 - INFO - ====已打开 2 个 tab 页面====
+2025-04-06 07:22:20 - INFO - ***points 城市 北京 日期 2025-04-06 的据量：8，耗时：17.02 秒)
+2025-04-06 07:22:20 - INFO - ***price 城市 北京 日期 2025-04-06 的据量：6，耗时：17.03 秒)
+2025-04-06 07:22:34 - INFO - ***points 城市 北京 日期 2025-04-07 的据量：8，耗时：13.04 秒)
+2025-04-06 07:22:35 - INFO - ***price 城市 北京 日期 2025-04-07 的据量：6，耗时：14.20 秒)
+2025-04-06 07:22:48 - INFO - ***points 城市 北京 日期 2025-04-08 的据量：6，耗时：13.75 秒)
+2025-04-06 07:22:49 - INFO - ***price 城市 北京 日期 2025-04-08 的据量：6，耗时：14.50 秒)
+2025-04-06 07:23:04 - INFO - ***price 城市 北京 日期 2025-04-09 的据量：6，耗时：15.14 秒)
+2025-04-06 07:23:04 - INFO - ***points 城市 北京 日期 2025-04-09 的据量：6，耗时：15.19 秒)
+2025-04-06 07:23:18 - INFO - ***points 城市 北京 日期 2025-04-10 的据量：6，耗时：13.79 秒)
+2025-04-06 07:23:19 - INFO - ***price 城市 北京 日期 2025-04-10 的据量：8，耗时：14.29 秒)
+2025-04-06 07:23:32 - INFO - ***points 城市 北京 日期 2025-04-11 的据量：6，耗时：13.32 秒)
+2025-04-06 07:23:32 - INFO - ***price 城市 北京 日期 2025-04-11 的据量：8，耗时：13.54 秒)
+2025-04-06 07:25:27 - INFO - 查询SELECT * FROM city WHERE hotelavailable != 0 AND level IN (0, 1) ORDER BY level ASC结果总数：11
+2025-04-06 07:25:27 - INFO - 从DB得到城市列表：['北京市', '上海市', '广州市', '深圳市', '天津市', '南京市', '苏州市', '杭州市', '武汉市', '重庆市', '成都市']
+2025-04-06 07:25:28 - INFO - ====已打开 2 个 tab 页面====
+2025-04-06 07:25:35 - INFO - Tab 1  北京 2025-04-06 07:25:28.073703 points 页面已滚动几次：1
+2025-04-06 07:25:36 - INFO - Tab 0  北京 2025-04-06 07:25:28.073703 price 页面已滚动几次：1
+2025-04-06 07:25:38 - INFO - Tab 1  北京 2025-04-06 07:25:28.073703 points 页面已滚动几次：2
+2025-04-06 07:25:38 - INFO - Tab 0  北京 2025-04-06 07:25:28.073703 price 页面已滚动几次：2
+2025-04-06 07:25:39 - INFO - Tab 1  北京 2025-04-06 07:25:28.073703 points 页面已滚动几次：3
+2025-04-06 07:25:39 - INFO - Tab 0  北京 2025-04-06 07:25:28.073703 price 页面已滚动几次：3
+2025-04-06 07:25:40 - INFO - Tab 1  北京 2025-04-06 07:25:28.073703 points 页面已滚动几次：4
+2025-04-06 07:25:40 - INFO - Tab 0  北京 2025-04-06 07:25:28.073703 price 页面已滚动几次：4
+2025-04-06 07:25:41 - INFO - Tab 1  北京 2025-04-06 07:25:28.073703 points 页面已滚动到底
+2025-04-06 07:25:41 - INFO - Tab 0  北京 2025-04-06 07:25:28.073703 price 页面已滚动到底
+2025-04-06 07:25:46 - INFO - ***points 城市 北京 日期 2025-04-06 的据量：8，耗时：18.63 秒)
+2025-04-06 07:25:46 - INFO - ***price 城市 北京 日期 2025-04-06 的据量：6，耗时：18.68 秒)
+2025-04-06 07:25:52 - INFO - Tab 0  北京 2025-04-07 07:25:28.073703 price 页面已滚动几次：1
+2025-04-06 07:25:52 - INFO - Tab 1  北京 2025-04-07 07:25:28.073703 points 页面已滚动几次：1
+2025-04-06 07:25:53 - INFO - Tab 0  北京 2025-04-07 07:25:28.073703 price 页面已滚动几次：2
+2025-04-06 07:25:53 - INFO - Tab 1  北京 2025-04-07 07:25:28.073703 points 页面已滚动几次：2
+2025-04-06 07:25:54 - INFO - Tab 0  北京 2025-04-07 07:25:28.073703 price 页面已滚动几次：3
+2025-04-06 07:25:54 - INFO - Tab 1  北京 2025-04-07 07:25:28.073703 points 页面已滚动几次：3
+2025-04-06 07:25:55 - INFO - Tab 0  北京 2025-04-07 07:25:28.073703 price 页面已滚动几次：4
+2025-04-06 07:25:55 - INFO - Tab 1  北京 2025-04-07 07:25:28.073703 points 页面已滚动几次：4
+2025-04-06 07:25:56 - INFO - Tab 0  北京 2025-04-07 07:25:28.073703 price 页面已滚动到底
+2025-04-06 07:25:56 - INFO - Tab 1  北京 2025-04-07 07:25:28.073703 points 页面已滚动到底
+2025-04-06 07:26:01 - INFO - ***price 城市 北京 日期 2025-04-07 的据量：6，耗时：14.59 秒)
+2025-04-06 07:26:01 - INFO - ***points 城市 北京 日期 2025-04-07 的据量：6，耗时：14.62 秒)
+2025-04-06 07:26:02 - INFO - Tab 1  北京 2025-04-08 07:25:28.073703 points 页面已滚动几次：1
+2025-04-06 07:26:06 - INFO - Tab 0  北京 2025-04-08 07:25:28.073703 price 页面已滚动几次：1
+2025-04-06 07:26:06 - INFO - Tab 1  北京 2025-04-08 07:25:28.073703 points 页面已滚动几次：2
+2025-04-06 07:26:07 - INFO - Tab 0  北京 2025-04-08 07:25:28.073703 price 页面已滚动几次：2
+2025-04-06 07:26:07 - INFO - Tab 1  北京 2025-04-08 07:25:28.073703 points 页面已滚动几次：3
+2025-04-06 07:26:08 - INFO - Tab 0  北京 2025-04-08 07:25:28.073703 price 页面已滚动几次：3
+2025-04-06 07:26:08 - INFO - Tab 1  北京 2025-04-08 07:25:28.073703 points 页面已滚动几次：4
+2025-04-06 07:26:09 - INFO - Tab 0  北京 2025-04-08 07:25:28.073703 price 页面已滚动几次：4
+2025-04-06 07:26:09 - INFO - Tab 1  北京 2025-04-08 07:25:28.073703 points 页面已滚动到底
+2025-04-06 07:26:10 - INFO - Tab 0  北京 2025-04-08 07:25:28.073703 price 页面已滚动到底
+2025-04-06 07:26:14 - INFO - ***points 城市 北京 日期 2025-04-08 的据量：6，耗时：12.91 秒)
+2025-04-06 07:26:15 - INFO - ***price 城市 北京 日期 2025-04-08 的据量：6，耗时：14.13 秒)
+2025-04-06 07:26:18 - INFO - Tab 1  北京 2025-04-09 07:25:28.073703 points 页面已滚动几次：1
+2025-04-06 07:26:22 - INFO - Tab 1  北京 2025-04-09 07:25:28.073703 points 页面已滚动几次：2
+2025-04-06 07:26:22 - INFO - Tab 0  北京 2025-04-09 07:25:28.073703 price 页面已滚动几次：1
+2025-04-06 07:26:23 - INFO - Tab 1  北京 2025-04-09 07:25:28.073703 points 页面已滚动几次：3
+2025-04-06 07:26:23 - INFO - Tab 0  北京 2025-04-09 07:25:28.073703 price 页面已滚动几次：2
+2025-04-06 07:26:24 - INFO - Tab 1  北京 2025-04-09 07:25:28.073703 points 页面已滚动几次：4
+2025-04-06 07:26:24 - INFO - Tab 0  北京 2025-04-09 07:25:28.073703 price 页面已滚动几次：3
+2025-04-06 07:26:25 - INFO - Tab 1  北京 2025-04-09 07:25:28.073703 points 页面已滚动到底
+2025-04-06 07:26:25 - INFO - Tab 0  北京 2025-04-09 07:25:28.073703 price 页面已滚动几次：4
+2025-04-06 07:26:26 - INFO - Tab 0  北京 2025-04-09 07:25:28.073703 price 页面已滚动到底
+2025-04-06 07:26:30 - INFO - ***points 城市 北京 日期 2025-04-09 的据量：8，耗时：14.65 秒)
+2025-04-06 07:31:50 - INFO - 查询SELECT * FROM city WHERE hotelavailable != 0 AND level IN (0, 1) ORDER BY level ASC结果总数：11
+2025-04-06 07:31:50 - INFO - 从DB得到城市列表：['北京市', '上海市', '广州市', '深圳市', '天津市', '南京市', '苏州市', '杭州市', '武汉市', '重庆市', '成都市']
+2025-04-06 07:31:51 - INFO - ====已打开 2 个 tab 页面====
+2025-04-06 07:32:05 - INFO - Tab 0  北京 2025-04-06 07:31:51.527353 price 页面已滚动4次到底
+2025-04-06 07:32:05 - INFO - Tab 1  北京 2025-04-06 07:31:51.527353 points 页面已滚动4次到底
+2025-04-06 07:32:10 - INFO - ***price 城市 北京 日期 2025-04-06 的据量：8，耗时：18.70 秒)
+2025-04-06 07:32:10 - INFO - ***points 城市 北京 日期 2025-04-06 的据量：8，耗时：18.74 秒)
+2025-04-06 07:32:19 - INFO - Tab 1  北京 2025-04-07 07:31:51.527353 points 页面已滚动4次到底
+2025-04-06 07:32:20 - INFO - Tab 0  北京 2025-04-07 07:31:51.527353 price 页面已滚动4次到底
