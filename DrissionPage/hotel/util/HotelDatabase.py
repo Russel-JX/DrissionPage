@@ -38,6 +38,12 @@ class HotelDatabase:
             self._ensure_connection()  # 重新建立连接
             self.cursor.execute(sql, tuple(data.values()))
             self.connection.commit()
+        except AttributeError as e:
+            logging.warning(f"数据库连接失效，尝试重新连接：{e}")
+            logging.error("尝试重新连接2Stack trace:\n%s", traceback.format_exc())
+            self._ensure_connection()  # 重新建立连接
+            self.cursor.execute(sql, tuple(data.values()))
+            self.connection.commit()
         except Exception as e:
             self.connection.rollback()
             logging.error(f"插入数据失败：{e}")

@@ -70,19 +70,23 @@ def process_city(loader, city, result_queue):
                 points_result = []
 
                 def fetch_price():
+                    #每个线程，单独loader单独DB，防止数据库连接中断
+                    loader4Load = LoadPriceHIG()
                     nonlocal price_result
                     start_time = time.time()
-                    price_result = loader.loadData(city, pricedate, priceURL, 'price', tab_index=price_tab_index)
-                    save(loader, version, pricedate, price_result)
+                    price_result = loader4Load.loadData(city, pricedate, priceURL, 'price', tab_index=price_tab_index)
+                    save(loader4Load, version, pricedate, price_result)
                     end_time =  time.time()
                     # logging.info(f"***price 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的据量：{len(price_result)}，耗时：{end_time - start_time:.2f} 秒)")
 
                 def fetch_points():
+                     #每个线程，单独loader单独DB，防止数据库连接中断
+                    loader4Load = LoadPriceHIG()
                     nonlocal points_result
                     start_time = time.time()
-                    points_result = loader.loadData(city, pricedate, pointsURL, 'points', tab_index=points_tab_index)
+                    points_result = loader4Load.loadData(city, pricedate, pointsURL, 'points', tab_index=points_tab_index)
                     # logging.info(f"points 城市 {city} 日期 {pricedate} 的1天数据：{points_result}")
-                    save(loader, version, pricedate, points_result)
+                    save(loader4Load, version, pricedate, points_result)
                     end_time =  time.time()
                     # logging.info(f"***points 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的据量：{len(points_result)}，耗时：{end_time - start_time:.2f} 秒)")
 
