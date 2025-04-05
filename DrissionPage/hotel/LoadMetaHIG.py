@@ -11,6 +11,7 @@
 """
 import time
 from DrissionPage import ChromiumPage
+from DrissionPage import Chromium, ChromiumOptions
 from util.HotelDatabase import HotelDatabase
 import logging
 import traceback
@@ -31,7 +32,7 @@ logging.basicConfig(
     ]
 )
 
-CITIES = ['淮安','上海']  # 城市列表
+CITIES = ['上海']  # 城市列表
 
 
 """
@@ -50,6 +51,14 @@ CITIES = ['淮安','上海']  # 城市列表
 """
 def main():
     start_time = time.time()
+    
+    # # 创建配置对象（默认从 ini 文件中读取配置）
+    # co = ChromiumOptions()
+    # # 设置不加载图片、静音
+    # co.no_imgs(True).mute(True)
+    # # 以该配置创建页面对象
+    # page = Chromium(addr_or_opts=co)
+
     # 初始化浏览器和数据库
     page = ChromiumPage()
     db = HotelDatabase()
@@ -97,6 +106,8 @@ def main():
             # 将生成器转换为列表。每个数据包最多等3秒，必须结束监听返回数据。不这样做的话，会导致页面一直在监听，如果页面自动刷新则会导致重复数据。
             # TODO这里还会出现重复url的问题。比如：同一个酒店的详情页url会被多次请求，导致数据重复。
             packets = list(page.listen.steps(count=None, timeout=3, gap=1))  
+            # packets = list(page.listen.wait(fit_count=False))  
+
             logging.info(f"{city}捕获到总请求数：{len(packets)}")
             # 注：城市无酒店的耗时比有酒店的长一点
             if len(packets) == 0:
@@ -132,9 +143,8 @@ def main():
                     'pic': hotel.get('profile').get('primaryImageUrl').get('originalUrl'),
                     'note': urlVersion
                     }
-                    if len(packets)>20 :
-                        if city.find(hotel.get('address', {}).get('city', '')) == -1:
-                            continue
+                    if len(packets)>20 and city.find(hotel.get('address', {}).get('city', '')) == -1:
+                        continue
                     else:
                         count = count+1
                         local = city.find(hotel.get('address', {}).get('city', ''))
@@ -142,6 +152,8 @@ def main():
                             hotel_data['local'] = 1
                         else:
                             hotel_data['local'] = 0
+                        # logging.info(f"有效数据：{hotel_data}")
+                        db.insert_data('hotel', hotel_data)
                 elif urlVersion == 'v3':
                     hotel = packet.response.body['hotelContent'][0]
                     hotel_data = {
@@ -160,9 +172,8 @@ def main():
                     'pic': hotel.get('profile').get('primaryImageUrl').get('originalUrl'),
                     'note': urlVersion
                     }
-                    if len(packets)>20 :
-                        if city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value')) == -1:
-                            continue
+                    if len(packets)>20 and city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value')) == -1 :
+                        continue
                     else:
                         count = count+1
                         local = city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value'))
@@ -170,11 +181,12 @@ def main():
                             hotel_data['local'] = 1
                         else:
                             hotel_data['local'] = 0
+                        # logging.info(f"有效数据：{hotel_data}")
+                        db.insert_data('hotel', hotel_data) 
                 else:
                     logging.error(f"{city}未知的URL版本：{urlVersion}")
-                    continue  
-                db.insert_data('hotel', hotel_data)
-                # logging.info(f"有效数据：{hotel_data}")  
+                    continue    
+            # 1个城市的所有请求处理完后，清空监听
             page.listen.stop() 
             inner_end_time =  time.time()
             logging.info(f"{city}有效请求数：{count}，耗时：{inner_end_time - inner_start_time:.2f} 秒)")
