@@ -15,6 +15,10 @@ from util.HotelDatabase import HotelDatabase
 import logging
 import traceback
 import re
+from datetime import datetime, timedelta
+from util.StrUtil import StrUtil
+
+
 
 # 配置日志
 logging.basicConfig(
@@ -27,6 +31,9 @@ logging.basicConfig(
     ]
 )
 
+CITIES = ['淮安','上海']  # 城市列表
+
+
 """
 频率：可以很长，如1周，1个月，半年。1次。
 耗时统计：
@@ -36,7 +43,7 @@ logging.basicConfig(
 洲际有的城市，因为没有酒店或本市洲际很少，页面展示包含了周边城市的洲际酒店。要排除这种，来避免重复数据。
 对meta数据收集，可以存页面返回的周边城市酒店，但用额外字段local表示(1：本市，0：周边)：
 	1.只收集市级酒店(因为市级酒店包括了县级市酒店，县级市不再次收集)
-	2.对市级没有酒店或因为本市很少返回了部分周边酒店的判断：都存入DB，用local字段区分。
+	2.对市级没有酒店或因为本市很少返回了部分周边酒店的判断：当页面返回的酒店数量<=20时，都存入DB，用local字段区分。否则只存入本市的酒店。
     以后在UI可以区分显示。如镇江有1,2,3家洲际酒店，横线下方再展示事先存DB的南京、扬州等地的酒店。
     目的是为了用户可以扩大选择。
 对酒店价格的收集：事先在meta表查询，没有酒店的城市（local=0），直接并不进行收集
@@ -46,109 +53,153 @@ def main():
     # 初始化浏览器和数据库
     page = ChromiumPage()
     db = HotelDatabase()
+    pricedate = datetime.today()
+    su = StrUtil()
+    count = 0
 
     try:
-        # 监听网络中所有满足的url请求。因为IHG的酒店详情页url有时是https://apis.ihg.com.cn/hotels/v3/profiles/，有时是https://apis.ihg.com.cn/hotels/v1/profiles/，有时是https://apis.ihg.com.cn/hotels/*/profiles/，所以需要监听所有满足的url请求。
-        # https://github.com/Russel-JX/DrissionPage/blob/master/docs_en/ChromiumPage/network_listener.md  监听网络数据
-        page.listen.start(targets='https://apis.ihg.com.cn/hotels/.*/profiles/', is_regex=True)
+        cities = CITIES
+        for city in cities:
+            params = getHIGMetaParams(city, pricedate)
+            # 监听网络中所有满足的url请求。因为IHG的酒店详情页url有时是https://apis.ihg.com.cn/hotels/v3/profiles/，有时是https://apis.ihg.com.cn/hotels/v1/profiles/，有时是https://apis.ihg.com.cn/hotels/*/profiles/，所以需要监听所有满足的url请求。
+            # https://github.com/Russel-JX/DrissionPage/blob/master/docs_en/ChromiumPage/network_listener.md  监听网络数据
+            page.listen.start(targets='https://apis.ihg.com.cn/hotels/.*/profiles/', is_regex=True)
 
-        # 只监听网络中1个URL
-        # page.listen.start('https://apis.ihg.com.cn/hotels/v3/profiles/NKGRS/details?fieldset=brandInfo,location,reviews,profile,address,parking,media,policies,facilities,badges,stripes,room,renovations,tax,marketing,greenEngage,renovationAlerts.active&brandCode=HIEX&ihg-language=zh-cn') 
-        # 浏览器中的URL。注：浏览器中的URL，可对应多个网络的url
-        # url = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8D%97%E4%BA%AC,%20%E6%B1%9F%E8%8B%8F,%20%E4%B8%AD%E5%9B%BD&qPt=CASH&qCiD=30&qCoD=31&qCiMy=042025&qCoMy=042025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=6CBARC&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=30&qRdU=mi&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1'
-        # 延安无酒店case
-        url = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E4%B8%AD%E5%9B%BD%E9%99%95%E8%A5%BF%E7%9C%81%E5%BB%B6%E5%AE%89%E5%B8%82&qPt=POINTS_CASH&qCiD=30&qCoD=31&qCiMy=042025&qCoMy=042025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1'
+            # 只监听网络中1个URL
+            # page.listen.start('https://apis.ihg.com.cn/hotels/v3/profiles/NKGRS/details?fieldset=brandInfo,location,reviews,profile,address,parking,media,policies,facilities,badges,stripes,room,renovations,tax,marketing,greenEngage,renovationAlerts.active&brandCode=HIEX&ihg-language=zh-cn') 
+            # 浏览器中的URL。注：浏览器中的URL，可对应多个网络的url
+            # url = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8D%97%E4%BA%AC,%20%E6%B1%9F%E8%8B%8F,%20%E4%B8%AD%E5%9B%BD&qPt=CASH&qCiD=30&qCoD=31&qCiMy=042025&qCoMy=042025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=6CBARC&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=30&qRdU=mi&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1'
+            # 延安无酒店case
+            url = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E4%B8%AD%E5%9B%BD%E9%99%95%E8%A5%BF%E7%9C%81%E5%BB%B6%E5%AE%89%E5%B8%82&qPt=POINTS_CASH&qCiD=30&qCoD=31&qCiMy=042025&qCoMy=042025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1'
+            
+            url = su.replace_URLParam(url, params)
+            logging.info(f"{city}请求的url是：{url}")
+            page.get(url)
 
-        
-        page.get(url)
+            """
+            V1和V3的json数据格式区别：前者以"hotelInfo"开头且"hotelInfo"是对象，后者以"hotelContent"开头，"hotelContent"是长度是1的数组。
+            V1的json数据格式:
+            "hotelInfo.brandInfo.mnemonic"、"hotelInfo.brandInfo.brandCode"、"hotelInfo.brandInfo.brandName"、"hotelInfo.profile.name"、
+            "hotelInfo.profile.latLong.longitude"、"hotelInfo.profile.latLong.latitude"、"hotelInfo.address.street1"、
+            "hotelInfo.address.city"、
+            "hotelInfo.profile.entityOpenDate"
+            V3的json数据格式:
+            将响应数据的 "hotelContent.hotelCode"、"hotelContent.brandInfo.brandCode"、"hotelContent.brandInfo.brandName"、"hotelContent.profile.name[0].value"、
+            "hotelContent.profile.latLong.longitude"、"hotelContent.profile.latLong.latitude"、"hotelContent.address.translatedMainAddress.line1[0].value"、
+            "hotelContent.address.translatedMainAddress.city[0].value"、
+            "hotelContent.profile.entityOpenDate"属性值取出，使用现有的HotelDatabase.py文件中的insert_data方法存到数据库的hotel表中，分别对应hotel表的
+            hotelcode、brandcode、enname、name、longitude、latitude、address、city、startyear列中。
+            {'hotelcode': 'NKGRS', 'brandcode': 'HIEX', 'enname': 'Holiday Inn Express', 'name': '南京滨江智选假日酒店', 'longitude': '118.73766', 'latitude': '32.09012', 'address': '江苏省南京市鼓楼区公共路18号', 'startyear': '2024-08-13'}
+            """
+            # 将生成器转换为列表。每个数据包最多等3秒，必须结束监听返回数据。不这样做的话，会导致页面一直在监听，如果页面自动刷新则会导致重复数据。
+            # TODO这里还会出现重复url的问题。比如：同一个酒店的详情页url会被多次请求，导致数据重复。
+            packets = list(page.listen.steps(count=None, timeout=3, gap=1))  
+            logging.info(f"{city}捕获到总请求数：{len(packets)}")
+            # 注：城市无酒店的耗时比有酒店的长一点
+            if len(packets) == 0:
+                logging.info(f"{city}无洲际酒店meta数据")
+                continue
+            fisrtPacketUrl = packets[0].url
 
-        """
-        V1和V3的json数据格式区别：前者以"hotelInfo"开头且"hotelInfo"是对象，后者以"hotelContent"开头，"hotelContent"是长度是1的数组。
-         V1的json数据格式:
-        "hotelInfo.brandInfo.mnemonic"、"hotelInfo.brandInfo.brandCode"、"hotelInfo.brandInfo.brandName"、"hotelInfo.profile.name"、
-        "hotelInfo.profile.latLong.longitude"、"hotelInfo.profile.latLong.latitude"、"hotelInfo.address.street1"、
-        "hotelInfo.address.city"、
-        "hotelInfo.profile.entityOpenDate"
-        V3的json数据格式:
-         将响应数据的 "hotelContent.hotelCode"、"hotelContent.brandInfo.brandCode"、"hotelContent.brandInfo.brandName"、"hotelContent.profile.name[0].value"、
-        "hotelContent.profile.latLong.longitude"、"hotelContent.profile.latLong.latitude"、"hotelContent.address.translatedMainAddress.line1[0].value"、
-        "hotelContent.address.translatedMainAddress.city[0].value"、
-        "hotelContent.profile.entityOpenDate"属性值取出，使用现有的HotelDatabase.py文件中的insert_data方法存到数据库的hotel表中，分别对应hotel表的
-        hotelcode、brandcode、enname、name、longitude、latitude、address、city、startyear列中。
-        {'hotelcode': 'NKGRS', 'brandcode': 'HIEX', 'enname': 'Holiday Inn Express', 'name': '南京滨江智选假日酒店', 'longitude': '118.73766', 'latitude': '32.09012', 'address': '江苏省南京市鼓楼区公共路18号', 'startyear': '2024-08-13'}
-        """
-        # 将生成器转换为列表。每个数据包最多等3秒，必须结束监听返回数据。不这样做的话，会导致页面一直在监听，如果页面自动刷新则会导致重复数据。
-        # TODO这里还会出现重复url的问题。比如：同一个酒店的详情页url会被多次请求，导致数据重复。
-        packets = list(page.listen.steps(count=None, timeout=3, gap=1))  
-        logging.info(f"捕获到总请求数：{len(packets)}")
-        # 注：城市无酒店的耗时比有酒店的长一点
-        if len(packets) == 0:
-            logging.info("无洲际酒店meta数据")
-            return
-        fisrtPacketUrl = packets[0].url
+            # 定义正则表达式。https://apis.ihg.com.cn/hotels/ 和 /profiles 之间的部分
+            pattern = r'https://apis\.ihg\.com\.cn/hotels/(.*)/profiles/'
+            # 使用正则表达式提取值
+            urlVersion = re.match(pattern, fisrtPacketUrl).group(1)
+            logging.info(f"{city}请求版本是：{urlVersion}")
 
-        # 定义正则表达式。https://apis.ihg.com.cn/hotels/ 和 /profiles 之间的部分
-        pattern = r'https://apis\.ihg\.com\.cn/hotels/(.*)/profiles/'
-        # 使用正则表达式提取值
-        urlVersion = re.match(pattern, fisrtPacketUrl).group(1)
-        logging.info(f"请求版本是：{urlVersion}")
+            # 遍历所有具体酒店细节的请求结果
+            for packet in packets:
+                # logging.info(f"捕获到请求：{packet.url}")
 
-        # 遍历所有具体酒店细节的请求结果
-        for packet in packets:
-            # logging.info(f"捕获到请求：{packet.url}")
+                if urlVersion == 'v1':
+                    hotel = packet.response.body['hotelInfo']
+                    hotel_data = {
+                    'groupcode': 'IHG',
+                    'groupname': '洲际',
+                    'brandname': hotel.get('brandInfo').get('brandName'),
+                    'hotelcode': hotel.get('brandInfo').get('mnemonic'),
+                    'brandcode': hotel.get('brandInfo').get('brandCode'),
+                    'enname': hotel.get('brandInfo').get('brandName'),
+                    'name': hotel.get('profile').get('name'),
+                    'longitude': hotel.get('profile').get('latLong').get('longitude'),
+                    'latitude': hotel.get('profile').get('latLong').get('latitude'),
+                    'address': hotel.get('address').get('street1'),
+                    'city': city,
+                    'startyear': hotel.get('profile').get('entityOpenDate'),
+                    'pic': hotel.get('profile').get('primaryImageUrl').get('originalUrl'),
+                    'note': urlVersion
+                    }
+                    if len(packets)>20 :
+                        if city.find(hotel.get('address', {}).get('city', '')) == -1:
+                            continue
+                    else:
+                        count = count+1
+                        local = city.find(hotel.get('address', {}).get('city', ''))
+                        if local != -1:
+                            hotel_data['local'] = 1
+                        else:
+                            hotel_data['local'] = 0
+                elif urlVersion == 'v3':
+                    hotel = packet.response.body['hotelContent'][0]
+                    hotel_data = {
+                    'groupcode': 'IHG',
+                    'groupname': '洲际',
+                    'brandname': hotel.get('brandInfo').get('brandName'),
+                    'hotelcode': hotel.get('hotelCode'),
+                    'brandcode': hotel.get('brandInfo').get('brandCode'),
+                    'enname': hotel.get('brandInfo').get('brandName'),
+                    'name': hotel.get('profile').get('name')[0].get('value'),
+                    'longitude': hotel.get('profile').get('latLong').get('longitude'),
+                    'latitude': hotel.get('profile').get('latLong').get('latitude'),
+                    'address': hotel.get('address').get('translatedMainAddress').get('line1')[0].get('value'),
+                    'city': city,
+                    'startyear': hotel.get('profile').get('entityOpenDate'),
+                    'pic': hotel.get('profile').get('primaryImageUrl').get('originalUrl'),
+                    'note': urlVersion
+                    }
+                    if len(packets)>20 :
+                        if city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value')) == -1:
+                            continue
+                    else:
+                        count = count+1
+                        local = city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value'))
+                        if local != -1:
+                            hotel_data['local'] = 1
+                        else:
+                            hotel_data['local'] = 0
+                else:
+                    logging.error(f"{city}未知的URL版本：{urlVersion}")
+                    continue  
+                db.insert_data('hotel', hotel_data)
+                # logging.info(f"有效数据：{hotel_data}")   
+            inner_end_time =  time.time()
+            logging.info(f"{city}有效请求数：{count}，耗时：{inner_end_time - start_time:.2f} 秒)")
 
-            # TODO 对非本市酒店处理
-            if urlVersion == 'v1':
-                hotel = packet.response.body['hotelInfo']
-                hotel_data = {
-                'groupcode': 'IHG',
-                'groupname': '洲际',
-                'brandname': hotel.get('brandInfo').get('brandName'),
-                'hotelcode': hotel.get('brandInfo').get('mnemonic'),
-                'brandcode': hotel.get('brandInfo').get('brandCode'),
-                'enname': hotel.get('brandInfo').get('brandName'),
-                'name': hotel.get('profile').get('name'),
-                'longitude': hotel.get('profile').get('latLong').get('longitude'),
-                'latitude': hotel.get('profile').get('latLong').get('latitude'),
-                'address': hotel.get('address').get('street1'),
-                'city': hotel.get('address').get('city'),
-                'startyear': hotel.get('profile').get('entityOpenDate'),
-                'pic': hotel.get('profile').get('primaryImageUrl').get('originalUrl'),
-                'note': urlVersion
-                }
-            elif urlVersion == 'v3':
-                hotel = packet.response.body['hotelContent'][0]
-                hotel_data = {
-                'groupcode': 'IHG',
-                'groupname': '洲际',
-                'brandname': hotel.get('brandInfo').get('brandName'),
-                'hotelcode': hotel.get('hotelCode'),
-                'brandcode': hotel.get('brandInfo').get('brandCode'),
-                'enname': hotel.get('brandInfo').get('brandName'),
-                'name': hotel.get('profile').get('name')[0].get('value'),
-                'longitude': hotel.get('profile').get('latLong').get('longitude'),
-                'latitude': hotel.get('profile').get('latLong').get('latitude'),
-                'address': hotel.get('address').get('translatedMainAddress').get('line1')[0].get('value'),
-                'city': hotel.get('address').get('translatedMainAddress').get('city')[0].get('value'),
-                'startyear': hotel.get('profile').get('entityOpenDate'),
-                'pic': hotel.get('profile').get('primaryImageUrl').get('originalUrl'),
-                'note': urlVersion
-                }
-            else:
-                logging.error(f"未知的URL版本：{urlVersion}")
-                continue  
-            db.insert_data('hotel', hotel_data)
-            # logging.info(f"有效数据：{hotel_data}")   
+            #1个城市处理结束，等待3秒后，开始下一个城市
+            time.sleep(3)
     except Exception as e:
-        print(f"运行过程中发生错误：{e}")
-        logging.error(f"运行过程中发生错误：{e}")
+        print(f"{city}运行过程中发生错误：{e}")
+        logging.error(f"{city}运行过程中发生错误：{e}")
         logging.error("Stack trace:\n%s", traceback.format_exc())  # 使用 traceback.format_exc() 获取堆栈信息
     finally:
         end_time =  time.time()
-        logging.info(f"总请求数：{len(packets)}，耗时：{end_time - start_time:.2f} 秒)")
+        logging.info(f"{cities}，耗时：{end_time - start_time:.2f} 秒)")
         # 关闭浏览器和数据库连接
         page.quit()
         db.close()
+
+def getHIGMetaParams(city, pricedate):
+        """
+        构造 URL 参数
+        """
+        params = {
+            'qDest': city,
+            'qCiD': f"{pricedate.day:02d}",
+            'qCoD': f"{(pricedate + timedelta(days=1)).day:02d}",
+            'qCiMy': f"{(pricedate - timedelta(days=30)).month:02d}20{(pricedate - timedelta(days=30)).year % 100}",
+            'qCoMy': f"{(pricedate - timedelta(days=30)).month:02d}20{(pricedate - timedelta(days=30)).year % 100}"
+        }
+        return params
 
 if __name__ == '__main__':
     main()
