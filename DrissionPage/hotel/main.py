@@ -75,7 +75,7 @@ def process_city(loader, city, result_queue):
                     price_result = loader.loadData(city, pricedate, priceURL, 'price', tab_index=price_tab_index)
                     save(loader, version, pricedate, price_result)
                     end_time =  time.time()
-                    logging.info(f"***price 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的据量：{len(price_result)}，耗时：{end_time - start_time:.2f} 秒)")
+                    # logging.info(f"***price 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的据量：{len(price_result)}，耗时：{end_time - start_time:.2f} 秒)")
 
                 def fetch_points():
                     nonlocal points_result
@@ -84,7 +84,7 @@ def process_city(loader, city, result_queue):
                     # logging.info(f"points 城市 {city} 日期 {pricedate} 的1天数据：{points_result}")
                     save(loader, version, pricedate, points_result)
                     end_time =  time.time()
-                    logging.info(f"***points 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的据量：{len(points_result)}，耗时：{end_time - start_time:.2f} 秒)")
+                    # logging.info(f"***points 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的据量：{len(points_result)}，耗时：{end_time - start_time:.2f} 秒)")
 
                 # 启动子线程
                 price_thread = Thread(target=fetch_price)
@@ -147,7 +147,8 @@ def main():
         3 2 2 154 12    5
         8 2 2 347 10.8  6
         1 3 2 48  x     251    313    365天，1城，预计1.6小时。
-        1 120 2 1393  x     9268    400    4个月数据，23.3分钟。365天，1城，预计70分钟。
+        1 120 2 1393  x     9268    400    4个月数据，23分钟。365天，1城，预计70分钟。
+        1 365 2 59分钟  x     4685    79    12个月数据，59分钟。数据明显少了，一天才12条。
         11 30 2 20分钟 xx  349 17    17:52执行到18:12共20分钟（一分钟17条数据，速度还可以），后来一直到17:00都在报错，且无数据产生
         """
         """
