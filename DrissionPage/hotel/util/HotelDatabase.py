@@ -51,3 +51,7 @@ class HotelDatabase:
         """关闭数据库连接"""
         self.cursor.close()
         self.connection.close()
+        # if self.cursor:  # 判断游标是否已关闭
+        #     self.cursor.close()
+        # if self.connection and self.connection.open:  # 判断连接是否已关闭
+        #     self.connection.close()
