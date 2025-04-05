@@ -65,8 +65,14 @@ def main():
     co.set_argument('--no-sandbox')  
     # 使用来宾模式打开浏览器。无浏览历史、没有书签、无登录、无浏览器设置
     co.set_argument('--guest')
-    # 无头模式  TODO 虽然浏览器没有打开，但导致页面基本内容没有加载，洲际应该有js控制：让没显示特定html，就不加载数据的请求，拿不到任何数据！
-    # co.headless()
+     # 禁用自动化标识
+    co.set_argument('--disable-blink-features=AutomationControlled')
+
+    # 无头模式必须结合 User-Agent一起用。否则，虽然浏览器没有打开，但导致页面基本内容没有加载，洲际应该有js控制：让没显示特定html，就不加载数据的请求，拿不到任何数据！
+    co.headless()
+    # 修改 User-Agent.可以解决无头模式的反扒问题！
+    co.set_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
+
     # 以该配置创建页面对象
     page = ChromiumPage(addr_or_opts=co)
 
@@ -98,10 +104,6 @@ def main():
             url = su.replace_URLParam(url, params)
             logging.info(f"{city}请求的url是：{url}")
             page.get(url)
-            
-            # page.wait.eles_loaded('#applicationWrapper')
-            #1个城市处理结束，等待3秒后，开始下一个城市
-            # time.sleep(5)
             
             """
             调试chrome浏览器的无头模式
