@@ -32,7 +32,8 @@ logging.basicConfig(
     ]
 )
 
-CITIES = ['上海']  # 城市列表
+# CITIES = ['上海']  # 城市列表
+CITIES = ['北京', '上海', '广州', '深圳', '南京', '武汉', '成都', '杭州', '大连', '淮安', '扬州', 'xx', '无锡市', '泉州市', '西湖'] 
 
 
 """
@@ -156,17 +157,17 @@ def main():
                     hotel_data = {
                     'groupcode': 'IHG',
                     'groupname': '洲际',
-                    'brandname': hotel.get('brandInfo').get('brandName'),
-                    'hotelcode': hotel.get('brandInfo').get('mnemonic'),
-                    'brandcode': hotel.get('brandInfo').get('brandCode'),
-                    'enname': hotel.get('brandInfo').get('brandName'),
-                    'name': hotel.get('profile').get('name'),
-                    'longitude': hotel.get('profile').get('latLong').get('longitude'),
-                    'latitude': hotel.get('profile').get('latLong').get('latitude'),
-                    'address': hotel.get('address').get('street1'),
+                    'brandname': hotel.get('brandInfo', {}).get('brandName', ''),
+                    'hotelcode': hotel.get('brandInfo', {}).get('mnemonic', ''),
+                    'brandcode': hotel.get('brandInfo', {}).get('brandCode', ''),
+                    'enname': hotel.get('brandInfo', {}).get('brandName', ''),
+                    'name': hotel.get('profile', {}).get('name', ''),
+                    'longitude': hotel.get('profile', {}).get('latLong', {}).get('longitude'),
+                    'latitude': hotel.get('profile', {}).get('latLong', {}).get('latitude'),
+                    'address': hotel.get('address', {}).get('street1', ''),
                     'city': city,
-                    'startyear': hotel.get('profile').get('entityOpenDate'),
-                    'pic': hotel.get('profile').get('primaryImageUrl').get('originalUrl'),
+                    'startyear': hotel.get('profile', {}).get('entityOpenDate'),
+                    'pic': hotel.get('profile', {}).get('primaryImageUrl', {}).get('originalUrl', ''),
                     'note': urlVersion
                     }
                     if len(packets)>20 and city.find(hotel.get('address', {}).get('city', '')) == -1:
@@ -185,17 +186,17 @@ def main():
                     hotel_data = {
                     'groupcode': 'IHG',
                     'groupname': '洲际',
-                    'brandname': hotel.get('brandInfo').get('brandName'),
-                    'hotelcode': hotel.get('hotelCode'),
-                    'brandcode': hotel.get('brandInfo').get('brandCode'),
-                    'enname': hotel.get('brandInfo').get('brandName'),
-                    'name': hotel.get('profile').get('name')[0].get('value'),
-                    'longitude': hotel.get('profile').get('latLong').get('longitude'),
-                    'latitude': hotel.get('profile').get('latLong').get('latitude'),
-                    'address': hotel.get('address').get('translatedMainAddress').get('line1')[0].get('value'),
+                    'brandname': hotel.get('brandInfo', {}).get('brandName', ''),
+                    'hotelcode': hotel.get('hotelCode', {}, ''),
+                    'brandcode': hotel.get('brandInfo', {}).get('brandCode', ''),
+                    'enname': hotel.get('brandInfo', {}).get('brandName', ''),
+                    'name': hotel.get('profile', {}).get('name', {})[0].get('value', ''),
+                    'longitude': hotel.get('profile', {}).get('latLong', {}).get('longitude'),
+                    'latitude': hotel.get('profile', {}).get('latLong', {}).get('latitude'),
+                    'address': hotel.get('address', {}).get('translatedMainAddress', {}).get('line1', {})[0].get('value', ''),
                     'city': city,
-                    'startyear': hotel.get('profile').get('entityOpenDate'),
-                    'pic': hotel.get('profile').get('primaryImageUrl').get('originalUrl'),
+                    'startyear': hotel.get('profile', {}).get('entityOpenDate'),
+                    'pic': hotel.get('profile', {}).get('primaryImageUrl', {}).get('originalUrl', ''),
                     'note': urlVersion
                     }
                     if len(packets)>20 and city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value')) == -1 :
