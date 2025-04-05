@@ -18,11 +18,11 @@ logging.basicConfig(
 )
 
 #常量定义
-MAX_MAIN_THREAD_COUNT = 8 #同时运行的城市（主线程）数
-MAX_SUB_THREAD_TAB_COUNT = 16 #同时运行的tab（子线程。1个酒店的一种数据请求）数
-MAX_DAYS_COUNT = 30 #请求的总天数
-# CITIES = ['北京']  # 城市列表
-CITIES = ['北京', '上海', '广州']  # 城市列表
+MAX_MAIN_THREAD_COUNT = 1 #同时运行的城市（主线程）数
+MAX_SUB_THREAD_TAB_COUNT = 2 #同时运行的tab（子线程。1个酒店的一种数据请求）数
+MAX_DAYS_COUNT = 3 #请求的总天数
+CITIES = ['北京']  # 城市列表
+# CITIES = ['北京', '上海', '广州']  # 城市列表
 # CITIES = ['北京', '上海', '广州', '深圳', '南京', '武汉', '成都', '杭州']  # 城市列表
 
 
@@ -132,7 +132,7 @@ def main():
     logging.info(f"从DB得到城市列表：{cities}")
 
     #测试用城市列表
-    # cities = CITIES
+    cities = CITIES
 
     try:
         """"
@@ -142,9 +142,11 @@ def main():
         处理一个单个数据时，耗时平均：15秒。
         处理一个城市下所有酒店的1天数据（同事包括积分和价格），耗时平均：30秒。
         03.26
-        city day type totaltime(s) average
-        3 2 2 154 12
-        8 2 2 347 10.8
+        city day type totaltime(s) average  总记录 条数据/分钟
+        3 2 2 154 12    5
+        8 2 2 347 10.8  6
+        1 3 2 48  x     251    313    单个城市速度最快。365天，1城，预计1.6小时。
+        11 30 2 20分钟 xx  349 17    17:52执行到18:12共20分钟（一分钟17条数据，速度还可以），后来一直到17:00都在报错，且无数据产生
         """
         """
         洲际有的城市，因为没有酒店或本市洲际很少，页面展示包含了周边城市的洲际酒店。要排除这种，来避免重复数据。

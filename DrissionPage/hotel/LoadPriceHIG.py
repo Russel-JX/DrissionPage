@@ -23,9 +23,9 @@ class LoadPriceHIG:
         co.set_argument('--disable-blink-features=AutomationControlled')
 
         # 无头模式必须结合 User-Agent一起用。否则，虽然浏览器没有打开，但导致页面基本内容没有加载，洲际应该有js控制：让没显示特定html，就不加载数据的请求，拿不到任何数据！
-        co.headless()
-        # 修改 User-Agent.可以解决无头模式的反扒问题！
-        co.set_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
+        # co.headless()
+        # # 修改 User-Agent.可以解决无头模式的反扒问题！
+        # co.set_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
 
         # 以该配置创建页面对象
         self.page = ChromiumPage(addr_or_opts=co)
