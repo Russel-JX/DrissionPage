@@ -64,6 +64,7 @@ def main():
     # 设置启动时最大化
     co.set_argument('--start-maximized')
     # 无沙盒模式.在某些 Linux 环境下，Chrome 无头模式可能会受到沙盒限制，导致无法正常启动。禁用沙盒可以解决这个问题
+    # 无头模式，不需要占用焦点。用户可以同时操作其他任何动作。且自动化操作页面时，也不需要获取页面焦点，脚本会自动操作页面。
     co.set_argument('--no-sandbox')  
     # 使用来宾模式打开浏览器。无浏览历史、没有书签、无登录、无浏览器设置
     co.set_argument('--guest')

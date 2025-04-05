@@ -23,9 +23,10 @@ class LoadPriceHIG:
         co.set_argument('--disable-blink-features=AutomationControlled')
 
         # 无头模式必须结合 User-Agent一起用。否则，虽然浏览器没有打开，但导致页面基本内容没有加载，洲际应该有js控制：让没显示特定html，就不加载数据的请求，拿不到任何数据！
-        co.headless()
-        # 修改 User-Agent.可以解决无头模式的反扒问题！
-        co.set_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
+        # 无头模式，不需要占用焦点。用户可以同时操作其他任何动作。且自动化操作页面时，也不需要获取页面焦点，脚本会自动操作页面。
+        # co.headless()
+        # # 修改 User-Agent.可以解决无头模式的反扒问题！
+        # co.set_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
 
         # 以该配置创建页面对象
         self.page = ChromiumPage(addr_or_opts=co)
@@ -129,7 +130,7 @@ class LoadPriceHIG:
             tab = self.tabs[tab_index]
             # logging.info(f"====当前tab： {tab_index} {city} {pricedate} {queryType}====")
 
-            tab.set.activate()  # 激活指定 tab
+            # tab.set.activate()  # 激活指定 tab。无头模式下，无需获取页面焦点。因为脚本会自动操作页面。
             tab.get(url)  # 打开目标页面
 
             # 滚动页面，确保内容加载完全
@@ -146,10 +147,10 @@ class LoadPriceHIG:
                     新开线程来控制这些子线程的运行
                     _activate_all_tabs中，当前等待跑的线程数<tab数时，只切换那些再跑的tab。完全结束的tab不用切换。
                 """
-                self._activate_all_tabs()
+                # self._activate_all_tabs() #无头模式下，无需获取页面焦点。因为脚本会自动操作页面。
 
                 tab.scroll.to_bottom()
-                time.sleep(1)
+                # time.sleep(1)
                 height = tab.run_js('document.body.scrollHeight')
 
                 if height == last_height:
@@ -188,6 +189,7 @@ class LoadPriceHIG:
                         points = points_div.text.strip()
                         hotel_data['minvalue'] = int(points.replace(',', ''))
                 hotel_list.append(hotel_data)
+            # logging.info(f"===酒店列表：{hotel_list}===")
             return hotel_list
 
         except Exception as e:
