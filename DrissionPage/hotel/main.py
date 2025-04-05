@@ -22,8 +22,8 @@ MAX_MAIN_THREAD_COUNT = 8 #同时运行的城市（主线程）数
 MAX_SUB_THREAD_TAB_COUNT = 16 #同时运行的tab（子线程。1个酒店的一种数据请求）数
 MAX_DAYS_COUNT = 2 #请求的总天数
 # CITIES = ['北京']  # 城市列表
-# CITIES = ['北京', '上海', '广州']  # 城市列表
-CITIES = ['北京', '上海', '广州', '深圳', '南京', '武汉', '成都', '杭州']  # 城市列表
+CITIES = ['北京', '上海', '广州']  # 城市列表
+# CITIES = ['北京', '上海', '广州', '深圳', '南京', '武汉', '成都', '杭州']  # 城市列表
 
 
 # 限制同时运行的城市数量（4 个城市，即 8 个 tab）
@@ -121,6 +121,9 @@ def save(loader, version, pricedate, hotel_list):
         loader.db.insert_data('hotelprice', hotel)
 
 def main():
+    # # 从 city 表中查询所有城市名称
+    # query_result = db.query_data('city', conditions=None)  # 假设 city 表中有 name 列
+    # cities = [row['name'] for row in query_result]  # 提取 name 列的值
     cities = CITIES
 
     result_queue = Queue()

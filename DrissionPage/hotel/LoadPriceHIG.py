@@ -1,15 +1,36 @@
 from DrissionPage import ChromiumPage
-from datetime import datetime, timedelta
+from DrissionPage import ChromiumOptions
+from datetime import timedelta
 import time
 import traceback
-from util.StrUtil import StrUtil
 from util.HotelDatabase import HotelDatabase
 import logging
 
 
 class LoadPriceHIG:
     def __init__(self):
-        self.page = ChromiumPage()  # 创建一个全局的浏览器实例
+        # 创建配置对象（默认从 ini 文件中读取配置）
+        co = ChromiumOptions()
+        # 设置不加载图片、静音。这个基本没效果
+        co.no_imgs(True).mute(True)
+        # 设置启动时最大化
+        co.set_argument('--start-maximized')
+        # 无沙盒模式.在某些 Linux 环境下，Chrome 无头模式可能会受到沙盒限制，导致无法正常启动。禁用沙盒可以解决这个问题
+        co.set_argument('--no-sandbox')  
+        # 使用来宾模式打开浏览器。无浏览历史、没有书签、无登录、无浏览器设置
+        co.set_argument('--guest')
+        # 禁用自动化标识
+        co.set_argument('--disable-blink-features=AutomationControlled')
+
+        # 无头模式必须结合 User-Agent一起用。否则，虽然浏览器没有打开，但导致页面基本内容没有加载，洲际应该有js控制：让没显示特定html，就不加载数据的请求，拿不到任何数据！
+        co.headless()
+        # 修改 User-Agent.可以解决无头模式的反扒问题！
+        co.set_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
+
+        # 以该配置创建页面对象
+        self.page = ChromiumPage(addr_or_opts=co)
+        
+        # self.page = ChromiumPage()  # 创建一个全局的浏览器实例
         self.tabs = []  # 存储所有 tab 的句柄
         self.db = HotelDatabase()  # 数据库实例
 

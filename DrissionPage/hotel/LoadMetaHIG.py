@@ -11,7 +11,7 @@
 """
 import time
 from DrissionPage import ChromiumPage
-from DrissionPage import Chromium, ChromiumOptions
+from DrissionPage import ChromiumOptions
 from util.HotelDatabase import HotelDatabase
 import logging
 import traceback
@@ -42,7 +42,7 @@ CITIES = ['忻州市','上海','淮安']  # 城市列表
 使用来宾模式:20-22s
 耗时统计：
 1个城市，40秒。总共342个城市，耗时约4小时。50个城市，耗时约1小时。
-多个城市平均每个15秒。总共342个城市，预计耗时约1.5小时，实际耗时40分钟（1240条数据）。50个城市，预计耗时约13分钟。
+多个城市平均每个15秒。总共342个城市（199个城市有酒店），预计耗时约1.5小时，实际耗时40分钟（1240条数据）。50个城市，预计耗时约13分钟。
 注：python策划给你续运行时，自动或主动关闭屏幕显示，不影响程序运行。
 """
 """
