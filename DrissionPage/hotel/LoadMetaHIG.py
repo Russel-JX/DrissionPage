@@ -37,6 +37,9 @@ CITIES = ['上海']  # 城市列表
 
 """
 频率：可以很长，如1周，1个月，半年。1次。
+普通:18-20s
+无图无声：18-20s
+使用来宾模式:20-22s
 耗时统计：
 1个城市，40秒。总共342个城市，耗时约4小时。50个城市，耗时约1小时。
 """
@@ -56,8 +59,14 @@ def main():
     co = ChromiumOptions()
     # 设置不加载图片、静音。这个基本没效果
     co.no_imgs(True).mute(True)
+    # 设置启动时最大化
+    co.set_argument('--start-maximized')
+    # 无沙盒模式.在某些 Linux 环境下，Chrome 无头模式可能会受到沙盒限制，导致无法正常启动。禁用沙盒可以解决这个问题
+    co.set_argument('--no-sandbox')  
+    # 使用来宾模式打开浏览器。无浏览历史、没有书签、无登录、无浏览器设置
+    co.set_argument('--guest')
     # 无头模式  TODO 虽然浏览器没有打开，但导致页面基本内容没有加载，洲际应该有js控制：让没显示特定html，就不加载数据的请求，拿不到任何数据！
-    co.headless()
+    # co.headless()
     # 以该配置创建页面对象
     page = ChromiumPage(addr_or_opts=co)
 
@@ -91,6 +100,17 @@ def main():
             page.get(url)
             
             # page.wait.eles_loaded('#applicationWrapper')
+            #1个城市处理结束，等待3秒后，开始下一个城市
+            # time.sleep(5)
+            
+            """
+            调试chrome浏览器的无头模式
+            """
+            # # 获取页面标题。无图模式下，"上海页面把标题是：Access Denied"
+            # logging.info(f"{city}页面把标题是：{page.title}")
+            # # 抓取屏幕截图来查看浏览器是否成功加载了页面。
+            # page.get_screenshot('screenshot.png')
+
             
             """
             V1和V3的json数据格式区别：前者以"hotelInfo"开头且"hotelInfo"是对象，后者以"hotelContent"开头，"hotelContent"是长度是1的数组。
@@ -195,8 +215,6 @@ def main():
             inner_end_time =  time.time()
             logging.info(f"{city}有效请求数：{count}，耗时：{inner_end_time - inner_start_time:.2f} 秒)")
 
-            #1个城市处理结束，等待3秒后，开始下一个城市
-            # time.sleep(3)
     except Exception as e:
         print(f"{city}运行过程中发生错误：{e}")
         logging.error(f"{city}运行过程中发生错误：{e}")
