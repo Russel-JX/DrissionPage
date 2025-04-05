@@ -4136,3 +4136,1375 @@ TypeError: string indices must be integers, not 'str'
 2025-04-05 15:31:22 - INFO - 自治区直辖县级行政区划捕获到总请求数：0
 2025-04-05 15:31:22 - INFO - 自治区直辖县级行政区划无洲际酒店meta数据
 2025-04-05 15:31:22 - INFO - 所有城市，耗时：2429.46 秒)
+2025-04-05 16:38:38 - INFO - ====已打开 16 个 tab 页面====
+2025-04-05 16:39:12 - INFO - ====已打开 16 个 tab 页面====
+2025-04-05 16:40:22 - INFO - ***points 城市 广州 日期 2025-04-05 的1天数据量：6，耗时：70.32 秒)
+2025-04-05 16:40:24 - INFO - ***points 城市 北京 日期 2025-04-05 的1天数据量：6，耗时：72.24 秒)
+2025-04-05 16:40:24 - INFO - ***price 城市 广州 日期 2025-04-05 的1天数据量：6，耗时：72.29 秒)
+2025-04-05 16:40:24 - INFO - ***price 城市 北京 日期 2025-04-05 的1天数据量：6，耗时：72.35 秒)
+2025-04-05 16:40:26 - INFO - ***price 城市 上海 日期 2025-04-05 的1天数据量：6，耗时：74.13 秒)
+2025-04-05 16:40:57 - INFO - ***points 城市 上海 日期 2025-04-05 的1天数据量：6，耗时：105.74 秒)
+2025-04-05 16:40:57 - INFO - ***price 城市 北京 日期 2025-04-06 的1天数据量：6，耗时：33.43 秒)
+2025-04-05 16:40:59 - INFO - ***points 城市 广州 日期 2025-04-06 的1天数据量：6，耗时：35.50 秒)
+2025-04-05 16:40:59 - INFO - ***price 城市 广州 日期 2025-04-06 的1天数据量：6，耗时：35.56 秒)
+2025-04-05 16:40:59 - INFO - ===广州 2 天 总耗时：107.85 秒)
+2025-04-05 16:40:59 - INFO - 城市 广州 释放了 tab 索引：价格 tab=4, 积分 tab=5
+2025-04-05 16:40:59 - INFO - ***points 城市 北京 日期 2025-04-06 的1天数据量：5，耗时：35.54 秒)
+2025-04-05 16:40:59 - INFO - ===北京 2 天 总耗时：107.90 秒)
+2025-04-05 16:40:59 - INFO - 城市 北京 释放了 tab 索引：价格 tab=0, 积分 tab=1
+2025-04-05 16:41:19 - INFO - ***points 城市 上海 日期 2025-04-06 的1天数据量：6，耗时：21.32 秒)
+2025-04-05 16:41:22 - INFO - ***price 城市 上海 日期 2025-04-06 的1天数据量：6，耗时：24.62 秒)
+2025-04-05 16:41:22 - INFO - ===上海 2 天 总耗时：130.36 秒)
+2025-04-05 16:41:22 - INFO - 城市 上海 释放了 tab 索引：价格 tab=2, 积分 tab=3
+2025-04-05 16:41:22 - INFO - ###3 个城市， 2 天 总耗时：130.36 秒)
+2025-04-05 16:41:22 - INFO - 城市 广州 2 天数据爬取完成
+2025-04-05 16:41:22 - INFO - 城市 北京 2 天数据爬取完成
+2025-04-05 16:41:22 - INFO - 城市 上海 2 天数据爬取完成
+2025-04-05 16:41:23 - INFO - 浏览器已关闭
+2025-04-05 17:10:42 - INFO - 深圳市请求的url是：https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E6%B7%B1%E5%9C%B3%E5%B8%82&qPt=POINTS_CASH&qCiD=05&qCoD=06&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1
+2025-04-05 17:10:56 - INFO - 深圳市捕获到总请求数：36
+2025-04-05 17:10:56 - INFO - 深圳市请求版本是：v3
+2025-04-05 17:10:56 - ERROR - 内部深圳市运行过程中发生错误：get expected at most 2 arguments, got 3
+2025-04-05 17:10:56 - ERROR - 内部Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadMetaHIG.py", line 198, in main
+    'hotelcode': hotel.get('hotelCode', {}, ''),
+                 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+TypeError: get expected at most 2 arguments, got 3
+
+2025-04-05 17:10:56 - INFO - 所有城市，耗时：15.50 秒)
+2025-04-05 17:12:48 - INFO - 深圳市请求的url是：https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E6%B7%B1%E5%9C%B3%E5%B8%82&qPt=POINTS_CASH&qCiD=05&qCoD=06&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1
+2025-04-05 17:13:13 - INFO - 深圳市捕获到总请求数：36
+2025-04-05 17:13:13 - INFO - 深圳市请求版本是：v3
+2025-04-05 17:13:13 - INFO - 深圳市有效请求数：24，耗时：25.78 秒)
+2025-04-05 17:13:13 - INFO - 所有城市，耗时：27.25 秒)
+2025-04-05 17:24:55 - INFO - 大连市请求的url是：https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%A4%A7%E8%BF%9E%E5%B8%82&qPt=POINTS_CASH&qCiD=05&qCoD=06&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1
+2025-04-05 17:25:08 - INFO - 大连市捕获到总请求数：7
+2025-04-05 17:25:08 - INFO - 大连市请求版本是：v3
+2025-04-05 17:25:09 - INFO - 大连市有效请求数：7，耗时：13.98 秒)
+2025-04-05 17:25:09 - INFO - 合肥市请求的url是：https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%90%88%E8%82%A5%E5%B8%82&qPt=POINTS_CASH&qCiD=05&qCoD=06&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1
+2025-04-05 17:25:17 - INFO - 合肥市捕获到总请求数：10
+2025-04-05 17:25:17 - INFO - 合肥市请求版本是：v3
+2025-04-05 17:25:18 - INFO - 合肥市有效请求数：10，耗时：8.91 秒)
+2025-04-05 17:25:18 - INFO - 济南市请求的url是：https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E6%B5%8E%E5%8D%97%E5%B8%82&qPt=POINTS_CASH&qCiD=05&qCoD=06&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1
+2025-04-05 17:25:25 - INFO - 济南市捕获到总请求数：6
+2025-04-05 17:25:25 - INFO - 济南市请求版本是：v3
+2025-04-05 17:25:26 - INFO - 济南市有效请求数：6，耗时：7.99 秒)
+2025-04-05 17:25:26 - INFO - 成都市请求的url是：https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E6%88%90%E9%83%BD%E5%B8%82&qPt=POINTS_CASH&qCiD=05&qCoD=06&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1
+2025-04-05 17:25:32 - INFO - 成都市捕获到总请求数：0
+2025-04-05 17:25:32 - INFO - 成都市无洲际酒店meta数据
+2025-04-05 17:25:32 - INFO - 所有城市，耗时：37.73 秒)
+2025-04-05 17:26:49 - INFO - 成都市请求的url是：https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E6%88%90%E9%83%BD%E5%B8%82&qPt=POINTS_CASH&qCiD=05&qCoD=06&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1
+2025-04-05 17:27:32 - INFO - 成都市捕获到总请求数：76
+2025-04-05 17:27:32 - INFO - 成都市请求版本是：v3
+2025-04-05 17:27:32 - INFO - 成都市有效请求数：74，耗时：43.25 秒)
+2025-04-05 17:27:32 - INFO - 所有城市，耗时：44.70 秒)
+2025-04-05 17:41:51 - ERROR - 查询数据失败：cannot access local variable 'params' where it is not associated with a value
+2025-04-05 17:41:51 - INFO - 从DB得到城市列表：[]
+2025-04-05 17:41:52 - INFO - 浏览器已关闭
+2025-04-05 17:42:41 - ERROR - 查询数据失败：cannot access local variable 'params' where it is not associated with a value
+2025-04-05 17:42:41 - INFO - 从DB得到城市列表：[]
+2025-04-05 17:42:42 - INFO - 浏览器已关闭
+2025-04-05 17:43:51 - ERROR - 查询数据失败：cannot access local variable 'params' where it is not associated with a value
+2025-04-05 17:43:51 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/util/HotelDatabase.py", line 43, in query_data
+    self.cursor.execute(sql, params)
+                             ^^^^^^
+UnboundLocalError: cannot access local variable 'params' where it is not associated with a value
+
+2025-04-05 17:43:51 - INFO - 从DB得到城市列表：[]
+2025-04-05 17:43:52 - INFO - 浏览器已关闭
+2025-04-05 17:44:17 - INFO - 查询SELECT * FROM city WHERE hotelavailable != 0 AND level IN (0, 1)结果总数：2
+2025-04-05 17:44:17 - INFO - 从DB得到城市列表：['深圳市', '成都市']
+2025-04-05 17:44:18 - INFO - 浏览器已关闭
+2025-04-05 17:48:15 - INFO - 查询SELECT * FROM city WHERE hotelavailable != 0 AND level IN (0, 1)结果总数：11
+2025-04-05 17:48:15 - INFO - 从DB得到城市列表：['北京市', '天津市', '上海市', '南京市', '苏州市', '杭州市', '武汉市', '广州市', '深圳市', '重庆市', '成都市']
+2025-04-05 17:48:16 - INFO - 浏览器已关闭
+2025-04-05 17:49:04 - INFO - 查询SELECT * FROM city WHERE hotelavailable != 0 AND level IN (0, 1) ORDER BY level ASC结果总数：11
+2025-04-05 17:49:04 - INFO - 从DB得到城市列表：['北京市', '上海市', '广州市', '深圳市', '天津市', '南京市', '苏州市', '杭州市', '武汉市', '重庆市', '成都市']
+2025-04-05 17:49:05 - INFO - 浏览器已关闭
+2025-04-05 17:51:38 - INFO - 查询SELECT * FROM city WHERE hotelavailable != 0 AND level IN (0, 1) ORDER BY level ASC结果总数：11
+2025-04-05 17:51:38 - INFO - 从DB得到城市列表：['北京市', '上海市', '广州市', '深圳市', '天津市', '南京市', '苏州市', '杭州市', '武汉市', '重庆市', '成都市']
+2025-04-05 17:51:41 - INFO - ====已打开 16 个 tab 页面====
+2025-04-05 17:55:26 - INFO - ***points 城市 天津市 日期 2025-04-05 的1天数据量：6，耗时：224.89 秒)
+2025-04-05 17:55:28 - INFO - ***points 城市 杭州市 日期 2025-04-05 的1天数据量：6，耗时：227.01 秒)
+2025-04-05 17:55:28 - INFO - ***price 城市 深圳市 日期 2025-04-05 的1天数据量：5，耗时：227.12 秒)
+2025-04-05 17:55:28 - INFO - ***points 城市 南京市 日期 2025-04-05 的1天数据量：6，耗时：227.17 秒)
+2025-04-05 17:55:28 - INFO - ***points 城市 上海市 日期 2025-04-05 的1天数据量：6，耗时：227.23 秒)
+2025-04-05 17:55:28 - INFO - ***points 城市 苏州市 日期 2025-04-05 的1天数据量：6，耗时：227.27 秒)
+2025-04-05 17:55:28 - INFO - ***points 城市 北京市 日期 2025-04-05 的1天数据量：6，耗时：227.33 秒)
+2025-04-05 17:55:28 - INFO - ***points 城市 广州市 日期 2025-04-05 的1天数据量：6，耗时：227.39 秒)
+2025-04-05 17:55:28 - INFO - ***price 城市 杭州市 日期 2025-04-05 的1天数据量：6，耗时：227.41 秒)
+2025-04-05 17:55:28 - INFO - ***price 城市 苏州市 日期 2025-04-05 的1天数据量：6，耗时：227.47 秒)
+2025-04-05 17:55:28 - INFO - ***price 城市 上海市 日期 2025-04-05 的1天数据量：6，耗时：227.54 秒)
+2025-04-05 17:55:29 - INFO - ***price 城市 天津市 日期 2025-04-05 的1天数据量：0，耗时：227.91 秒)
+2025-04-05 17:55:29 - INFO - ***price 城市 南京市 日期 2025-04-05 的1天数据量：0，耗时：227.91 秒)
+2025-04-05 17:55:30 - INFO - ***price 城市 北京市 日期 2025-04-05 的1天数据量：0，耗时：228.71 秒)
+2025-04-05 17:55:30 - INFO - ***price 城市 广州市 日期 2025-04-05 的1天数据量：0，耗时：228.71 秒)
+2025-04-05 17:55:31 - INFO - ***points 城市 深圳市 日期 2025-04-05 的1天数据量：0，耗时：229.78 秒)
+2025-04-05 17:57:31 - ERROR - 加载 Tab 10 南京市 2025-04-06 17:51:41.423875 price 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 17:57:31 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 17:57:31 - INFO - ***price 城市 南京市 日期 2025-04-06 的1天数据量：0，耗时：121.75 秒)
+2025-04-05 17:57:31 - ERROR - 加载 Tab 2 北京市 2025-04-06 17:51:41.414757 price 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 17:57:31 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 17:57:31 - INFO - ***price 城市 北京市 日期 2025-04-06 的1天数据量：0，耗时：121.34 秒)
+2025-04-05 17:58:30 - INFO - ***points 城市 苏州市 日期 2025-04-06 的1天数据量：5，耗时：181.91 秒)
+2025-04-05 17:58:32 - INFO - ***points 城市 广州市 日期 2025-04-06 的1天数据量：8，耗时：182.35 秒)
+2025-04-05 17:58:32 - INFO - ***points 城市 天津市 日期 2025-04-06 的1天数据量：0，耗时：183.24 秒)
+2025-04-05 17:58:33 - INFO - ***price 城市 苏州市 日期 2025-04-06 的1天数据量：0，耗时：184.68 秒)
+2025-04-05 17:58:35 - INFO - ***price 城市 天津市 日期 2025-04-06 的1天数据量：6，耗时：185.97 秒)
+2025-04-05 17:58:35 - INFO - ***points 城市 南京市 日期 2025-04-06 的1天数据量：6，耗时：186.03 秒)
+2025-04-05 17:58:35 - INFO - ***price 城市 上海市 日期 2025-04-06 的1天数据量：6，耗时：186.46 秒)
+2025-04-05 17:58:35 - INFO - ***points 城市 上海市 日期 2025-04-06 的1天数据量：6，耗时：186.50 秒)
+2025-04-05 17:59:11 - INFO - ***points 城市 杭州市 日期 2025-04-06 的1天数据量：6，耗时：222.37 秒)
+2025-04-05 17:59:11 - INFO - ***price 城市 深圳市 日期 2025-04-06 的1天数据量：6，耗时：220.07 秒)
+2025-04-05 17:59:13 - INFO - ***price 城市 广州市 日期 2025-04-06 的1天数据量：6，耗时：222.89 秒)
+2025-04-05 17:59:15 - INFO - ***price 城市 杭州市 日期 2025-04-06 的1天数据量：5，耗时：226.33 秒)
+2025-04-05 17:59:24 - INFO - ***points 城市 深圳市 日期 2025-04-06 的1天数据量：0，耗时：233.65 秒)
+2025-04-05 17:59:31 - INFO - ***points 城市 北京市 日期 2025-04-06 的1天数据量：5，耗时：241.78 秒)
+2025-04-05 18:02:11 - INFO - ***points 城市 南京市 日期 2025-04-07 的1天数据量：6，耗时：216.55 秒)
+2025-04-05 18:02:13 - INFO - ***price 城市 上海市 日期 2025-04-07 的1天数据量：6，耗时：217.59 秒)
+2025-04-05 18:02:14 - INFO - ***points 城市 天津市 日期 2025-04-07 的1天数据量：6，耗时：219.10 秒)
+2025-04-05 18:02:15 - INFO - ***points 城市 深圳市 日期 2025-04-07 的1天数据量：8，耗时：171.04 秒)
+2025-04-05 18:02:20 - INFO - ***points 城市 杭州市 日期 2025-04-07 的1天数据量：6，耗时：185.22 秒)
+2025-04-05 18:02:28 - INFO - ***price 城市 天津市 日期 2025-04-07 的1天数据量：0，耗时：233.12 秒)
+2025-04-05 18:02:29 - INFO - ***price 城市 苏州市 日期 2025-04-07 的1天数据量：0，耗时：235.77 秒)
+2025-04-05 18:02:29 - INFO - ***price 城市 南京市 日期 2025-04-07 的1天数据量：0，耗时：234.05 秒)
+2025-04-05 18:02:29 - INFO - ***price 城市 深圳市 日期 2025-04-07 的1天数据量：6，耗时：184.81 秒)
+2025-04-05 18:02:29 - INFO - ***price 城市 广州市 日期 2025-04-07 的1天数据量：6，耗时：196.70 秒)
+2025-04-05 18:02:29 - INFO - ***price 城市 杭州市 日期 2025-04-07 的1天数据量：6，耗时：194.59 秒)
+2025-04-05 18:02:30 - INFO - ***price 城市 北京市 日期 2025-04-07 的1天数据量：6，耗时：178.81 秒)
+2025-04-05 18:02:32 - INFO - ***points 城市 上海市 日期 2025-04-07 的1天数据量：0，耗时：236.71 秒)
+2025-04-05 18:02:32 - INFO - ***points 城市 苏州市 日期 2025-04-07 的1天数据量：0，耗时：238.49 秒)
+2025-04-05 18:02:32 - INFO - ***points 城市 北京市 日期 2025-04-07 的1天数据量：6，耗时：180.67 秒)
+2025-04-05 18:02:39 - INFO - ***points 城市 广州市 日期 2025-04-07 的1天数据量：0，耗时：206.91 秒)
+2025-04-05 18:05:42 - INFO - ***price 城市 天津市 日期 2025-04-08 的1天数据量：6，耗时：193.68 秒)
+2025-04-05 18:05:46 - INFO - ***points 城市 苏州市 日期 2025-04-08 的1天数据量：1，耗时：194.70 秒)
+2025-04-05 18:05:47 - INFO - ***price 城市 杭州市 日期 2025-04-08 的1天数据量：6，耗时：197.26 秒)
+2025-04-05 18:05:49 - INFO - ***points 城市 广州市 日期 2025-04-08 的1天数据量：6，耗时：189.17 秒)
+2025-04-05 18:05:52 - INFO - ***price 城市 上海市 日期 2025-04-08 的1天数据量：6，耗时：199.99 秒)
+2025-04-05 18:05:52 - INFO - ***points 城市 天津市 日期 2025-04-08 的1天数据量：6，耗时：204.17 秒)
+2025-04-05 18:05:52 - INFO - ***points 城市 上海市 日期 2025-04-08 的1天数据量：6，耗时：200.47 秒)
+2025-04-05 18:05:54 - INFO - ***points 城市 杭州市 日期 2025-04-08 的1天数据量：5，耗时：204.44 秒)
+2025-04-05 18:05:54 - INFO - ***price 城市 苏州市 日期 2025-04-08 的1天数据量：0，耗时：202.15 秒)
+2025-04-05 18:05:54 - INFO - ***points 城市 南京市 日期 2025-04-08 的1天数据量：0，耗时：204.90 秒)
+2025-04-05 18:06:01 - INFO - ***price 城市 深圳市 日期 2025-04-08 的1天数据量：6，耗时：211.68 秒)
+2025-04-05 18:06:01 - INFO - ***points 城市 北京市 日期 2025-04-08 的1天数据量：6，耗时：209.03 秒)
+2025-04-05 18:06:01 - INFO - ***points 城市 深圳市 日期 2025-04-08 的1天数据量：5，耗时：212.01 秒)
+2025-04-05 18:06:01 - INFO - ***price 城市 南京市 日期 2025-04-08 的1天数据量：6，耗时：212.28 秒)
+2025-04-05 18:06:18 - INFO - ***price 城市 广州市 日期 2025-04-08 的1天数据量：6，耗时：218.96 秒)
+2025-04-05 18:06:18 - INFO - ***price 城市 北京市 日期 2025-04-08 的1天数据量：5，耗时：226.36 秒)
+2025-04-05 18:09:15 - INFO - ***points 城市 天津市 日期 2025-04-09 的1天数据量：6，耗时：203.28 秒)
+2025-04-05 18:09:15 - INFO - ***points 城市 南京市 日期 2025-04-09 的1天数据量：6，耗时：194.22 秒)
+2025-04-05 18:09:18 - INFO - ***price 城市 南京市 日期 2025-04-09 的1天数据量：6，耗时：196.97 秒)
+2025-04-05 18:09:20 - INFO - ***points 城市 深圳市 日期 2025-04-09 的1天数据量：6，耗时：198.43 秒)
+2025-04-05 18:09:22 - INFO - ***price 城市 北京市 日期 2025-04-09 的1天数据量：6，耗时：183.09 秒)
+2025-04-05 18:09:24 - INFO - ***points 城市 杭州市 日期 2025-04-09 的1天数据量：6，耗时：210.78 秒)
+2025-04-05 18:09:27 - INFO - ***price 城市 深圳市 日期 2025-04-09 的1天数据量：0，耗时：205.73 秒)
+2025-04-05 18:09:30 - INFO - ***price 城市 上海市 日期 2025-04-09 的1天数据量：6，耗时：217.51 秒)
+2025-04-05 18:09:31 - INFO - ***points 城市 北京市 日期 2025-04-09 的1天数据量：6，耗时：192.43 秒)
+2025-04-05 18:09:31 - INFO - ***points 城市 广州市 日期 2025-04-09 的1天数据量：6，耗时：192.53 秒)
+2025-04-05 18:09:32 - INFO - ***price 城市 杭州市 日期 2025-04-09 的1天数据量：0，耗时：218.15 秒)
+2025-04-05 18:09:32 - INFO - ***price 城市 苏州市 日期 2025-04-09 的1天数据量：6，耗时：218.65 秒)
+2025-04-05 18:09:34 - INFO - ***points 城市 上海市 日期 2025-04-09 的1天数据量：0，耗时：222.23 秒)
+2025-04-05 18:09:38 - INFO - ***price 城市 天津市 日期 2025-04-09 的1天数据量：0，耗时：225.98 秒)
+2025-04-05 18:09:38 - INFO - ***points 城市 苏州市 日期 2025-04-09 的1天数据量：0，耗时：224.25 秒)
+2025-04-05 18:09:42 - INFO - ***price 城市 广州市 日期 2025-04-09 的1天数据量：0，耗时：203.85 秒)
+2025-04-05 18:11:48 - INFO - ***points 城市 南京市 日期 2025-04-10 的1天数据量：7，耗时：149.91 秒)
+2025-04-05 18:11:51 - INFO - ***price 城市 南京市 日期 2025-04-10 的1天数据量：7，耗时：152.33 秒)
+2025-04-05 18:12:45 - INFO - ***price 城市 天津市 日期 2025-04-10 的1天数据量：6，耗时：187.35 秒)
+2025-04-05 18:19:38 - INFO - ***price 城市 南京市 日期 2025-04-13 的1天数据量：0，耗时：223.04 秒)
+2025-04-05 18:23:14 - INFO - ***price 城市 苏州市 日期 2025-04-13 的1天数据量：0，耗时：211.84 秒)
+2025-04-05 18:23:15 - INFO - ***price 城市 天津市 日期 2025-04-14 的1天数据量：0，耗时：207.50 秒)
+2025-04-05 18:26:58 - INFO - ***points 城市 杭州市 日期 2025-04-15 的1天数据量：0，耗时：227.21 秒)
+2025-04-05 18:27:06 - INFO - ***price 城市 北京市 日期 2025-04-14 的1天数据量：0，耗时：223.18 秒)
+2025-04-05 18:28:14 - ERROR - 加载 Tab 8 天津市 2025-04-16 17:51:41.421039 price 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:28:15 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:28:15 - INFO - ***price 城市 天津市 日期 2025-04-16 的1天数据量：0，耗时：88.22 秒)
+2025-04-05 18:30:39 - INFO - ***points 城市 北京市 日期 2025-04-15 的1天数据量：0，耗时：212.07 秒)
+2025-04-05 18:30:40 - INFO - ***price 城市 上海市 日期 2025-04-15 的1天数据量：0，耗时：215.24 秒)
+2025-04-05 18:31:04 - INFO - ***points 城市 苏州市 日期 2025-04-15 的1天数据量：0，耗时：239.05 秒)
+2025-04-05 18:34:28 - INFO - ***price 城市 广州市 日期 2025-04-16 的1天数据量：0，耗时：238.23 秒)
+2025-04-05 18:34:28 - INFO - ***points 城市 北京市 日期 2025-04-16 的1天数据量：0，耗时：229.73 秒)
+2025-04-05 18:34:29 - INFO - ***price 城市 深圳市 日期 2025-04-17 的1天数据量：0，耗时：238.46 秒)
+2025-04-05 18:34:34 - INFO - ***price 城市 苏州市 日期 2025-04-16 的1天数据量：0，耗时：209.85 秒)
+2025-04-05 18:36:01 - ERROR - 加载 Tab 5 广州市 2025-04-17 17:51:41.415739 points 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:36:01 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:36:01 - INFO - ***points 城市 广州市 日期 2025-04-17 的1天数据量：0，耗时：92.45 秒)
+2025-04-05 18:37:25 - ERROR - 加载 Tab 15 杭州市 2025-04-18 17:51:41.426835 points 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:37:25 - ERROR - 加载 Tab 12 苏州市 2025-04-17 17:51:41.425038 price 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:37:25 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:37:25 - INFO - ***points 城市 杭州市 日期 2025-04-18 的1天数据量：0，耗时：174.99 秒)
+2025-04-05 18:37:25 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:37:25 - INFO - ***price 城市 苏州市 日期 2025-04-17 的1天数据量：0，耗时：170.84 秒)
+2025-04-05 18:37:27 - ERROR - 加载 Tab 3 北京市 2025-04-17 17:51:41.414757 points 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:37:27 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:37:27 - INFO - ***points 城市 北京市 日期 2025-04-17 的1天数据量：0，耗时：176.77 秒)
+2025-04-05 18:37:50 - ERROR - 加载 Tab 1 上海市 2025-04-17 17:51:41.411913 points 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:37:50 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:37:50 - INFO - ***points 城市 上海市 日期 2025-04-17 的1天数据量：0，耗时：199.97 秒)
+2025-04-05 18:38:06 - INFO - ***price 城市 南京市 日期 2025-04-18 的1天数据量：0，耗时：216.39 秒)
+2025-04-05 18:38:07 - INFO - ***price 城市 深圳市 日期 2025-04-18 的1天数据量：0，耗时：216.92 秒)
+2025-04-05 18:38:07 - INFO - ***price 城市 杭州市 日期 2025-04-18 的1天数据量：0，耗时：216.85 秒)
+2025-04-05 18:38:07 - INFO - ***points 城市 深圳市 日期 2025-04-18 的1天数据量：0，耗时：217.22 秒)
+2025-04-05 18:38:08 - INFO - ***price 城市 上海市 日期 2025-04-17 的1天数据量：0，耗时：217.43 秒)
+2025-04-05 18:38:11 - INFO - ***price 城市 北京市 日期 2025-04-17 的1天数据量：0，耗时：221.42 秒)
+2025-04-05 18:38:16 - INFO - ***points 城市 南京市 日期 2025-04-18 的1天数据量：0，耗时：225.75 秒)
+2025-04-05 18:39:55 - ERROR - 加载 Tab 14 杭州市 2025-04-19 17:51:41.426835 price 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:39:55 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:39:55 - INFO - ***price 城市 杭州市 日期 2025-04-19 的1天数据量：0，耗时：108.63 秒)
+2025-04-05 18:40:09 - ERROR - 加载 Tab 3 北京市 2025-04-18 17:51:41.414757 points 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:40:09 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:40:09 - INFO - ***points 城市 北京市 日期 2025-04-18 的1天数据量：0，耗时：117.71 秒)
+2025-04-05 18:40:47 - ERROR - 加载 Tab 2 北京市 2025-04-18 17:51:41.414757 price 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:40:47 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:40:47 - INFO - ***price 城市 北京市 日期 2025-04-18 的1天数据量：0，耗时：155.19 秒)
+2025-04-05 18:41:11 - ERROR - 加载 Tab 4 广州市 2025-04-18 17:51:41.415739 price 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:41:11 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:41:11 - INFO - ***price 城市 广州市 日期 2025-04-18 的1天数据量：0，耗时：190.38 秒)
+2025-04-05 18:41:35 - ERROR - 加载 Tab 3 北京市 2025-04-19 17:51:41.414757 points 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:41:35 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:41:35 - INFO - ***points 城市 北京市 日期 2025-04-19 的1天数据量：0，耗时：48.61 秒)
+2025-04-05 18:41:58 - INFO - ***points 城市 上海市 日期 2025-04-18 的1天数据量：0，耗时：230.82 秒)
+2025-04-05 18:41:59 - INFO - ***price 城市 苏州市 日期 2025-04-18 的1天数据量：0，耗时：232.63 秒)
+2025-04-05 18:54:20 - ERROR - 加载 Tab 3 北京市 2025-04-20 17:51:41.414757 points 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:54:20 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:54:20 - INFO - ***points 城市 北京市 日期 2025-04-20 的1天数据量：0，耗时：29.98 秒)
+2025-04-05 18:56:07 - ERROR - 加载 Tab 14 杭州市 2025-04-20 17:51:41.426835 price 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:56:07 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:56:07 - INFO - ***price 城市 杭州市 日期 2025-04-20 的1天数据量：0，耗时：136.52 秒)
+2025-04-05 18:56:24 - ERROR - 加载 Tab 5 广州市 2025-04-19 17:51:41.415739 points 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:56:24 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:56:24 - INFO - ***points 城市 广州市 日期 2025-04-19 的1天数据量：0，耗时：153.50 秒)
+2025-04-05 18:56:34 - ERROR - 加载 Tab 7 深圳市 2025-04-20 17:51:41.417080 points 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:56:34 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:56:34 - INFO - ***points 城市 深圳市 日期 2025-04-20 的1天数据量：0，耗时：163.97 秒)
+2025-04-05 18:56:37 - ERROR - 加载 Tab 12 苏州市 2025-04-19 17:51:41.425038 price 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:56:37 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:56:37 - INFO - ***price 城市 苏州市 日期 2025-04-19 的1天数据量：0，耗时：166.01 秒)
+2025-04-05 18:56:45 - ERROR - 加载 Tab 9 天津市 2025-04-22 17:51:41.421039 points 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:56:45 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:56:45 - INFO - ***points 城市 天津市 日期 2025-04-22 的1天数据量：0，耗时：174.90 秒)
+2025-04-05 18:56:46 - ERROR - 加载 Tab 6 深圳市 2025-04-20 17:51:41.417080 price 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:56:46 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:56:46 - INFO - ***price 城市 深圳市 日期 2025-04-20 的1天数据量：0，耗时：175.34 秒)
+2025-04-05 18:56:46 - ERROR - 加载 Tab 13 苏州市 2025-04-19 17:51:41.425038 points 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:56:46 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:56:46 - INFO - ***points 城市 苏州市 日期 2025-04-19 的1天数据量：0，耗时：175.37 秒)
+2025-04-05 18:56:48 - ERROR - 加载 Tab 10 南京市 2025-04-20 17:51:41.423875 price 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:56:48 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:56:48 - INFO - ***price 城市 南京市 日期 2025-04-20 的1天数据量：0，耗时：177.96 秒)
+2025-04-05 18:56:54 - ERROR - 加载 Tab 0 上海市 2025-04-19 17:51:41.411913 price 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:56:54 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:56:54 - INFO - ***price 城市 上海市 日期 2025-04-19 的1天数据量：0，耗时：183.06 秒)
+2025-04-05 18:56:57 - ERROR - 加载 Tab 1 上海市 2025-04-19 17:51:41.411913 points 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:56:57 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:56:57 - INFO - ***points 城市 上海市 日期 2025-04-19 的1天数据量：0，耗时：186.77 秒)
+2025-04-05 18:57:20 - ERROR - 加载 Tab 7 深圳市 2025-04-21 17:51:41.417080 points 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:57:20 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:57:20 - INFO - ***points 城市 深圳市 日期 2025-04-21 的1天数据量：0，耗时：34.01 秒)
+2025-04-05 18:57:26 - ERROR - 加载 Tab 2 北京市 2025-04-20 17:51:41.414757 price 的数据时发生错误：
+Wait for run js timeout (30 seconds).
+Version: 4.1.0.17
+2025-04-05 18:57:26 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+TimeoutError: 
+Time out. Maybe the browser is stuck.
+Information: timeout
+Method: Runtime.callFunctionOn
+Arguments: {'functionDeclaration': 'function(){window.scrollTo(document.documentElement.scrollLeft, document.documentElement.scrollHeight);}', 'objectId': '4810197029144576560.180.4', 'arguments': [], 'returnByValue': False, 'awaitPromise': True, 'userGesture': True, '_timeout': 30}
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1233, in run_js
+    raise TimeoutError(_S._lang.join(_S._lang.TIMEOUT_, _S._lang.RUN_JS, timeout))
+TimeoutError: 
+Wait for run js timeout (30 seconds).
+Version: 4.1.0.17
+
+2025-04-05 18:57:26 - INFO - ***price 城市 北京市 日期 2025-04-20 的1天数据量：0，耗时：215.46 秒)
+2025-04-05 18:57:53 - INFO - ***price 城市 天津市 日期 2025-04-22 的1天数据量：0，耗时：242.57 秒)
+2025-04-05 18:58:04 - ERROR - 加载 Tab 3 北京市 2025-04-21 17:51:41.414757 points 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:58:04 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:58:04 - INFO - ***points 城市 北京市 日期 2025-04-21 的1天数据量：0，耗时：37.68 秒)
+2025-04-05 18:58:05 - INFO - ***price 城市 广州市 日期 2025-04-19 的1天数据量：0，耗时：254.11 秒)
+2025-04-05 18:58:10 - INFO - ***points 城市 南京市 日期 2025-04-20 的1天数据量：0，耗时：259.02 秒)
+2025-04-05 18:58:10 - INFO - ***points 城市 杭州市 日期 2025-04-20 的1天数据量：0，耗时：259.24 秒)
+2025-04-05 18:59:03 - ERROR - 加载 Tab 14 杭州市 2025-04-21 17:51:41.426835 price 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 18:59:03 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 18:59:03 - INFO - ***price 城市 杭州市 日期 2025-04-21 的1天数据量：0，耗时：53.66 秒)
+2025-04-05 19:00:16 - ERROR - 加载 Tab 1 上海市 2025-04-20 17:51:41.411913 points 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 19:00:16 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 19:00:16 - INFO - ***points 城市 上海市 日期 2025-04-20 的1天数据量：0，耗时：199.05 秒)
+2025-04-05 19:00:29 - ERROR - 加载 Tab 5 广州市 2025-04-20 17:51:41.415739 points 的数据时发生错误：
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+2025-04-05 19:00:29 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1229, in run_js
+    res = page._run_cdp('Runtime.callFunctionOn', functionDeclaration=script, objectId=obj_id,
+                        arguments=[convert_argument(arg) for arg in args], returnByValue=False,
+                        awaitPromise=True, userGesture=True, _timeout=timeout, _ignore=AlertExistsError)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 384, in _run_cdp
+    return r if __ERROR__ not in r else raise_error(r, self.browser, ignore)
+                                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_functions/tools.py", line 199, in raise_error
+    raise r
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/DrissionPage/hotel/LoadPriceHIG.py", line 151, in loadData
+    tab.scroll.to_bottom()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 32, in to_bottom
+    self._run_js('{}.scrollTo({}.scrollLeft, {}.scrollHeight);')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_units/scroller.py", line 24, in _run_js
+    self._owner._run_js(js)
+    ~~~~~~~~~~~~~~~~~~~^^^^
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_pages/chromium_base.py", line 398, in _run_js
+    return run_js(self, script, as_expr, self.timeouts.script if timeout is None else timeout, args)
+  File "/Users/jiangxun/IdeaProjects/spider/DrissionPage/venv/lib/python3.13/site-packages/DrissionPage/_elements/chromium_element.py", line 1235, in run_js
+    raise ContextLostError() if is_page else ElementLostError()
+DrissionPage.errors.ContextLostError: 
+The page is refreshed. Please wait until the page is refreshed or loaded.
+Version: 4.1.0.17
+
+2025-04-05 19:00:29 - INFO - ***points 城市 广州市 日期 2025-04-20 的1天数据量：0，耗时：144.71 秒)
+2025-04-05 19:01:15 - INFO - ***price 城市 苏州市 日期 2025-04-20 的1天数据量：0，耗时：268.94 秒)
+2025-04-05 19:01:22 - INFO - ***price 城市 深圳市 日期 2025-04-21 的1天数据量：0，耗时：275.75 秒)
