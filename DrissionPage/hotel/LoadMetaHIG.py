@@ -52,15 +52,17 @@ CITIES = ['上海']  # 城市列表
 def main():
     start_time = time.time()
     
-    # # 创建配置对象（默认从 ini 文件中读取配置）
-    # co = ChromiumOptions()
-    # # 设置不加载图片、静音
-    # co.no_imgs(True).mute(True)
-    # # 以该配置创建页面对象
-    # page = Chromium(addr_or_opts=co)
+    # 创建配置对象（默认从 ini 文件中读取配置）
+    co = ChromiumOptions()
+    # 设置不加载图片、静音。这个基本没效果
+    co.no_imgs(True).mute(True)
+    # 无头模式  TODO 虽然浏览器没有打开，但导致页面基本内容没有加载，洲际应该有js控制：让没显示特定html，就不加载数据的请求，拿不到任何数据！
+    co.headless()
+    # 以该配置创建页面对象
+    page = ChromiumPage(addr_or_opts=co)
 
     # 初始化浏览器和数据库
-    page = ChromiumPage()
+    # page = ChromiumPage()
     db = HotelDatabase()
     pricedate = datetime.today()
     su = StrUtil()
@@ -87,7 +89,9 @@ def main():
             url = su.replace_URLParam(url, params)
             logging.info(f"{city}请求的url是：{url}")
             page.get(url)
-
+            
+            # page.wait.eles_loaded('#applicationWrapper')
+            
             """
             V1和V3的json数据格式区别：前者以"hotelInfo"开头且"hotelInfo"是对象，后者以"hotelContent"开头，"hotelContent"是长度是1的数组。
             V1的json数据格式:
