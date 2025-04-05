@@ -8,6 +8,15 @@ class HotelDatabase:
     def __init__(self):
         self.connection = pymysql.connect(**DB_CONFIG)
         self.cursor = self.connection.cursor(pymysql.cursors.DictCursor)
+        
+    def _ensure_connection(self):
+        """确保数据库连接有效"""
+        try:
+            self.connection.ping(reconnect=True)  # 如果连接失效，自动重连
+        except Exception as e:
+            logging.error(f"数据库连接失效，尝试重新连接：{e}")
+            self.connection = pymysql.connect(**DB_CONFIG)
+            self.cursor = self.connection.cursor(pymysql.cursors.DictCursor)
 
     def insert_data(self, table, data):
         """
@@ -15,6 +24,7 @@ class HotelDatabase:
         :param table: 表名
         :param data: 字典形式的数据
         """
+        self._ensure_connection()  # 确保连接有效
         keys = ', '.join(data.keys())
         values = ', '.join(['%s'] * len(data))
         sql = f"INSERT INTO {table} ({keys}) VALUES ({values})"
@@ -22,6 +32,11 @@ class HotelDatabase:
             self.cursor.execute(sql, tuple(data.values()))
             self.connection.commit()
             # logging.info(f"数据插入成功：{data}")
+        except pymysql.err.InterfaceError as e:
+            logging.warning(f"数据库连接失效，尝试重新连接：{e}")
+            self._ensure_connection()  # 重新建立连接
+            self.cursor.execute(sql, tuple(data.values()))
+            self.connection.commit()
         except Exception as e:
             self.connection.rollback()
             logging.info(f"插入数据失败：{e}")
