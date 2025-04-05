@@ -49627,3 +49627,21 @@ Version: 4.1.0.17
 2025-04-05 23:06:48 - INFO - ###1 个城市， 365 天 总耗时：3515.64 秒)
 2025-04-05 23:06:48 - INFO - 城市 北京 365 天数据爬取完成
 2025-04-05 23:06:49 - INFO - 浏览器已关闭
+2025-04-06 06:19:49 - INFO - 查询SELECT * FROM city结果总数：342
+2025-04-06 06:19:49 - INFO - 北京市请求的url是：https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E5%B8%82&qPt=POINTS_CASH&qCiD=06&qCoD=07&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1
+2025-04-06 06:20:02 - INFO - 北京市捕获到总请求数：43
+2025-04-06 06:20:02 - INFO - 北京市请求版本是：v3
+2025-04-06 06:20:03 - INFO - 北京市有效请求数：37，耗时：14.49 秒)
+2025-04-06 06:20:03 - INFO - 天津市请求的url是：https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%A4%A9%E6%B4%A5%E5%B8%82&qPt=POINTS_CASH&qCiD=06&qCoD=07&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1
+2025-04-06 06:20:10 - INFO - 天津市捕获到总请求数：14
+2025-04-06 06:20:10 - INFO - 天津市请求版本是：v3
+2025-04-06 06:20:11 - INFO - 天津市有效请求数：14，耗时：7.59 秒)
+2025-04-06 06:20:11 - INFO - 石家庄市请求的url是：https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E7%9F%B3%E5%AE%B6%E5%BA%84%E5%B8%82&qPt=POINTS_CASH&qCiD=06&qCoD=07&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1
+2025-04-06 06:20:17 - INFO - 石家庄市捕获到总请求数：6
+2025-04-06 06:20:17 - INFO - 石家庄市请求版本是：v3
+2025-04-06 06:20:17 - INFO - 石家庄市有效请求数：6，耗时：6.60 秒)
+2025-04-06 06:20:17 - INFO - 唐山市请求的url是：https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%94%90%E5%B1%B1%E5%B8%82&qPt=POINTS_CASH&qCiD=06&qCoD=07&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1
+2025-04-06 06:20:24 - INFO - 唐山市捕获到总请求数：2
+2025-04-06 06:20:24 - INFO - 唐山市请求版本是：v3
+2025-04-06 06:20:24 - INFO - 唐山市有效请求数：2，耗时：7.04 秒)
+2025-04-06 06:20:24 - INFO - 秦皇岛市请求的url是：https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E7%A7%A6%E7%9A%87%E5%B2%9B%E5%B8%82&qPt=POINTS_CASH&qCiD=06&qCoD=07&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1

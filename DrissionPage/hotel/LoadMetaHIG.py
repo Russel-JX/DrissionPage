@@ -83,6 +83,8 @@ def main():
     db = HotelDatabase()
     pricedate = datetime.today()
     su = StrUtil()
+    version = datetime.now().strftime('%Y-%m-%d %H:%M')
+
 
     try:
         # 从 city 表中查询所有城市名称
@@ -176,6 +178,7 @@ def main():
                         'city': city,
                         'startyear': hotel.get('profile', {}).get('entityOpenDate'),
                         'pic': hotel.get('profile', {}).get('primaryImageUrl', {}).get('originalUrl', ''),
+                        'version':version,
                         'note': urlVersion
                         }
                         if len(packets)>20 and city.find(hotel.get('address', {}).get('city', '')) == -1:
@@ -205,6 +208,7 @@ def main():
                         'city': city,
                         'startyear': hotel.get('profile', {}).get('entityOpenDate'),
                         'pic': hotel.get('profile', {}).get('primaryImageUrl', {}).get('originalUrl', ''),
+                        'version':version,
                         'note': urlVersion
                         }
                         if len(packets)>20 and city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value')) == -1 :
