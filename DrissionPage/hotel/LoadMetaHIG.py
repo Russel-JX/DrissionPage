@@ -55,11 +55,14 @@ def main():
     db = HotelDatabase()
     pricedate = datetime.today()
     su = StrUtil()
-    count = 0
 
     try:
         cities = CITIES
         for city in cities:
+            inner_start_time =  time.time()
+            # 1个城市有效请求数
+            count = 0
+
             params = getHIGMetaParams(city, pricedate)
             # 监听网络中所有满足的url请求。因为IHG的酒店详情页url有时是https://apis.ihg.com.cn/hotels/v3/profiles/，有时是https://apis.ihg.com.cn/hotels/v1/profiles/，有时是https://apis.ihg.com.cn/hotels/*/profiles/，所以需要监听所有满足的url请求。
             # https://github.com/Russel-JX/DrissionPage/blob/master/docs_en/ChromiumPage/network_listener.md  监听网络数据
@@ -171,19 +174,20 @@ def main():
                     logging.error(f"{city}未知的URL版本：{urlVersion}")
                     continue  
                 db.insert_data('hotel', hotel_data)
-                # logging.info(f"有效数据：{hotel_data}")   
+                # logging.info(f"有效数据：{hotel_data}")  
+            page.listen.stop() 
             inner_end_time =  time.time()
-            logging.info(f"{city}有效请求数：{count}，耗时：{inner_end_time - start_time:.2f} 秒)")
+            logging.info(f"{city}有效请求数：{count}，耗时：{inner_end_time - inner_start_time:.2f} 秒)")
 
             #1个城市处理结束，等待3秒后，开始下一个城市
-            time.sleep(3)
+            # time.sleep(3)
     except Exception as e:
         print(f"{city}运行过程中发生错误：{e}")
         logging.error(f"{city}运行过程中发生错误：{e}")
         logging.error("Stack trace:\n%s", traceback.format_exc())  # 使用 traceback.format_exc() 获取堆栈信息
     finally:
         end_time =  time.time()
-        logging.info(f"{cities}，耗时：{end_time - start_time:.2f} 秒)")
+        logging.info(f"所有城市{cities}，耗时：{end_time - start_time:.2f} 秒)")
         # 关闭浏览器和数据库连接
         page.quit()
         db.close()
