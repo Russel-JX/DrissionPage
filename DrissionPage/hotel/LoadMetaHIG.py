@@ -31,7 +31,7 @@ logging.basicConfig(
     ]
 )
 
-CITIES = ['忻州市','上海','淮安']  # 城市列表
+CITIES = ['成都市']  # 城市列表
 # CITIES = ['北京', '上海', '广州', '深圳', '南京', '武汉', '成都', '杭州', '大连', '淮安', '扬州', 'xx', '无锡市', '泉州市', '西湖'] 
 
 
@@ -42,7 +42,7 @@ CITIES = ['忻州市','上海','淮安']  # 城市列表
 使用来宾模式:20-22s
 耗时统计：
 1个城市，40秒。总共342个城市，耗时约4小时。50个城市，耗时约1小时。
-多个城市平均每个15秒。总共342个城市（199个城市有酒店），预计耗时约1.5小时，实际耗时40分钟（1240条数据）。50个城市，预计耗时约13分钟。
+多个城市平均每个15秒。总共342个城市（实际200个城市有酒店），预计耗时约1.5小时，实际耗时40分钟（1264条数据）。50个城市，预计耗时约13分钟。
 注：python策划给你续运行时，自动或主动关闭屏幕显示，不影响程序运行。
 """
 """
@@ -195,7 +195,7 @@ def main():
                         'groupcode': 'IHG',
                         'groupname': '洲际',
                         'brandname': hotel.get('brandInfo', {}).get('brandName', ''),
-                        'hotelcode': hotel.get('hotelCode', {}, ''),
+                        'hotelcode': hotel.get('hotelCode', ''),
                         'brandcode': hotel.get('brandInfo', {}).get('brandCode', ''),
                         'enname': hotel.get('brandInfo', {}).get('brandName', ''),
                         'name': hotel.get('profile', {}).get('name', {})[0].get('value', ''),

@@ -2,6 +2,7 @@
 import pymysql
 from config.db_config import DB_CONFIG
 import logging
+import traceback
 
 class HotelDatabase:
     def __init__(self):
@@ -32,19 +33,21 @@ class HotelDatabase:
         :return: 查询结果列表
         """
         sql = f"SELECT * FROM {table}"
-        if conditions:
+        params = []
+        if isinstance(conditions, dict):  # 如果条件是字典
             condition_str = ' AND '.join([f"{k}=%s" for k in conditions.keys()])
             sql += f" WHERE {condition_str}"
-            params = tuple(conditions.values())
-        else:
-            params = ()
+            params = list(conditions.values())
+        elif isinstance(conditions, str):  # 如果条件是字符串
+            sql += f" WHERE {conditions}"
         try:
             self.cursor.execute(sql, params)
             results = self.cursor.fetchall()
-            logging.info(f"查询结果总数：{len(results)}")
+            logging.info(f"查询{sql}结果总数：{len(results)}")
             return results
         except Exception as e:
             logging.error(f"查询数据失败：{e}")
+            logging.error("Stack trace:\n%s", traceback.format_exc())
             return []
 
     def close(self):

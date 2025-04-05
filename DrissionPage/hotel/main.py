@@ -20,7 +20,7 @@ logging.basicConfig(
 #常量定义
 MAX_MAIN_THREAD_COUNT = 8 #同时运行的城市（主线程）数
 MAX_SUB_THREAD_TAB_COUNT = 16 #同时运行的tab（子线程。1个酒店的一种数据请求）数
-MAX_DAYS_COUNT = 2 #请求的总天数
+MAX_DAYS_COUNT = 30 #请求的总天数
 # CITIES = ['北京']  # 城市列表
 CITIES = ['北京', '上海', '广州']  # 城市列表
 # CITIES = ['北京', '上海', '广州', '深圳', '南京', '武汉', '成都', '杭州']  # 城市列表
@@ -121,20 +121,26 @@ def save(loader, version, pricedate, hotel_list):
         loader.db.insert_data('hotelprice', hotel)
 
 def main():
-    # # 从 city 表中查询所有城市名称
-    # query_result = db.query_data('city', conditions=None)  # 假设 city 表中有 name 列
-    # cities = [row['name'] for row in query_result]  # 提取 name 列的值
-    cities = CITIES
-
     result_queue = Queue()
     loader = LoadPriceHIG()
+    
+    # # 从 city 表中查询所有城市名称
+    query_result = loader.db.query_data(
+        'city', 
+       conditions="hotelavailable != 0 AND level IN (0, 1) ORDER BY level ASC")
+    cities = [row['name'] for row in query_result]  # 提取 name 列的值
+    logging.info(f"从DB得到城市列表：{cities}")
+
+    #测试用城市列表
+    # cities = CITIES
 
     try:
         """"
         频率：至少1-5h跑一遍
         默认的page会打开一个tab，加上这里指定打开的固定tab数。总tab数比定义的多1个。
         操作定义的tab时，还是从0开始（0不会操作到page默认tab）
-        处理一个单个数据时，耗时平均：15秒
+        处理一个单个数据时，耗时平均：15秒。
+        处理一个城市下所有酒店的1天数据（同事包括积分和价格），耗时平均：30秒。
         03.26
         city day type totaltime(s) average
         3 2 2 154 12
