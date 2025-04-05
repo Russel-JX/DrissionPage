@@ -20,9 +20,9 @@ logging.basicConfig(
 #常量定义
 MAX_MAIN_THREAD_COUNT = 1 #同时运行的城市（主线程）数
 MAX_SUB_THREAD_TAB_COUNT = 2 #同时运行的tab（子线程。1个酒店的一种数据请求）数
-MAX_DAYS_COUNT = 365 #请求的总天数
-CITIES = ['北京']  # 城市列表
-# CITIES = ['上海'] 
+MAX_DAYS_COUNT = 120 #请求的总天数
+# CITIES = ['北京']  # 城市列表
+CITIES = ['上海'] 
 # CITIES = ['北京', '上海', '广州'] 
 # CITIES = ['北京', '上海', '广州', '深圳', '南京', '武汉', '成都', '杭州'] 
 
@@ -75,7 +75,7 @@ def process_city(loader, city, result_queue):
                     price_result = loader.loadData(city, pricedate, priceURL, 'price', tab_index=price_tab_index)
                     save(loader, version, pricedate, price_result)
                     end_time =  time.time()
-                    logging.info(f"***price 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的据量：{len(price_result)}，耗时：{end_time - start_time:.2f} 秒)")
+                    logging.info(f"***price 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的1天数据量：{len(price_result)}，耗时：{end_time - start_time:.2f} 秒)")
 
                 def fetch_points():
                     nonlocal points_result
@@ -84,7 +84,7 @@ def process_city(loader, city, result_queue):
                     # logging.info(f"points 城市 {city} 日期 {pricedate} 的1天数据：{points_result}")
                     save(loader, version, pricedate, points_result)
                     end_time =  time.time()
-                    logging.info(f"***points 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的据量：{len(points_result)}，耗时：{end_time - start_time:.2f} 秒)")
+                    # logging.info(f"***points 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的1天数据量：{len(points_result)}，耗时：{end_time - start_time:.2f} 秒)")
 
                 # 启动子线程
                 price_thread = Thread(target=fetch_price)

@@ -25,6 +25,8 @@ class HotelDatabase:
         except Exception as e:
             self.connection.rollback()
             logging.info(f"插入数据失败：{e}")
+            logging.error("Stack trace:\n%s", traceback.format_exc())
+
     def query_data(self, table, conditions=None):
         """
         查询数据
@@ -54,7 +56,3 @@ class HotelDatabase:
         """关闭数据库连接"""
         self.cursor.close()
         self.connection.close()
-        # if self.cursor:  # 判断游标是否已关闭
-        #     self.cursor.close()
-        # if self.connection and self.connection.open:  # 判断连接是否已关闭
-        #     self.connection.close()
