@@ -18,8 +18,7 @@ import traceback
 import re
 from datetime import datetime, timedelta
 from util.StrUtil import StrUtil
-
-
+import json
 
 # 配置日志
 logging.basicConfig(
@@ -32,8 +31,8 @@ logging.basicConfig(
     ]
 )
 
-# CITIES = ['上海']  # 城市列表
-CITIES = ['北京', '上海', '广州', '深圳', '南京', '武汉', '成都', '杭州', '大连', '淮安', '扬州', 'xx', '无锡市', '泉州市', '西湖'] 
+CITIES = ['忻州市','上海','淮安']  # 城市列表
+# CITIES = ['北京', '上海', '广州', '深圳', '南京', '武汉', '成都', '杭州', '大连', '淮安', '扬州', 'xx', '无锡市', '泉州市', '西湖'] 
 
 
 """
@@ -86,7 +85,12 @@ def main():
     su = StrUtil()
 
     try:
-        cities = CITIES
+        # 从 city 表中查询所有城市名称
+        query_result = db.query_data('city', conditions=None)  # 假设 city 表中有 name 列
+        cities = [row['name'] for row in query_result]  # 提取 name 列的值
+        # logging.info(f"从数据库中查询到的城市列表：{cities}")
+        #测试用城市列表
+        # cities = CITIES
         for city in cities:
             inner_start_time =  time.time()
             # 1个城市有效请求数
@@ -116,117 +120,122 @@ def main():
             # # 抓取屏幕截图来查看浏览器是否成功加载了页面。
             # page.get_screenshot('screenshot.png')
 
+            try:
             
-            """
-            V1和V3的json数据格式区别：前者以"hotelInfo"开头且"hotelInfo"是对象，后者以"hotelContent"开头，"hotelContent"是长度是1的数组。
-            V1的json数据格式:
-            "hotelInfo.brandInfo.mnemonic"、"hotelInfo.brandInfo.brandCode"、"hotelInfo.brandInfo.brandName"、"hotelInfo.profile.name"、
-            "hotelInfo.profile.latLong.longitude"、"hotelInfo.profile.latLong.latitude"、"hotelInfo.address.street1"、
-            "hotelInfo.address.city"、
-            "hotelInfo.profile.entityOpenDate"
-            V3的json数据格式:
-            将响应数据的 "hotelContent.hotelCode"、"hotelContent.brandInfo.brandCode"、"hotelContent.brandInfo.brandName"、"hotelContent.profile.name[0].value"、
-            "hotelContent.profile.latLong.longitude"、"hotelContent.profile.latLong.latitude"、"hotelContent.address.translatedMainAddress.line1[0].value"、
-            "hotelContent.address.translatedMainAddress.city[0].value"、
-            "hotelContent.profile.entityOpenDate"属性值取出，使用现有的HotelDatabase.py文件中的insert_data方法存到数据库的hotel表中，分别对应hotel表的
-            hotelcode、brandcode、enname、name、longitude、latitude、address、city、startyear列中。
-            {'hotelcode': 'NKGRS', 'brandcode': 'HIEX', 'enname': 'Holiday Inn Express', 'name': '南京滨江智选假日酒店', 'longitude': '118.73766', 'latitude': '32.09012', 'address': '江苏省南京市鼓楼区公共路18号', 'startyear': '2024-08-13'}
-            """
-            # 将生成器转换为列表。每个数据包最多等3秒，必须结束监听返回数据。不这样做的话，会导致页面一直在监听，如果页面自动刷新则会导致重复数据。
-            # TODO这里还会出现重复url的问题。比如：同一个酒店的详情页url会被多次请求，导致数据重复。
-            packets = list(page.listen.steps(count=None, timeout=3, gap=1))  
-            # packets = list(page.listen.wait(fit_count=False))  
+                """
+                V1和V3的json数据格式区别：前者以"hotelInfo"开头且"hotelInfo"是对象，后者以"hotelContent"开头，"hotelContent"是长度是1的数组。
+                V1的json数据格式:
+                "hotelInfo.brandInfo.mnemonic"、"hotelInfo.brandInfo.brandCode"、"hotelInfo.brandInfo.brandName"、"hotelInfo.profile.name"、
+                "hotelInfo.profile.latLong.longitude"、"hotelInfo.profile.latLong.latitude"、"hotelInfo.address.street1"、
+                "hotelInfo.address.city"、
+                "hotelInfo.profile.entityOpenDate"
+                V3的json数据格式:
+                将响应数据的 "hotelContent.hotelCode"、"hotelContent.brandInfo.brandCode"、"hotelContent.brandInfo.brandName"、"hotelContent.profile.name[0].value"、
+                "hotelContent.profile.latLong.longitude"、"hotelContent.profile.latLong.latitude"、"hotelContent.address.translatedMainAddress.line1[0].value"、
+                "hotelContent.address.translatedMainAddress.city[0].value"、
+                "hotelContent.profile.entityOpenDate"属性值取出，使用现有的HotelDatabase.py文件中的insert_data方法存到数据库的hotel表中，分别对应hotel表的
+                hotelcode、brandcode、enname、name、longitude、latitude、address、city、startyear列中。
+                {'hotelcode': 'NKGRS', 'brandcode': 'HIEX', 'enname': 'Holiday Inn Express', 'name': '南京滨江智选假日酒店', 'longitude': '118.73766', 'latitude': '32.09012', 'address': '江苏省南京市鼓楼区公共路18号', 'startyear': '2024-08-13'}
+                """
+                # 将生成器转换为列表。每个数据包最多等3秒，必须结束监听返回数据。不这样做的话，会导致页面一直在监听，如果页面自动刷新则会导致重复数据。
+                # TODO这里还会出现重复url的问题。比如：同一个酒店的详情页url会被多次请求，导致数据重复。
+                packets = list(page.listen.steps(count=None, timeout=3, gap=1))  
+                # packets = list(page.listen.wait(fit_count=False))  
 
-            logging.info(f"{city}捕获到总请求数：{len(packets)}")
-            # 注：城市无酒店的耗时比有酒店的长一点
-            if len(packets) == 0:
-                logging.info(f"{city}无洲际酒店meta数据")
-                continue
-            fisrtPacketUrl = packets[0].url
+                logging.info(f"{city}捕获到总请求数：{len(packets)}")
+                # 注：城市无酒店的耗时比有酒店的长一点
+                if len(packets) == 0:
+                    logging.info(f"{city}无洲际酒店meta数据")
+                    continue
+                fisrtPacketUrl = packets[0].url
 
-            # 定义正则表达式。https://apis.ihg.com.cn/hotels/ 和 /profiles 之间的部分
-            pattern = r'https://apis\.ihg\.com\.cn/hotels/(.*)/profiles/'
-            # 使用正则表达式提取值
-            urlVersion = re.match(pattern, fisrtPacketUrl).group(1)
-            logging.info(f"{city}请求版本是：{urlVersion}")
+                # 定义正则表达式。https://apis.ihg.com.cn/hotels/ 和 /profiles 之间的部分
+                pattern = r'https://apis\.ihg\.com\.cn/hotels/(.*)/profiles/'
+                # 使用正则表达式提取值
+                urlVersion = re.match(pattern, fisrtPacketUrl).group(1)
+                logging.info(f"{city}请求版本是：{urlVersion}")
 
-            # 遍历所有具体酒店细节的请求结果
-            for packet in packets:
-                # logging.info(f"捕获到请求：{packet.url}")
+                # 遍历所有具体酒店细节的请求结果
+                for packet in packets:
+                    # logging.info(f"捕获到请求：{packet.url}")
 
-                if urlVersion == 'v1':
-                    hotel = packet.response.body['hotelInfo']
-                    hotel_data = {
-                    'groupcode': 'IHG',
-                    'groupname': '洲际',
-                    'brandname': hotel.get('brandInfo', {}).get('brandName', ''),
-                    'hotelcode': hotel.get('brandInfo', {}).get('mnemonic', ''),
-                    'brandcode': hotel.get('brandInfo', {}).get('brandCode', ''),
-                    'enname': hotel.get('brandInfo', {}).get('brandName', ''),
-                    'name': hotel.get('profile', {}).get('name', ''),
-                    'longitude': hotel.get('profile', {}).get('latLong', {}).get('longitude'),
-                    'latitude': hotel.get('profile', {}).get('latLong', {}).get('latitude'),
-                    'address': hotel.get('address', {}).get('street1', ''),
-                    'city': city,
-                    'startyear': hotel.get('profile', {}).get('entityOpenDate'),
-                    'pic': hotel.get('profile', {}).get('primaryImageUrl', {}).get('originalUrl', ''),
-                    'note': urlVersion
-                    }
-                    if len(packets)>20 and city.find(hotel.get('address', {}).get('city', '')) == -1:
-                        continue
-                    else:
-                        count = count+1
-                        local = city.find(hotel.get('address', {}).get('city', ''))
-                        if local != -1:
-                            hotel_data['local'] = 1
+                    if urlVersion == 'v1':
+                        hotel = packet.response.body['hotelInfo']
+
+                        hotel_data = {
+                        'groupcode': 'IHG',
+                        'groupname': '洲际',
+                        'brandname': hotel.get('brandInfo', {}).get('brandName', ''),
+                        'hotelcode': hotel.get('brandInfo', {}).get('mnemonic', ''),
+                        'brandcode': hotel.get('brandInfo', {}).get('brandCode', ''),
+                        'enname': hotel.get('brandInfo', {}).get('brandName', ''),
+                        'name': hotel.get('profile', {}).get('name', ''),
+                        'longitude': hotel.get('profile', {}).get('latLong', {}).get('longitude'),
+                        'latitude': hotel.get('profile', {}).get('latLong', {}).get('latitude'),
+                        'address': hotel.get('address', {}).get('street1', ''),
+                        'city': city,
+                        'startyear': hotel.get('profile', {}).get('entityOpenDate'),
+                        'pic': hotel.get('profile', {}).get('primaryImageUrl', {}).get('originalUrl', ''),
+                        'note': urlVersion
+                        }
+                        if len(packets)>20 and city.find(hotel.get('address', {}).get('city', '')) == -1:
+                            continue
                         else:
-                            hotel_data['local'] = 0
-                        # logging.info(f"有效数据：{hotel_data}")
-                        db.insert_data('hotel', hotel_data)
-                elif urlVersion == 'v3':
-                    hotel = packet.response.body['hotelContent'][0]
-                    hotel_data = {
-                    'groupcode': 'IHG',
-                    'groupname': '洲际',
-                    'brandname': hotel.get('brandInfo', {}).get('brandName', ''),
-                    'hotelcode': hotel.get('hotelCode', {}, ''),
-                    'brandcode': hotel.get('brandInfo', {}).get('brandCode', ''),
-                    'enname': hotel.get('brandInfo', {}).get('brandName', ''),
-                    'name': hotel.get('profile', {}).get('name', {})[0].get('value', ''),
-                    'longitude': hotel.get('profile', {}).get('latLong', {}).get('longitude'),
-                    'latitude': hotel.get('profile', {}).get('latLong', {}).get('latitude'),
-                    'address': hotel.get('address', {}).get('translatedMainAddress', {}).get('line1', {})[0].get('value', ''),
-                    'city': city,
-                    'startyear': hotel.get('profile', {}).get('entityOpenDate'),
-                    'pic': hotel.get('profile', {}).get('primaryImageUrl', {}).get('originalUrl', ''),
-                    'note': urlVersion
-                    }
-                    if len(packets)>20 and city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value')) == -1 :
-                        continue
-                    else:
-                        count = count+1
-                        local = city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value'))
-                        if local != -1:
-                            hotel_data['local'] = 1
+                            count = count+1
+                            local = city.find(hotel.get('address', {}).get('city', ''))
+                            if local != -1:
+                                hotel_data['local'] = 1
+                            else:
+                                hotel_data['local'] = 0
+                            # logging.info(f"有效数据：{hotel_data}")
+                            db.insert_data('hotel', hotel_data)
+                    elif urlVersion == 'v3':
+                        hotel = packet.response.body['hotelContent'][0]
+                        hotel_data = {
+                        'groupcode': 'IHG',
+                        'groupname': '洲际',
+                        'brandname': hotel.get('brandInfo', {}).get('brandName', ''),
+                        'hotelcode': hotel.get('hotelCode', {}, ''),
+                        'brandcode': hotel.get('brandInfo', {}).get('brandCode', ''),
+                        'enname': hotel.get('brandInfo', {}).get('brandName', ''),
+                        'name': hotel.get('profile', {}).get('name', {})[0].get('value', ''),
+                        'longitude': hotel.get('profile', {}).get('latLong', {}).get('longitude'),
+                        'latitude': hotel.get('profile', {}).get('latLong', {}).get('latitude'),
+                        'address': hotel.get('address', {}).get('translatedMainAddress', {}).get('line1', {})[0].get('value', ''),
+                        'city': city,
+                        'startyear': hotel.get('profile', {}).get('entityOpenDate'),
+                        'pic': hotel.get('profile', {}).get('primaryImageUrl', {}).get('originalUrl', ''),
+                        'note': urlVersion
+                        }
+                        if len(packets)>20 and city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value')) == -1 :
+                            continue
                         else:
-                            hotel_data['local'] = 0
-                        # logging.info(f"有效数据：{hotel_data}")
-                        db.insert_data('hotel', hotel_data) 
-                else:
-                    logging.error(f"{city}未知的URL版本：{urlVersion}")
-                    continue    
-            # 1个城市的所有请求处理完后，清空监听
-            page.listen.stop() 
-            inner_end_time =  time.time()
-            logging.info(f"{city}有效请求数：{count}，耗时：{inner_end_time - inner_start_time:.2f} 秒)")
-
+                            count = count+1
+                            local = city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value'))
+                            if local != -1:
+                                hotel_data['local'] = 1
+                            else:
+                                hotel_data['local'] = 0
+                            # logging.info(f"有效数据：{hotel_data}")
+                            db.insert_data('hotel', hotel_data) 
+                    else:
+                        logging.error(f"{city}未知的URL版本：{urlVersion}")
+                        continue    
+                # 1个城市的所有请求处理完后，清空监听
+                page.listen.stop() 
+                inner_end_time =  time.time()
+                logging.info(f"{city}有效请求数：{count}，耗时：{inner_end_time - inner_start_time:.2f} 秒)")
+            except Exception as e:
+                print(f"内部{city}运行过程中发生错误：{e}")
+                logging.error(f"内部{city}运行过程中发生错误：{e}")
+                logging.error("内部Stack trace:\n%s", traceback.format_exc()) 
     except Exception as e:
         print(f"{city}运行过程中发生错误：{e}")
         logging.error(f"{city}运行过程中发生错误：{e}")
         logging.error("Stack trace:\n%s", traceback.format_exc())  # 使用 traceback.format_exc() 获取堆栈信息
     finally:
         end_time =  time.time()
-        logging.info(f"所有城市{cities}，耗时：{end_time - start_time:.2f} 秒)")
+        logging.info(f"所有城市，耗时：{end_time - start_time:.2f} 秒)")
         # 关闭浏览器和数据库连接
         page.quit()
         db.close()
