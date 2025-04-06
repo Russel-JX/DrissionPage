@@ -97,8 +97,8 @@ class LoadPriceHIG:
             self.tabs.append(tab)
         logging.info(f"====已打开 {len(self.tabs)} 个 tab 页面====")
 
-    #TODO 切换tab页面的方法要搞
     """
+    25.04.06因为简化成最多2个tab(2个城市的price tab+points tab)同时在跑，2个tab切换，且是独立线程，问题不大。
     DrissionPage并不提供切换标签页的功能，而是通过get_tab()或者new_tab()方法来获取指定的标签页对象进行操作。
 
     tab的一些功能：
@@ -112,14 +112,6 @@ class LoadPriceHIG:
     tab_id = page.find_tabs(url='baidu.com')  查找符合指定条件的标签页
     tab.set.activate()  激活Tab对象
     page.set.activate()  激活Page对象。
-
-    """
-
-
-
-    """
-    TODO 同时打开多个tab时，有时有的tab不被点击选中，tab内容不会渲染，导致程序一直等待。
-    方案：可在其他tab执行完成后，去点击卡住的tab，让程序继续。
     """
     def loadData(self, city, pricedate, url, queryType, tab_index):
         """
@@ -136,39 +128,31 @@ class LoadPriceHIG:
             # 滚动页面，确保内容加载完全
             last_height = 0
             same_count = 0
-            scroll_count = 0
-            effecttive_scroll_count = 0
             scroll_height_delta = 0
+            scroll_end_max_count = 3
             
-            scroll_end_max_count = 8
+            # 调试用
+            # croll_count = 0
+            # effecttive_scroll_count = 0
             """
             城市下，价格记录丢失原因找到
             1.tab.scroll.to_bottom() 1次就滑到底了，中间的酒店元素没来得及渲染；
             2.tab.run_js('document.body.scrollHeight') js代码获取的总高度不正确总返回None，js能执行，给的js代码不对。
             导致按照代码逻辑4次下滑中，第一次直接滑到底，后面3次下滑每次if height == last_height:都是None==None，3次后直接结束
             """
-            for _ in range(15):  # 最多滚动 15 次
-                """
-                TODO
-                激活所有 tab，确保每个 tab 都能顺利加载内容，这样做有问题。3个城市跑了6分钟。（单线程才3分钟）
-                时间都消耗在了tab切换上了。因为每个线程这个位置，都去切换所有线程，不管当前线程是否正在有效处理数据。
-                注释掉_activate_all_tabs中的time.sleep(1)后，快了。1分51秒(切换耗时46秒，占比41.4%)
-                下一步：
-                    找到更合理的切换时机，或者
-                    新开线程来控制这些子线程的运行
-                    _activate_all_tabs中，当前等待跑的线程数<tab数时，只切换那些再跑的tab。完全结束的tab不用切换。
-                """
+            for _ in range(25):  # 最多滚动 25 次结束，连续scroll_end_max_count次滚不动也算结束
                 # self._activate_all_tabs() #无头模式下，无需获取页面焦点。因为脚本会自动操作页面。
 
                 """
                 https://drissionpage.cn/browser_control/ele_operation  元素交互，见元素滚动
-                 tab.scroll.to_bottom() 每次滚到tab页底部。由于TODO
+                 tab.scroll.to_bottom() 每次一下子滚到tab页底部，页面来不及渲染，导致数据丢失
+                 tab.scroll.to_location(300, scroll_height_delta) 每次向下滚动固定距离，保证页面渲染完成
                 """
                 # tab.scroll.to_bottom()
                 # tab.scroll.to_half()
                 scroll_height_delta = scroll_height_delta+1500
                 tab.scroll.to_location(300, scroll_height_delta)
-                scroll_count = scroll_count+1
+                # scroll_count = scroll_count+1
                 
                 # #测试是否能返回值。输出：JavaScript 测试返回值：42   说明js代码可以运行
                 # result = tab.run_js('return 42;')  
@@ -177,21 +161,20 @@ class LoadPriceHIG:
                 time.sleep(1)  # 等待 1 秒，确保刚滚下的页面加载完成
 
                 # 每次获取页面总高度，包括当前可见部分和不可见的滚动区域。
-                # TODO tab.run_js('document.body.scrollHeight') 每次都返回None  !!!
-                height = tab.run_js('document.body.scrollHeight')
-                viewheight = tab.run_js('window.innerHeight')
-                
-                logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 滚动高度 {height}次,视图高度{viewheight}")
+                # 注： tab.run_js('return document.body.scrollHeight;') js代码有return才能有返回值，否则拿不到变量值(返回None)！
+                # tab.run_js('document.body.scrollHeight;')  # 直接运行js代码，返回None
+                height = tab.run_js('return document.body.scrollHeight;') # 总高度= 视图高度+滚动高度。如视图高度2None。13768, 14052
+                viewHeight = tab.run_js('return document.documentElement.clientHeight;') # 视图高度。固定840
+                # logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 总高度 {height}次,视图固定高度{viewHeight}")
 
                 if height == last_height:
                     same_count += 1
                     if same_count >= scroll_end_max_count:
-                        logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 页面已滚动{scroll_count}次到底，其中{scroll_end_max_count}次是底部无效滚动")
-                        # time.sleep(4)  # 等待 4 秒，确保数据加载完成
+                        # logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 页面已滚动{scroll_count}次到底，有效滚动 {effecttive_scroll_count}次")
                         break
                 else:
-                    effecttive_scroll_count = effecttive_scroll_count + 1
-                    logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 有效滚动 {effecttive_scroll_count}次")
+                    # effecttive_scroll_count = effecttive_scroll_count + 1
+                    # logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 有效滚动 {effecttive_scroll_count}次")
                     same_count = 0
                     last_height = height
 
