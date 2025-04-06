@@ -24,9 +24,9 @@ class LoadPriceHIG:
 
         # 无头模式必须结合 User-Agent一起用。否则，虽然浏览器没有打开，但导致页面基本内容没有加载，洲际应该有js控制：让没显示特定html，就不加载数据的请求，拿不到任何数据！
         # 无头模式，不需要占用焦点。用户可以同时操作其他任何动作。且自动化操作页面时，也不需要获取页面焦点，脚本会自动操作页面。
-        co.headless()
-        # 修改 User-Agent.可以解决无头模式的反扒问题！
-        co.set_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
+        # co.headless()
+        # # 修改 User-Agent.可以解决无头模式的反扒问题！
+        # co.set_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
 
         # 以该配置创建页面对象
         self.page = ChromiumPage(addr_or_opts=co)
@@ -137,6 +137,16 @@ class LoadPriceHIG:
             last_height = 0
             same_count = 0
             scroll_count = 0
+            effecttive_scroll_count = 0
+            scroll_height_delta = 0
+            
+            scroll_end_max_count = 8
+            """
+            城市下，价格记录丢失原因找到
+            1.tab.scroll.to_bottom() 1次就滑到底了，中间的酒店元素没来得及渲染；
+            2.tab.run_js('document.body.scrollHeight') js代码获取的总高度不正确总返回None，js能执行，给的js代码不对。
+            导致按照代码逻辑4次下滑中，第一次直接滑到底，后面3次下滑每次if height == last_height:都是None==None，3次后直接结束
+            """
             for _ in range(15):  # 最多滚动 15 次
                 """
                 TODO
@@ -150,19 +160,38 @@ class LoadPriceHIG:
                 """
                 # self._activate_all_tabs() #无头模式下，无需获取页面焦点。因为脚本会自动操作页面。
 
-                tab.scroll.to_bottom()
+                """
+                https://drissionpage.cn/browser_control/ele_operation  元素交互，见元素滚动
+                 tab.scroll.to_bottom() 每次滚到tab页底部。由于TODO
+                """
+                # tab.scroll.to_bottom()
+                # tab.scroll.to_half()
+                scroll_height_delta = scroll_height_delta+1500
+                tab.scroll.to_location(300, scroll_height_delta)
                 scroll_count = scroll_count+1
+                
+                # #测试是否能返回值。输出：JavaScript 测试返回值：42   说明js代码可以运行
+                # result = tab.run_js('return 42;')  
+                # logging.info(f"JavaScript 测试返回值：{result}") 
+                
+                time.sleep(1)  # 等待 1 秒，确保刚滚下的页面加载完成
 
-                time.sleep(1)
+                # 每次获取页面总高度，包括当前可见部分和不可见的滚动区域。
+                # TODO tab.run_js('document.body.scrollHeight') 每次都返回None  !!!
                 height = tab.run_js('document.body.scrollHeight')
+                viewheight = tab.run_js('window.innerHeight')
+                
+                logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 滚动高度 {height}次,视图高度{viewheight}")
 
                 if height == last_height:
                     same_count += 1
-                    if same_count >= 3:
-                        logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 页面已滚动{scroll_count}次到底")
+                    if same_count >= scroll_end_max_count:
+                        logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 页面已滚动{scroll_count}次到底，其中{scroll_end_max_count}次是底部无效滚动")
                         # time.sleep(4)  # 等待 4 秒，确保数据加载完成
                         break
                 else:
+                    effecttive_scroll_count = effecttive_scroll_count + 1
+                    logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 有效滚动 {effecttive_scroll_count}次")
                     same_count = 0
                     last_height = height
 
