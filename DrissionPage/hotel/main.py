@@ -20,7 +20,7 @@ logging.basicConfig(
 #常量定义
 MAX_MAIN_THREAD_COUNT = 1 #同时运行的城市（主线程）数
 MAX_SUB_THREAD_TAB_COUNT = 2 #同时运行的tab（子线程。1个酒店的一种数据请求）数
-MAX_DAYS_COUNT = 2 #请求的总天数
+MAX_DAYS_COUNT = 365 #请求的总天数
 CITIES = ['北京']  # 城市列表
 # CITIES = ['上海'] 
 # CITIES = ['北京', '上海', '广州'] 
