@@ -77,7 +77,7 @@ def process_city(loader, city, result_queue):
                     price_result = loader.loadData(city, pricedate, priceURL, 'price', tab_index=price_tab_index)
                     save(loader4Load, version, pricedate, price_result)
                     end_time =  time.time()
-                    logging.info(f"***price 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的记录数：{len(price_result)}，耗时：{end_time - start_time:.2f} 秒)")
+                    # logging.info(f"***price 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的记录数：{len(price_result)}，耗时：{end_time - start_time:.2f} 秒)")
 
                 def fetch_points():
                      #每个线程，单独loader单独DB，防止数据库连接中断
@@ -88,7 +88,7 @@ def process_city(loader, city, result_queue):
                     # logging.info(f"points 城市 {city} 日期 {pricedate} 的1天数据：{points_result}")
                     save(loader4Load, version, pricedate, points_result)
                     end_time =  time.time()
-                    logging.info(f"***points 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的记录数：{len(points_result)}，耗时：{end_time - start_time:.2f} 秒)")
+                    # logging.info(f"***points 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的记录数：{len(points_result)}，耗时：{end_time - start_time:.2f} 秒)")
 
                 # 启动子线程
                 price_thread = Thread(target=fetch_price)
@@ -142,18 +142,20 @@ def main():
     try:
         """"
         频率：至少1-5h跑一遍
-        默认的page会打开一个tab，加上这里指定打开的固定tab数。总tab数比定义的多1个。
+        注：默认的page会打开一个tab，加上这里指定打开的固定tab数。总tab数比定义的多1个。
         操作定义的tab时，还是从0开始（0不会操作到page默认tab）
-        处理一个单个数据时，耗时平均：15秒。
-        处理一个城市下所有酒店的1天数据（同事包括积分和价格），耗时平均：30秒。
+        速度:
+            1城的所有数据(价格+积分)：18-30s，中位数19-22.2s
+        统计：
         03.26
         city day type totaltime(s) average  总记录 条数据/分钟
         3 2 2 154 12    5
         8 2 2 347 10.8  6
         1 3 2 48  x     251    313    365天，1城，预计1.6小时。
         1 120 2 1393  x     9268    400    4个月数据，23分钟。365天，1城，预计70分钟。
-        1 365 2 59分钟  x     4685    79    12个月数据，59分钟。数据明显少了，一天才12条。
         11 30 2 20分钟 xx  349 17    17:52执行到18:12共20分钟（一分钟17条数据，速度还可以），后来一直到17:00都在报错，且无数据产生
+        1 365 2 59分钟  x     4685    79    12个月数据，59分钟。数据明显少了，一天才12条。
+        1 365 2 118分钟  x    29951    254    12个月数据，118分钟。
         """
         """
         洲际有的城市，因为没有酒店或本市洲际很少，页面展示包含了周边城市的洲际酒店。要排除这种，来避免重复数据。
