@@ -77,7 +77,7 @@ def process_city(loader, city, result_queue):
                     price_result = loader.loadData(city, pricedate, priceURL, 'price', tab_index=price_tab_index)
                     save(loader4Load, version, pricedate, price_result)
                     end_time =  time.time()
-                    # logging.info(f"***price 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的记录数：{len(price_result)}，耗时：{end_time - start_time:.2f} 秒)")
+                    logging.info(f"***price 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的记录数：{len(price_result)}，耗时：{end_time - start_time:.2f} 秒)")
 
                 def fetch_points():
                      #每个线程，单独loader单独DB，防止数据库连接中断
