@@ -33,8 +33,8 @@ DB_CONFIGS = {
 
 # 获取当前环境，默认为 development
 # CURRENT_ENV = os.getenv('DB_ENV', 'development')
-CURRENT_ENV = 'development'
-# CURRENT_ENV = 'production'
+# CURRENT_ENV = 'development'
+CURRENT_ENV = 'production'
 
 
 
