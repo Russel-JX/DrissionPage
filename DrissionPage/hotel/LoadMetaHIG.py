@@ -43,16 +43,17 @@ def __init__():
     co.set_argument('--disable-blink-features=AutomationControlled')
 
     # 无头模式必须结合 User-Agent一起用。否则，虽然浏览器没有打开，但导致页面基本内容没有加载，洲际应该有js控制：让没显示特定html，就不加载数据的请求，拿不到任何数据！
-    # co.headless()
+    co.headless()
     # 修改 User-Agent.可以解决无头模式的反扒问题！
     co.set_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
     # # 设置调试端口9222
     # 设置调试端口9222、指定chrome浏览器路径
-    co.set_browser_path('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')  # 明确设置路径
-    co.set_argument('--remote-debugging-port=9222') 
+    # co.set_browser_path('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')  # 明确设置路径
+    # co.set_argument('--remote-debugging-port=9222') 
     
     # 以该配置创建页面对象
     page = ChromiumPage(addr_or_opts=co)
+    # page = ChromiumPage()  # Ensure the page object is initialized
     return page
 """
 频率：可以很长，如1周，1个月，半年。1次。
@@ -61,8 +62,11 @@ def __init__():
     无图无声：18-20s
     使用来宾模式:20-22s
 耗时统计：
-    1个城市，40秒。总共342个城市，耗时约4小时。50个城市，耗时约1小时。
-    多个城市平均每个15秒。总共342个城市（实际200个城市有酒店），实际耗时40分钟（1264条数据）。50个城市，预计耗时约13分钟。
+    本地：  
+        1个城市，40秒。总共342个城市，耗时约4小时。50个城市，耗时约1小时。
+        多个城市平均每个15秒。总共342个城市（实际200个城市有酒店），实际耗时40分钟（1264条数据）。50个城市，预计耗时约13分钟。
+    服务器：
+        57分钟
 注：python策划给你续运行时，自动或主动关闭屏幕显示，不影响程序运行。
 """
 """
@@ -78,34 +82,8 @@ def main():
     start_time = time.time()
     logging.info(f"===查洲际meta，chrome===")
 
-    
-    # # 创建配置对象（默认从 ini 文件中读取配置）
-    # co = ChromiumOptions()
-    # # 设置不加载图片、静音。这个基本没效果
-    # co.no_imgs(True).mute(True)
-    # # 设置启动时最大化
-    # co.set_argument('--start-maximized')
-    # # 无沙盒模式.在某些 Linux 环境下，Chrome 无头模式可能会受到沙盒限制，导致无法正常启动。禁用沙盒可以解决这个问题
-    # # 无头模式，不需要占用焦点。用户可以同时操作其他任何动作。且自动化操作页面时，也不需要获取页面焦点，脚本会自动操作页面。
-    # co.set_argument('--no-sandbox')  
-    # # 使用来宾模式打开浏览器。无浏览历史、没有书签、无登录、无浏览器设置
-    # co.set_argument('--guest')
-    #  # 禁用自动化标识
-    # co.set_argument('--disable-blink-features=AutomationControlled')
-
-    # # 无头模式必须结合 User-Agent一起用。否则，虽然浏览器没有打开，但导致页面基本内容没有加载，洲际应该有js控制：让没显示特定html，就不加载数据的请求，拿不到任何数据！
-    # co.headless()
-    # # 修改 User-Agent.可以解决无头模式的反扒问题！
-    # co.set_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
-    # # 设置调试端口9222
-    # co.set_argument('--remote-debugging-port=9222') 
-    
-    # # 以该配置创建页面对象
-    # page = ChromiumPage(addr_or_opts=co)
-
     # 初始化浏览器和数据库
     page = __init__()
-    # page = ChromiumPage()  # Ensure the page object is initialized
     db = HotelDatabase()
     pricedate = datetime.today()
     su = StrUtil()
