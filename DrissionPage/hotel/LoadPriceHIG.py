@@ -24,13 +24,13 @@ class LoadPriceHIG:
 
         # 无头模式必须结合 User-Agent一起用。否则，虽然浏览器没有打开，但导致页面基本内容没有加载，洲际应该有js控制：让没显示特定html，就不加载数据的请求，拿不到任何数据！
         # 无头模式，不需要占用焦点。用户可以同时操作其他任何动作。且自动化操作页面时，也不需要获取页面焦点，脚本会自动操作页面。
-        co.headless()
+        # co.headless()
         # 修改 User-Agent.可以解决无头模式的反扒问题！
         co.set_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
         # co.set_argument('--user-agent=Edg/91.0.864.59')
-        # 设置调试端口9223
-        # co.set_argument('--remote-debugging-port=9230')  
-        # co.set_argument(f'--browser-path="/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge"')
+        # 设置调试端口9230、指定edge浏览器路径
+        co.set_browser_path('/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge')  # 明确设置路径
+        co.set_argument('--remote-debugging-port=9230')  
 
         # 以该配置创建页面对象
         self.page = ChromiumPage(addr_or_opts=co)
