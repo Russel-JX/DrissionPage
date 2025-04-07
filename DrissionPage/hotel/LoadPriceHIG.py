@@ -27,6 +27,10 @@ class LoadPriceHIG:
         co.headless()
         # 修改 User-Agent.可以解决无头模式的反扒问题！
         co.set_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
+        # co.set_argument('--user-agent=Edg/91.0.864.59')
+        # 设置调试端口9223
+        # co.set_argument('--remote-debugging-port=9230')  
+        # co.set_argument(f'--browser-path="/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge"')
 
         # 以该配置创建页面对象
         self.page = ChromiumPage(addr_or_opts=co)
