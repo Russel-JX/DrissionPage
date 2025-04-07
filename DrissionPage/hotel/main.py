@@ -119,7 +119,7 @@ def save(loader, version, pricedate, hotel_list):
         loader.db.insert_data('hotelprice', hotel)
 
 def main():
-    logging.info(f"===查洲际价格===")
+    logging.info(f"===查洲际价格，edge===")
     result_queue = Queue()
     loader = LoadPriceHIG()
     

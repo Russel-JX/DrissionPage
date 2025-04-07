@@ -76,7 +76,7 @@ def __init__():
 """
 def main():
     start_time = time.time()
-    logging.info(f"===查洲际meta===")
+    logging.info(f"===查洲际meta，chrome===")
 
     
     # # 创建配置对象（默认从 ini 文件中读取配置）
