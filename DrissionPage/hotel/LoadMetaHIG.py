@@ -18,18 +18,11 @@ import traceback
 import re
 from datetime import datetime, timedelta
 from util.StrUtil import StrUtil
+from util.Common import setup_logging
 import json
 
 # 配置日志
-logging.basicConfig(
-    level=logging.INFO,  # 设置日志级别为 DEBUG
-    format='%(asctime)s - %(levelname)s - %(message)s',  # 日志格式（包括时间戳）
-    datefmt='%Y-%m-%d %H:%M:%S',  # 设置时间格式
-    handlers=[
-        logging.FileHandler('DrissionPage/hotel/logs/hotel.log'),  # 将日志输出到 logs/my_log.log 文件
-        logging.StreamHandler()  # 同时将日志输出到控制台
-    ]
-)
+setup_logging()
 
 CITIES = ['成都市']  # 城市列表
 # CITIES = ['北京', '上海', '广州', '深圳', '南京', '武汉', '成都', '杭州', '大连', '淮安', '扬州', 'xx', '无锡市', '泉州市', '西湖'] 

@@ -5,17 +5,10 @@ from datetime import datetime, timedelta
 from util.StrUtil import StrUtil
 import logging
 import time
+from util.Common import setup_logging
 
 # 配置日志
-logging.basicConfig(
-    level=logging.INFO,  # 设置日志级别为 DEBUG
-    format='%(asctime)s - %(levelname)s - %(message)s',  # 日志格式（包括时间戳）
-    datefmt='%Y-%m-%d %H:%M:%S',  # 设置时间格式
-    handlers=[
-        logging.FileHandler('DrissionPage/hotel/logs/hotel.log'),  # 将日志输出到 logs/my_log.log 文件
-        logging.StreamHandler()  # 同时将日志输出到控制台
-    ]
-)
+setup_logging()
 
 #常量定义
 MAX_MAIN_THREAD_COUNT = 1 #同时运行的城市（主线程）数
@@ -157,6 +150,7 @@ def main():
         11 30 2 20分钟 xx  349 17    17:52执行到18:12共20分钟（一分钟17条数据，速度还可以），后来一直到17:00都在报错，且无数据产生
         1 365 2 59分钟  x     4685    79    12个月数据，59分钟。数据明显少了，一天才12条。
         1 365 2 118分钟  x    29951    254    12个月数据，118分钟。
+        1 365 2 130分钟  x    27605    254    12个月数据，130分钟。服务器
         """
         """
         洲际有的城市，因为没有酒店或本市洲际很少，页面展示包含了周边城市的洲际酒店。要排除这种，来避免重复数据。
