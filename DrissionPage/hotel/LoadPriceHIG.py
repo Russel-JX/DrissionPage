@@ -335,10 +335,10 @@ def process_city(loader, city, result_queue):
             logging.info(f"==={city} {MAX_DAYS_COUNT} 天 总耗时：{days_end_time - days_start_time:.2f} 秒)")
             result_queue.put(f"城市 {city} {MAX_DAYS_COUNT} 天数据爬取完成")
             
-            logging.info(f"==={city} {MAX_DAYS_COUNT} 天 开始去重)")   
+            logging.info(f"==={city} {MAX_DAYS_COUNT} 天 {version} 版本 开始去重)")   
             #去重。同一批次、同一酒店、同一数据类型、同一天的数据，保留1个
-            loader.db.remove_duplicates('hotelprice', ['version', 'name', 'mintype', 'pricedate'],  conditions=f"t1.city = '{city}' AND t1.version = '{version}'")
-            logging.info(f"==={city} {MAX_DAYS_COUNT} 天 去重成功")   
+            loader.db.remove_duplicates('hotelprice', ['version', 'name', 'mintype', 'pricedate'], conditions=f"t1.city = '{city}' AND t1.version = '{version}'")
+            logging.info(f"==={city} {MAX_DAYS_COUNT} 天 {version} 版本 去重成功")   
         except Exception as e:
             result_queue.put(f"城市 {city} 数据爬取失败：{e}")
 
@@ -436,7 +436,8 @@ def main(args):
 
 if __name__ == '__main__':
     # 本地模拟设置 sys.argv
-    sys.argv = ['main.py', '北京']
+    # sys.argv = ['main.py', '北京']
+    
     # 这里 args 是从 crontab 传递过来的参数。只取数组的第一个元素城市
     logging.info(f"===查{sys.argv}洲际，{MAX_DAYS_COUNT}天的价格，edge===")
     # 获取 crontab 传递的参数

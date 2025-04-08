@@ -115,7 +115,7 @@ def main():
             url = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E4%B8%AD%E5%9B%BD%E9%99%95%E8%A5%BF%E7%9C%81%E5%BB%B6%E5%AE%89%E5%B8%82&qPt=POINTS_CASH&qCiD=30&qCoD=31&qCiMy=042025&qCoMy=042025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1'
             
             url = su.replace_URLParam(url, params)
-            logging.info(f"{city}请求的url是：{url}")
+            # logging.info(f"{city}请求的url是：{url}")
             page.get(url)
             
             """
@@ -237,8 +237,11 @@ def main():
                 print(f"内部{city}运行过程中发生错误：{e}")
                 logging.error(f"内部{city}运行过程中发生错误：{e}")
                 logging.error("内部Stack trace:\n%s", traceback.format_exc()) 
+                
         #去重。同一批次、同一酒店的数据，保留1个
-        db.remove_duplicates('hotel', ['version', 'hotelcode'])
+        logging.info(f"===洲际meta {version} 版本 开始去重")   
+        db.remove_duplicates('hotel', ['version', 'hotelcode'], conditions=f"t1.version = '{version}'")
+        logging.info(f"===洲际meta {version} 版本 去重成功")   
     except Exception as e:
         print(f"{city}运行过程中发生错误：{e}")
         logging.error(f"{city}运行过程中发生错误：{e}")
