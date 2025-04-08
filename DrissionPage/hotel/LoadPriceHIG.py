@@ -16,7 +16,7 @@ setup_logging()
 #常量定义
 MAX_MAIN_THREAD_COUNT = 1 #同时运行的城市（主线程）数
 MAX_SUB_THREAD_TAB_COUNT = 2 #同时运行的tab（子线程。1个酒店的一种数据请求）数
-MAX_DAYS_COUNT = 2 #请求的总天数
+MAX_DAYS_COUNT = 365  #请求的总天数
 CITIES = ['北京']  # 城市列表
 # CITIES = ['上海'] 
 # CITIES = ['北京', '上海', '广州'] 
@@ -425,10 +425,10 @@ def main(args):
 
 
 if __name__ == '__main__':
-    # 模拟设置 sys.argv
-    sys.argv = ['main.py', '上海', '苏州']
+    # 本地模拟设置 sys.argv
+    # sys.argv = ['main.py', '上海', '苏州']
     # 这里 args 是从 crontab 传递过来的参数。只取数组的第一个元素城市
-    logging.info(f"===查{sys.argv}洲际价格，edge===")
+    logging.info(f"===查{sys.argv}洲际，{MAX_DAYS_COUNT}天的价格，edge===")
     # 获取 crontab 传递的参数
     args = sys.argv[1:]
     main(args)
