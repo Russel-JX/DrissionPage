@@ -211,6 +211,7 @@ class LoadPriceHIG:
             hotel_list = []
             for hotel in hotels:
                 hotel_data = {
+                    'city': {city},
                     'name': hotel.ele('@data-slnm-ihg=brandHotelNameSID').text if hotel.ele('@data-slnm-ihg=brandHotelNameSID') else '',
                     'minvalue': -1,
                     'mintype': 0 #默认0，表示既不是最低房价，页不是最低所需积分。1:房价；2：积分
@@ -304,7 +305,7 @@ def process_city(loader, city, result_queue):
                     price_result = loader.loadData(city, pricedate, priceURL, 'price', tab_index=price_tab_index)
                     save(loader4Load, version, pricedate, price_result)
                     end_time =  time.time()
-                    logging.info(f"***price 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的记录数：{len(price_result)}，耗时：{end_time - start_time:.2f} 秒)")
+                    # logging.info(f"***price 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的记录数：{len(price_result)}，耗时：{end_time - start_time:.2f} 秒)")
 
                 def fetch_points():
                      #每个线程，单独loader单独DB，防止数据库连接中断
@@ -329,9 +330,15 @@ def process_city(loader, city, result_queue):
 
                 # 更新日期
                 pricedate += timedelta(days=1)
+                
             days_end_time = time.time()
             logging.info(f"==={city} {MAX_DAYS_COUNT} 天 总耗时：{days_end_time - days_start_time:.2f} 秒)")
             result_queue.put(f"城市 {city} {MAX_DAYS_COUNT} 天数据爬取完成")
+            
+            logging.info(f"==={city} {MAX_DAYS_COUNT} 天 开始去重)")   
+            #去重。同一批次、同一酒店、同一数据类型、同一天的数据，保留1个
+            loader.db.remove_duplicates('hotelprice', ['version', 'name', 'mintype', 'pricedate'],  conditions=f"t1.city = '{city}' AND t1.version = '{version}'")
+            logging.info(f"==={city} {MAX_DAYS_COUNT} 天 去重成功")   
         except Exception as e:
             result_queue.put(f"城市 {city} 数据爬取失败：{e}")
 
@@ -378,6 +385,7 @@ def main(args):
         统计：
         03.26
         city day type totaltime(s) average  总记录 条数据/分钟
+        本地：
         3 2 2 154 12    5
         8 2 2 347 10.8  6
         1 3 2 48  x     251    313    365天，1城，预计1.6小时。
@@ -385,7 +393,9 @@ def main(args):
         11 30 2 20分钟 xx  349 17    17:52执行到18:12共20分钟（一分钟17条数据，速度还可以），后来一直到17:00都在报错，且无数据产生
         1 365 2 59分钟  x     4685    79    12个月数据，59分钟。数据明显少了，一天才12条。
         1 365 2 118分钟  x    29951    254    12个月数据，118分钟。
-        1 365 2 130分钟  x    27605    254    12个月数据，130分钟。服务器
+        服务器：
+        1 365 2 130分钟  x    27605    254    北京12个月数据，130分钟。服务器
+        
         """
         """
         洲际有的城市，因为没有酒店或本市洲际很少，页面展示包含了周边城市的洲际酒店。要排除这种，来避免重复数据。
@@ -426,7 +436,7 @@ def main(args):
 
 if __name__ == '__main__':
     # 本地模拟设置 sys.argv
-    # sys.argv = ['main.py', '上海', '苏州']
+    sys.argv = ['main.py', '北京']
     # 这里 args 是从 crontab 传递过来的参数。只取数组的第一个元素城市
     logging.info(f"===查{sys.argv}洲际，{MAX_DAYS_COUNT}天的价格，edge===")
     # 获取 crontab 传递的参数

@@ -24,7 +24,7 @@ import json
 # 配置日志
 setup_logging()
 
-CITIES = ['成都市']  # 城市列表
+CITIES = ['成都市','南京']  # 城市列表
 # CITIES = ['北京', '上海', '广州', '深圳', '南京', '武汉', '成都', '杭州', '大连', '淮安', '扬州', 'xx', '无锡市', '泉州市', '西湖'] 
 
 def __init__():
@@ -237,6 +237,8 @@ def main():
                 print(f"内部{city}运行过程中发生错误：{e}")
                 logging.error(f"内部{city}运行过程中发生错误：{e}")
                 logging.error("内部Stack trace:\n%s", traceback.format_exc()) 
+        #去重。同一批次、同一酒店的数据，保留1个
+        db.remove_duplicates('hotel', ['version', 'hotelcode'])
     except Exception as e:
         print(f"{city}运行过程中发生错误：{e}")
         logging.error(f"{city}运行过程中发生错误：{e}")

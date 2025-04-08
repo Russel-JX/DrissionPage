@@ -17,6 +17,47 @@ class HotelDatabase:
             logging.error(f"数据库连接失效，尝试重新连接：{e}")
             self.connection = pymysql.connect(**DB_CONFIG)
             self.cursor = self.connection.cursor(pymysql.cursors.DictCursor)
+    
+    def remove_duplicates(self, table, columns, conditions=None):
+        """
+        删除指定表中指定列相同的重复记录，只保留一条
+        :param table: 表名
+        :param columns: 用于去重的列（列表形式）
+        """
+        self._ensure_connection()  # 确保数据库连接有效
+
+        # 动态生成用于 JOIN 的条件
+        join_conditions = ' AND '.join([f"t1.{col} = t2.{col}" for col in columns])
+
+        # 构造附加条件
+        where_clause = ""
+        params = []
+        if isinstance(conditions, dict):  # 如果条件是字典
+            condition_str = ' AND '.join([f"t1.{k}=%s" for k in conditions.keys()])
+            where_clause = f" AND {condition_str}"
+            params = list(conditions.values())
+        elif isinstance(conditions, str):  # 如果条件是字符串
+            where_clause = f" AND {conditions}"
+            
+        # 构造删除重复记录的 SQL 语句
+        delete_query = f"""
+        DELETE t1
+        FROM {table} t1
+        JOIN {table} t2
+        ON {join_conditions}
+        AND t1.id > t2.id
+            {where_clause};
+            """
+
+        try:
+            # 执行删除操作
+            delNum = self.cursor.execute(delete_query, params)
+            self.connection.commit()
+            logging.info(f"重复记录已删除，表：{table}，列：{columns}，条件：{conditions}。删除{delNum}条记录。")
+        except Exception as e:
+            self.connection.rollback()
+            logging.error(f"删除重复记录时发生错误：{e}")
+            logging.error("Stack trace:\n%s", traceback.format_exc())
 
     def insert_data(self, table, data):
         """
