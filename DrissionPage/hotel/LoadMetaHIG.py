@@ -47,7 +47,7 @@ def __init__():
     # 修改 User-Agent.可以解决无头模式的反扒问题！
     co.set_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
     # # 设置调试端口9222
-    # 设置调试端口9222、指定chrome浏览器路径
+    # 设置调试端口9222、指定chrome浏览器路径。不指定的话，默认也是会去找chrome浏览器的路径。
     # co.set_browser_path('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')  # 明确设置路径
     # co.set_argument('--remote-debugging-port=9222') 
     

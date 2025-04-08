@@ -6,6 +6,7 @@ from util.StrUtil import StrUtil
 import logging
 import time
 from util.Common import setup_logging
+import sys
 
 # 配置日志
 setup_logging()
@@ -13,7 +14,7 @@ setup_logging()
 #常量定义
 MAX_MAIN_THREAD_COUNT = 1 #同时运行的城市（主线程）数
 MAX_SUB_THREAD_TAB_COUNT = 2 #同时运行的tab（子线程。1个酒店的一种数据请求）数
-MAX_DAYS_COUNT = 365 #请求的总天数
+MAX_DAYS_COUNT = 2 #请求的总天数
 CITIES = ['北京']  # 城市列表
 # CITIES = ['上海'] 
 # CITIES = ['北京', '上海', '广州'] 
@@ -118,20 +119,20 @@ def save(loader, version, pricedate, hotel_list):
         hotel['pricedate'] = pricedate
         loader.db.insert_data('hotelprice', hotel)
 
-def main():
-    logging.info(f"===查洲际价格，edge===")
+def main(args):
     result_queue = Queue()
     loader = LoadPriceHIG()
     
     # # 从 city 表中查询所有城市名称
-    query_result = loader.db.query_data(
-        'city', 
-       conditions="hotelavailable != 0 AND level IN (0, 1) ORDER BY level ASC")
-    cities = [row['name'] for row in query_result]  # 提取 name 列的值
-    logging.info(f"从DB得到城市列表：{cities}")
+    # query_result = loader.db.query_data(
+    #     'city', 
+    #    conditions="hotelavailable != 0 AND level IN (0, 1) ORDER BY level ASC")
+    # cities = [row['name'] for row in query_result]  # 提取 name 列的值
+    # logging.info(f"从DB得到城市列表：{cities}")
 
     #测试用城市列表
-    cities = CITIES
+    # cities = CITIES
+    cities = args
 
     try:
         """"
@@ -191,4 +192,10 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # 模拟设置 sys.argv
+    sys.argv = ['main.py', '上海', '苏州']
+    # 这里 args 是从 crontab 传递过来的参数。只取数组的第一个元素城市
+    logging.info(f"===查{sys.argv}洲际价格，edge===")
+    # 获取 crontab 传递的参数
+    args = sys.argv[1:]
+    main(args)
