@@ -97,6 +97,7 @@ def main():
         # logging.info(f"从数据库中查询到的城市列表：{cities}")
         #测试用城市列表
         cities = CITIES
+        logging.info(f"补充的城市列表：{CITIES}")
         for city in cities:
             inner_start_time =  time.time()
             # 1个城市有效请求数
