@@ -67,7 +67,7 @@ def __init__():
         多个城市平均每个15秒。总共342个城市（实际200个城市有酒店），实际耗时40分钟（1264条数据）。50个城市，预计耗时约13分钟。
     服务器：
         57分钟
-        51分钟 有效517条+重复的546
+        51分钟 有效517条+重复的546。跑3遍，825条有效
 注：python策划给你续运行时，自动或主动关闭屏幕显示，不影响程序运行。
 """
 """
@@ -216,7 +216,8 @@ def main():
                         'version':version,
                         'note': urlVersion
                         }
-                        if len(packets)>20 and city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value')) == -1 :
+                        #即将开业的酒店无city属性
+                        if len(packets)>20 and city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', ''))  and city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value')) == -1 :
                             continue
                         else:
                             count = count+1
