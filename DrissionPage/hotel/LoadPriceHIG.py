@@ -14,20 +14,11 @@ import traceback
 setup_logging()
 
 #常量定义
-MAX_MAIN_THREAD_COUNT = 1 #同时运行的城市（主线程）数
-MAX_SUB_THREAD_TAB_COUNT = 2 #同时运行的tab（子线程。1个酒店的一种数据请求）数
 MAX_DAYS_COUNT = 365  #请求的总天数
 CITIES = ['北京']  # 城市列表
 # CITIES = ['上海'] 
 # CITIES = ['北京', '上海', '广州'] 
 # CITIES = ['北京', '上海', '广州', '深圳', '南京', '武汉', '成都', '杭州'] 
-
-
-# 限制同时运行的城市数量（4 个城市，即 8 个 tab）
-city_semaphore = Semaphore(MAX_MAIN_THREAD_COUNT)
-tab_pool = list(range(MAX_SUB_THREAD_TAB_COUNT))  # 4 个 tab 的索引
-tab_lock = Lock()  # 用于保护 tab_pool 的线程锁
-
 
 class LoadPriceHIG:
     def __init__(self):
@@ -58,48 +49,8 @@ class LoadPriceHIG:
         self.page = ChromiumPage(addr_or_opts=co)
         
         # self.page = ChromiumPage()  # 创建一个全局的浏览器实例
-        self.tabs = []  # 存储所有 tab 的句柄
         self.db = HotelDatabase()  # 数据库实例
 
-    #合并酒店的价格信息和积分信息
-    def merge_hotel_data(self, price_list, points_list):
-        """
-        合并酒店的价格信息和积分信息
-        :param price_list: 包含价格信息的酒店列表
-        :param points_list: 包含积分信息的酒店列表
-        :return: 合并后的酒店列表
-        """
-        # 创建一个字典，用于快速查找酒店。key-object形式
-        hotel_dict = {}
-
-        # 遍历价格列表，将价格信息存入字典
-        for hotel in price_list:
-            name = hotel['name']
-            if name not in hotel_dict:
-                hotel_dict[name] = {
-                    'name': name,
-                    'minvalue': hotel.get('price', -1),
-                    'minpoints': -1  # 初始化积分为-1，表示无房或不能用积分
-                }
-            else:
-                hotel_dict[name]['minvalue'] = hotel.get('price', -1)
-
-        # 遍历积分列表，将积分信息合并到字典中
-        for hotel in points_list:
-            name = hotel['name']
-            if name not in hotel_dict:
-                hotel_dict[name] = {
-                    'name': name,
-                    'minvalue': -1,  # 初始化现金价格为-1，表示无房或不能用现金
-                    'minpoints': hotel.get('points', -1),
-                    # 'minpoints': hotel.get('points') if isinstance(hotel.get('points'), (int, float)) else -1
-                }
-            else:
-                hotel_dict[name]['minpoints'] = hotel.get('points', -1)
-
-        # 将字典转换为列表。[{},{}]形式
-        merged_list = list(hotel_dict.values())
-        return merged_list
     
     def getHIGParams(self, city, pricedate):
         """
@@ -114,15 +65,6 @@ class LoadPriceHIG:
         }
         return params
     
-    def open_tabs(self, count):
-        """
-        打开指定数量的 tab 页面
-        """
-        for _ in range(count):
-            tab = self.page.new_tab()
-            self.tabs.append(tab)
-        logging.info(f"====已打开 {len(self.tabs)} 个 tab 页面====")
-
     """
     25.04.06因为简化成最多2个tab(2个城市的price tab+points tab)同时在跑，2个tab切换，且是独立线程，问题不大。
     DrissionPage并不提供切换标签页的功能，而是通过get_tab()或者new_tab()方法来获取指定的标签页对象进行操作。
@@ -139,17 +81,12 @@ class LoadPriceHIG:
     tab.set.activate()  激活Tab对象
     page.set.activate()  激活Page对象。
     """
-    def loadData(self, city, pricedate, url, queryType, tab_index):
+    def loadData(self, city, pricedate, url, queryType):
         """
         在指定的 tab 页面中加载数据
         """
         try:
-            #当前被使用的tab。tab_index和main.py中的tab_pool.pop(0)对应
-            tab = self.tabs[tab_index]
-            # logging.info(f"====当前tab： {tab_index} {city} {pricedate} {queryType}====")
-
-            # tab.set.activate()  # 激活指定 tab。无头模式下，无需获取页面焦点。因为脚本会自动操作页面。
-            tab.get(url)  # 打开目标页面
+            self.page.get(url)  # 打开目标页面
 
             # 滚动页面，确保内容加载完全
             last_height = 0
@@ -166,13 +103,13 @@ class LoadPriceHIG:
             2.tab.run_js('document.body.scrollHeight') js代码获取的总高度不正确总返回None，js能执行，给的js代码不对。
             导致按照代码逻辑4次下滑中，第一次直接滑到底，后面3次下滑每次if height == last_height:都是None==None，3次后直接结束
             """
-            scroll_start_time = time()
-            scroll_timeout = 20  # 设置滚动操作的超时时间为 20 秒
+            # scroll_start_time = time()
+            # scroll_timeout = 20  # 设置滚动操作的超时时间为 20 秒
             for _ in range(25):  # 最多滚动 25 次结束，连续scroll_end_max_count次滚不动也算结束
                 # self._activate_all_tabs() #无头模式下，无需获取页面焦点。因为脚本会自动操作页面。
-                if time() - scroll_start_time > scroll_timeout:
-                    logging.warning("！！！滚动操作超时，停止滚动！！！")
-                    break
+                # if time() - scroll_start_time > scroll_timeout:
+                #     logging.warning("！！！滚动操作超时，停止滚动！！！")
+                #     break
                 """
                 https://drissionpage.cn/browser_control/ele_operation  元素交互，见元素滚动
                 tab.scroll.to_bottom() 每次一下子滚到tab页底部，页面来不及渲染，导致数据丢失
@@ -182,7 +119,7 @@ class LoadPriceHIG:
                 # tab.scroll.to_half()
                 scroll_height_delta = scroll_height_delta+1500
                 # 当页面刷新导致 页面上下文丢失时，to_location方法会无限等待页面滚动，而等不到，导致脚本卡死。怎么解决？
-                tab.scroll.to_location(300, scroll_height_delta)
+                self.page.scroll.to_location(300, scroll_height_delta)
                 # scroll_count = scroll_count+1
                 
                 # #测试是否能返回值。输出：JavaScript 测试返回值：42   说明js代码可以运行
@@ -194,8 +131,8 @@ class LoadPriceHIG:
                 # 每次获取页面总高度，包括当前可见部分和不可见的滚动区域。
                 # 注： tab.run_js('return document.body.scrollHeight;') js代码有return才能有返回值，否则拿不到变量值(返回None)！
                 # tab.run_js('document.body.scrollHeight;')  # 直接运行js代码，返回None
-                height = tab.run_js('return document.body.scrollHeight;') # 总高度= 视图高度+滚动高度。如视图高度2None。13768, 14052
-                viewHeight = tab.run_js('return document.documentElement.clientHeight;') # 视图高度。固定840
+                height = self.page.run_js('return document.body.scrollHeight;') # 总高度= 视图高度+滚动高度。如视图高度2None。13768, 14052
+                viewHeight = self.page.run_js('return document.documentElement.clientHeight;') # 视图高度。固定840
                 # logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 总高度 {height}次,视图固定高度{viewHeight}")
 
                 if height == last_height:
@@ -210,7 +147,7 @@ class LoadPriceHIG:
                     last_height = height
 
             # 获取酒店数据
-            hotels = tab.s_eles('@class=hotel-card-list-resize ng-star-inserted')
+            hotels = self.page.s_eles('@class=hotel-card-list-resize ng-star-inserted')
 
             # logging.info(f"城市 {city} 的 {queryType} 数据，共找到 {len(hotels)} 个酒店")
             hotel_list = []
@@ -241,22 +178,10 @@ class LoadPriceHIG:
             return hotel_list
 
         except Exception as e:
-            logging.error(f"加载 Tab {tab_index} {city} {pricedate} {queryType} 的数据时发生错误：{e}")
+            logging.error(f"加载 {city} {pricedate} {queryType} 的数据时发生错误：{e}")
             logging.error("Stack trace:\n%s", traceback.format_exc())  # 使用 traceback.format_exc() 获取堆栈信息
 
             return []
-
-    def _activate_all_tabs(self):
-        """
-        依次激活所有 tab，确保每个 tab 都能顺利加载内容
-        """
-        for i, tab in enumerate(self.tabs):
-            try:
-                tab.set.activate()
-                # logging.info(f"激活 Tab {i}")
-                # time.sleep(1)  # 每次激活后等待 1 秒
-            except Exception as e:
-                logging.warning(f"激活 Tab {i} 时发生错误：{e}")
 
     def close_browser(self):
         """
@@ -267,93 +192,50 @@ class LoadPriceHIG:
         
 def process_city(loader, city, result_queue):
     version = datetime.now().strftime('%Y-%m-%d %H:%M')
-    """
-    处理单个城市的数据（父线程）
-    """
-    with city_semaphore:  # 限制同时运行的城市数量
-        try:
-            # 分配两个 tab 索引
-            with tab_lock:
-                if len(tab_pool) < 2:
-                    raise RuntimeError("没有足够的 tab 可用")
-                #每次从列表中按顺序移除1个并返回。分别返回:0,1,2,3,4...
-                price_tab_index = tab_pool.pop(0)
-                points_tab_index = tab_pool.pop(0)
+    pricedate = datetime.today()
 
-            # logging.info(f"城市 {city} 分配到的 tab 索引：价格 tab={price_tab_index}, 积分 tab={points_tab_index}")
+    days_start_time = time.time()
 
-            pricedate = datetime.today()
+    for i in range(MAX_DAYS_COUNT):  # 爬取两天的数据
+        # 构造 URL
+        params = loader.getHIGParams(city, pricedate)
+        su = StrUtil()
 
-            days_start_time = time.time()
+        # 价格信息URL
+        priceURL = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=CASH&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=6CBARC&qAAR=6CBARC&qAkamaiCC=CN&srb_u=1&qExpndSrch=false&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1&qLoSe=false'
+        # 积分信息URL
+        pointsURL = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=POINTS&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1'
+        priceURL = su.replace_URLParam(priceURL, params)
+        pointsURL = su.replace_URLParam(pointsURL, params)
+        
+        # 价格和积分数据
+        price_result = []
+        points_result = []
+        
+        loader4Load = LoadPriceHIG()
+        price_start_time = time.time()
+        price_result = loader.loadData(city, pricedate, priceURL, 'price')
+        save(loader4Load, version, pricedate, price_result)
+        price_end_time = time.time()
+        logging.info(f"***price 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的记录数：{len(price_result)}，耗时：{price_end_time - price_start_time:.2f} 秒)")
+        
+        points_start_time = time.time()
+        points_result = loader.loadData(city, pricedate, pointsURL, 'points')
+        save(loader4Load, version, pricedate, points_result)
+        points_end_time =  time.time()
+        logging.info(f"***points 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的记录数：{len(points_result)}，耗时：{points_end_time - points_start_time:.2f} 秒)")
 
-            for i in range(MAX_DAYS_COUNT):  # 爬取两天的数据
-                # 构造 URL
-                params = loader.getHIGParams(city, pricedate)
-                su = StrUtil()
-     
-                # 价格信息URL
-                priceURL = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=CASH&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=6CBARC&qAAR=6CBARC&qAkamaiCC=CN&srb_u=1&qExpndSrch=false&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1&qLoSe=false'
-                # 积分信息URL
-                pointsURL = 'https://www.ihg.com.cn/hotels/cn/zh/find-hotels/hotel-search?qDest=%E5%8C%97%E4%BA%AC%E4%BA%9A%E8%BF%90%E6%9D%91&qPt=POINTS&qCiD=23&qCoD=24&qCiMy=032025&qCoMy=032025&qAdlt=1&qChld=0&qRms=1&qIta=99618455&qRtP=IVANI&qAAR=6CBARC&srb_u=1&qSrt=sAV&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.re.vx.nd.sx.we.lx.rn.sn.nu&qWch=0&qSmP=0&qRad=100&qRdU=km&setPMCookies=false&qpMbw=0&qErm=false&qpMn=1'
-                priceURL = su.replace_URLParam(priceURL, params)
-                pointsURL = su.replace_URLParam(pointsURL, params)
-                
-                # 创建子线程处理价格和积分数据
-                price_result = []
-                points_result = []
-
-                def fetch_price():
-                    #每个线程，单独loader单独DB，防止数据库连接中断.loader4Load独立，只负责DB插入。
-                    loader4Load = LoadPriceHIG()
-                    nonlocal price_result
-                    start_time = time.time()
-                    price_result = loader.loadData(city, pricedate, priceURL, 'price', tab_index=price_tab_index)
-                    save(loader4Load, version, pricedate, price_result)
-                    end_time =  time.time()
-                    # logging.info(f"***price 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的记录数：{len(price_result)}，耗时：{end_time - start_time:.2f} 秒)")
-
-                def fetch_points():
-                     #每个线程，单独loader单独DB，防止数据库连接中断
-                    loader4Load = LoadPriceHIG()
-                    nonlocal points_result
-                    start_time = time.time()
-                    points_result = loader.loadData(city, pricedate, pointsURL, 'points', tab_index=points_tab_index)
-                    # logging.info(f"points 城市 {city} 日期 {pricedate} 的1天数据：{points_result}")
-                    save(loader4Load, version, pricedate, points_result)
-                    end_time =  time.time()
-                    # logging.info(f"***points 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的记录数：{len(points_result)}，耗时：{end_time - start_time:.2f} 秒)")
-
-                # 启动子线程
-                price_thread = Thread(target=fetch_price)
-                points_thread = Thread(target=fetch_points)
-                price_thread.start()
-                points_thread.start()
-
-                # 等待子线程完成
-                price_thread.join()
-                points_thread.join()
-
-                # 更新日期
-                pricedate += timedelta(days=1)
-                
-            days_end_time = time.time()
-            logging.info(f"==={city} {MAX_DAYS_COUNT} 天 总耗时：{days_end_time - days_start_time:.2f} 秒)")
-            result_queue.put(f"城市 {city} {MAX_DAYS_COUNT} 天数据爬取完成")
-            
-            logging.info(f"==={city} {MAX_DAYS_COUNT} 天 {version} 版本 开始去重)")   
-            #去重。同一批次、同一酒店、同一数据类型、同一天的数据，保留1个
-            loader.db.remove_duplicates('hotelprice', ['version', 'name', 'mintype', 'pricedate'], conditions=f"t1.city = '{city}' AND t1.version = '{version}'")
-            logging.info(f"==={city} {MAX_DAYS_COUNT} 天 {version} 版本 去重成功")   
-        except Exception as e:
-            result_queue.put(f"城市 {city} 数据爬取失败：{e}")
-
-        finally:
-            # 释放 tab 索引
-            with tab_lock:
-                tab_pool.append(price_tab_index)
-                tab_pool.append(points_tab_index)
-            logging.info(f"城市 {city} 释放了 tab 索引：价格 tab={price_tab_index}, 积分 tab={points_tab_index}")
-
+        # 更新日期
+        pricedate += timedelta(days=1)
+        
+    days_end_time = time.time()
+    logging.info(f"==={city} {MAX_DAYS_COUNT} 天 总耗时：{days_end_time - days_start_time:.2f} 秒)")
+    result_queue.put(f"城市 {city} {MAX_DAYS_COUNT} 天数据爬取完成")
+    
+    logging.info(f"==={city} {MAX_DAYS_COUNT} 天 {version} 版本 开始去重)")   
+    #去重。同一批次、同一酒店、同一数据类型、同一天的数据，保留1个
+    loader.db.remove_duplicates('hotelprice', ['version', 'name', 'mintype', 'pricedate'], conditions=f"t1.city = '{city}' AND t1.version = '{version}'")
+    logging.info(f"==={city} {MAX_DAYS_COUNT} 天 {version} 版本 去重成功")   
     #保存1个城市的1个酒店的1天价格信息，到DB
 def save(loader, version, pricedate, hotel_list):
     #转一下
@@ -411,21 +293,11 @@ def main(args):
             目的是为了用户可以扩大选择。
         对酒店价格的收集：事先在meta表查询，没有酒店的城市（local=0），直接并不进行收集
         """
-        # 打开 8 个 tab 页面（4 个城市，每个城市 2 个 tab）
-        loader.open_tabs(MAX_SUB_THREAD_TAB_COUNT)
 
         cities_start_time = time.time()
 
-        # 多线程处理每个城市的数据
-        threads = []
         for city in cities:
-            thread = Thread(target=process_city, args=(loader, city, result_queue))
-            threads.append(thread)
-            thread.start()
-
-        # 等待所有线程完成
-        for thread in threads:
-            thread.join()
+            process_city(loader, city, result_queue)
 
         cities_end_time = time.time()
         logging.info(f"###{len(cities)} 个城市， {MAX_DAYS_COUNT} 天 总耗时：{cities_end_time - cities_start_time:.2f} 秒)")

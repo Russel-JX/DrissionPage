@@ -5,12 +5,20 @@ select * from hotel;
 select * from hotel where name in ('北京前门富力智选假日酒店') order by id desc;
 select count(1), hotelcode, name from hotel group by hotelcode, name having count(hotelcode)>1;
 
-
-#去重
+#洲际meta去重
 DELETE t1
 FROM hotel t1
 JOIN hotel t2
 ON t1.hotelcode = t2.hotelcode
+   AND t1.id > t2.id;
+   
+#洲际价格积分去重
+DELETE t1
+FROM hotelprice t1
+JOIN hotelprice t2
+ON t1.name = t2.name
+	AND t1.pricedate =  t2.pricedate
+    AND t1.mintype =  t2.mintype
    AND t1.id > t2.id;
 
    #校验70个主要城市酒店是否拿到
