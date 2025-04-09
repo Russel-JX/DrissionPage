@@ -9,7 +9,6 @@ import logging
 import time
 import sys
 import traceback
-from drission.errors import ContextLostError
 
 # 配置日志
 setup_logging()
@@ -167,47 +166,48 @@ class LoadPriceHIG:
             2.tab.run_js('document.body.scrollHeight') js代码获取的总高度不正确总返回None，js能执行，给的js代码不对。
             导致按照代码逻辑4次下滑中，第一次直接滑到底，后面3次下滑每次if height == last_height:都是None==None，3次后直接结束
             """
+            scroll_start_time = time()
+            scroll_timeout = 20  # 设置滚动操作的超时时间为 20 秒
             for _ in range(25):  # 最多滚动 25 次结束，连续scroll_end_max_count次滚不动也算结束
                 # self._activate_all_tabs() #无头模式下，无需获取页面焦点。因为脚本会自动操作页面。
-                try:
-                    """
-                    https://drissionpage.cn/browser_control/ele_operation  元素交互，见元素滚动
-                    tab.scroll.to_bottom() 每次一下子滚到tab页底部，页面来不及渲染，导致数据丢失
-                    tab.scroll.to_location(300, scroll_height_delta) 每次向下滚动固定距离，保证页面渲染完成
-                    """
-                    # tab.scroll.to_bottom()
-                    # tab.scroll.to_half()
-                    scroll_height_delta = scroll_height_delta+1500
-                    tab.scroll.to_location(300, scroll_height_delta)
-                    # scroll_count = scroll_count+1
-                    
-                    # #测试是否能返回值。输出：JavaScript 测试返回值：42   说明js代码可以运行
-                    # result = tab.run_js('return 42;')  
-                    # logging.info(f"JavaScript 测试返回值：{result}") 
-                    
-                    time.sleep(1)  # 等待 1 秒，确保刚滚下的页面加载完成
+                if time() - scroll_start_time > scroll_timeout:
+                    logging.warning("！！！滚动操作超时，停止滚动！！！")
+                    break
+                """
+                https://drissionpage.cn/browser_control/ele_operation  元素交互，见元素滚动
+                tab.scroll.to_bottom() 每次一下子滚到tab页底部，页面来不及渲染，导致数据丢失
+                tab.scroll.to_location(300, scroll_height_delta) 每次向下滚动固定距离，保证页面渲染完成
+                """
+                # tab.scroll.to_bottom()
+                # tab.scroll.to_half()
+                scroll_height_delta = scroll_height_delta+1500
+                # 当页面刷新导致 页面上下文丢失时，to_location方法会无限等待页面滚动，而等不到，导致脚本卡死。怎么解决？
+                tab.scroll.to_location(300, scroll_height_delta)
+                # scroll_count = scroll_count+1
+                
+                # #测试是否能返回值。输出：JavaScript 测试返回值：42   说明js代码可以运行
+                # result = tab.run_js('return 42;')  
+                # logging.info(f"JavaScript 测试返回值：{result}") 
+                
+                time.sleep(1)  # 等待 1 秒，确保刚滚下的页面加载完成
 
-                    # 每次获取页面总高度，包括当前可见部分和不可见的滚动区域。
-                    # 注： tab.run_js('return document.body.scrollHeight;') js代码有return才能有返回值，否则拿不到变量值(返回None)！
-                    # tab.run_js('document.body.scrollHeight;')  # 直接运行js代码，返回None
-                    height = tab.run_js('return document.body.scrollHeight;') # 总高度= 视图高度+滚动高度。如视图高度2None。13768, 14052
-                    viewHeight = tab.run_js('return document.documentElement.clientHeight;') # 视图高度。固定840
-                    # logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 总高度 {height}次,视图固定高度{viewHeight}")
+                # 每次获取页面总高度，包括当前可见部分和不可见的滚动区域。
+                # 注： tab.run_js('return document.body.scrollHeight;') js代码有return才能有返回值，否则拿不到变量值(返回None)！
+                # tab.run_js('document.body.scrollHeight;')  # 直接运行js代码，返回None
+                height = tab.run_js('return document.body.scrollHeight;') # 总高度= 视图高度+滚动高度。如视图高度2None。13768, 14052
+                viewHeight = tab.run_js('return document.documentElement.clientHeight;') # 视图高度。固定840
+                # logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 总高度 {height}次,视图固定高度{viewHeight}")
 
-                    if height == last_height:
-                        same_count += 1
-                        if same_count >= scroll_end_max_count:
-                            # logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 页面已滚动{scroll_count}次到底，有效滚动 {effecttive_scroll_count}次")
-                            break
-                    else:
-                        # effecttive_scroll_count = effecttive_scroll_count + 1
-                        # logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 有效滚动 {effecttive_scroll_count}次")
-                        same_count = 0
-                        last_height = height
-                except ContextLostError:
-                    logging.warning(f"页面上下文丢失，重新加载页面：{url}")
-                    tab.get(url)  # 重新加载页面
-                    time.sleep(3)  # 等待页面加载完成
+                if height == last_height:
+                    same_count += 1
+                    if same_count >= scroll_end_max_count:
+                        # logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 页面已滚动{scroll_count}次到底，有效滚动 {effecttive_scroll_count}次")
+                        break
+                else:
+                    # effecttive_scroll_count = effecttive_scroll_count + 1
+                    # logging.info(f"Tab {tab_index}  {city} {pricedate} {queryType} 有效滚动 {effecttive_scroll_count}次")
+                    same_count = 0
+                    last_height = height
 
             # 获取酒店数据
             hotels = tab.s_eles('@class=hotel-card-list-resize ng-star-inserted')
