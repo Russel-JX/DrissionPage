@@ -216,18 +216,20 @@ def main():
                         'version':version,
                         'note': urlVersion
                         }
-                        #即将开业的酒店无city属性
-                        if len(packets)>20 and city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', ''))  and city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value')) == -1 :
+                        #即将开业的酒店无city属性  TODO 县级市的酒店的city !=查询city，导致酒店没被保存
+                        if len(packets)>20 and hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')  and city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value')) == -1 :
                             continue
                         else:
                             count = count+1
-                            local = city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value'))
+                            local = 0
+                            if hotel.get('address', {}).get('translatedMainAddress', {}).get('city', ''):
+                                local = city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value'))
                             if local != -1:
                                 hotel_data['local'] = 1
                             else:
                                 hotel_data['local'] = 0
                             # logging.info(f"有效数据：{hotel_data}")
-                            db.insert_data('hotel', hotel_data) 
+                            db.insert_data('hotel', hotel_data)
                     else:
                         logging.error(f"{city}未知的URL版本：{urlVersion}")
                         continue    

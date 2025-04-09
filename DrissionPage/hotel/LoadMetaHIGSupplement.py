@@ -23,14 +23,14 @@ import json
 
 # 配置日志
 setup_logging()
-CITIES = [
-'苏州市'] 
 # CITIES = [
-# '苏州市', '成都市', '杭州市', '无锡市', '南京市', '佛山市', '台州市', '绵阳市', 
-# '长沙市', '武汉市', '福州市', '昆明市', '长春市', '兰州市', '南宁市', '柳州市', 
-# '洛阳市', '泸州市', '揭阳市', '桂林市', '株洲市', '临沂市', '大庆市', '邢台市', 
-# '茂名市', '安庆市', '淄博市', '兰州市', '德州市', '四平市', '长治市', '广安市', 
-# '塔城市', '日照市', '岳阳市', '盐城市', '扬州市', '泰州市' ]  # 城市列表
+# '苏州市'] 
+CITIES = [
+'苏州市', '成都市', '杭州市', '无锡市', '南京市', '佛山市', '台州市', '绵阳市', 
+'长沙市', '武汉市', '福州市', '昆明市', '长春市', '兰州市', '南宁市', '柳州市', 
+'洛阳市', '泸州市', '揭阳市', '桂林市', '株洲市', '临沂市', '大庆市', '邢台市', 
+'茂名市', '安庆市', '淄博市', '兰州市', '德州市', '四平市', '长治市', '广安市', 
+'塔城市', '日照市', '岳阳市', '盐城市', '扬州市', '泰州市' ]  # 城市列表
 
 def __init__():
     # 创建配置对象（默认从 ini 文件中读取配置）
@@ -223,12 +223,14 @@ def main():
                         'note': urlVersion
                         }
                         # logging.info(f"===hotel：{hotel.get('address', {})}")
-                        #即将开业的酒店无city属性
-                        if len(packets)>20 and city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', ''))  and city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value')) == -1 :
+                        #即将开业的酒店无city属性  TODO 县级市的酒店的city !=查询city，导致酒店没被保存
+                        if len(packets)>20 and hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')  and city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value')) == -1 :
                             continue
                         else:
                             count = count+1
-                            local = city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value'))
+                            local = 0
+                            if hotel.get('address', {}).get('translatedMainAddress', {}).get('city', ''):
+                                local = city.find(hotel.get('address', {}).get('translatedMainAddress', {}).get('city', '')[0].get('value'))
                             if local != -1:
                                 hotel_data['local'] = 1
                             else:
