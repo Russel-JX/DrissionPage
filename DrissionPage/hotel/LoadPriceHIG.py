@@ -298,8 +298,13 @@ def main(args):
         
         #去重。同一批次、同一酒店、同一爬取城市、同一数据类型、同一天的数据，保留1个
         remove_duplicate_start_time = time.time()
-        loader.db.remove_duplicates('hotelprice', ['version', 'name', 'city', 'mintype', 'pricedate'], conditions=f"t1.city in ({', '.join([f'\'{city}\'' for city in cities])}) AND t1.version = '{version}'")
-        cities_tuple = f"({', '.join([f'\'{city}\'' for city in cities])})"
+        # 将城市列表转换为 SQL IN 子句的格式
+        cities_tuple = f"({', '.join([f'\"{city}\"' for city in cities])})"
+        loader.db.remove_duplicates(
+            'hotelprice', 
+            ['version', 'name', 'city', 'mintype', 'pricedate'], 
+            conditions=f"""t1.city IN {cities_tuple} AND t1.version = '{version}'"""
+        )
 
         remove_duplicate_end_time = time.time()
         remove_time = remove_duplicate_end_time - remove_duplicate_start_time
