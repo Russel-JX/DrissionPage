@@ -298,9 +298,7 @@ def main(args):
         
         #去重。同一批次、同一酒店、同一爬取城市、同一数据类型、同一天的数据，保留1个
         remove_duplicate_start_time = time.time()
-        # 将城市列表转换为 SQL IN 子句的格式
-        cities_tuple = f"({', '.join([f'\"{city}\"' for city in cities])})"
-        
+
         # 将城市列表转换为 SQL IN 子句的格式
         cities_tuple = "({})".format(", ".join(["'{}'".format(city) for city in cities]))
         loader.db.remove_duplicates(
