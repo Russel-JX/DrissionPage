@@ -190,10 +190,8 @@ class LoadPriceHIG:
         self.page.quit()
         logging.info("浏览器已关闭")
         
-def process_city(loader, city, result_queue):
-    version = datetime.now().strftime('%Y-%m-%d %H:%M')
+def process_city(loader, city, result_queue, version):
     pricedate = datetime.today()
-
     days_start_time = time.time()
 
     for i in range(MAX_DAYS_COUNT):  # 爬取两天的数据
@@ -231,12 +229,8 @@ def process_city(loader, city, result_queue):
     days_end_time = time.time()
     logging.info(f"==={city} {MAX_DAYS_COUNT} 天 总耗时：{days_end_time - days_start_time:.2f} 秒)")
     result_queue.put(f"城市 {city} {MAX_DAYS_COUNT} 天数据爬取完成")
-    
-    logging.info(f"==={city} {MAX_DAYS_COUNT} 天 {version} 版本 开始去重)")   
-    #去重。同一批次、同一酒店、同一数据类型、同一天的数据，保留1个
-    loader.db.remove_duplicates('hotelprice', ['version', 'name', 'mintype', 'pricedate'], conditions=f"t1.city = '{city}' AND t1.version = '{version}'")
-    logging.info(f"==={city} {MAX_DAYS_COUNT} 天 {version} 版本 去重成功")   
-    #保存1个城市的1个酒店的1天价格信息，到DB
+     
+#保存1个城市的1个酒店的1天价格信息，到DB
 def save(loader, version, pricedate, hotel_list):
     #转一下
 
@@ -293,14 +287,26 @@ def main(args):
             目的是为了用户可以扩大选择。
         对酒店价格的收集：事先在meta表查询，没有酒店的城市（local=0），直接并不进行收集
         """
-
         cities_start_time = time.time()
-
+        version = datetime.now().strftime('%Y-%m-%d %H:%M')
         for city in cities:
-            process_city(loader, city, result_queue)
+            process_city(loader, city, result_queue, version)
 
         cities_end_time = time.time()
-        logging.info(f"###{len(cities)} 个城市， {MAX_DAYS_COUNT} 天 总耗时：{cities_end_time - cities_start_time:.2f} 秒)")
+        fetch_time = cities_end_time - cities_start_time
+        logging.info(f"###{MAX_DAYS_COUNT} 天 爬取耗时：{fetch_time:.2f} 秒)")
+        
+        #去重。同一批次、同一酒店、同一爬取城市、同一数据类型、同一天的数据，保留1个
+        remove_duplicate_start_time = time.time()
+        loader.db.remove_duplicates('hotelprice', ['version', 'name', 'city', 'mintype', 'pricedate'], conditions=f"t1.city in ({', '.join([f'\'{city}\'' for city in cities])}) AND t1.version = '{version}'")
+        cities_tuple = f"({', '.join([f'\'{city}\'' for city in cities])})"
+
+        remove_duplicate_end_time = time.time()
+        remove_time = remove_duplicate_end_time - remove_duplicate_start_time
+        logging.info(f"==={MAX_DAYS_COUNT} 天 去重成功。去重耗时：{remove_time:.2f} 秒)") 
+        
+        logging.info(f"###{len(cities)} 个城市， {MAX_DAYS_COUNT} 天 总耗时：{remove_time+fetch_time:.2f} 秒)")
+ 
 
         # 打印结果
         while not result_queue.empty():
