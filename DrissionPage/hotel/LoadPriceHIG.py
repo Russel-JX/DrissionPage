@@ -221,7 +221,7 @@ def process_city(loader, city, result_queue, version):
         points_result = loader.loadData(city, pricedate, pointsURL, 'points')
         save(loader4Load, version, pricedate, points_result)
         points_end_time =  time.time()
-        logging.info(f"***points 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的记录数：{len(points_result)}，耗时：{points_end_time - points_start_time:.2f} 秒)")
+        # logging.info(f"***points 城市 {city} 日期 {pricedate.strftime('%Y-%m-%d')} 的记录数：{len(points_result)}，耗时：{points_end_time - points_start_time:.2f} 秒)")
 
         # 更新日期
         pricedate += timedelta(days=1)
